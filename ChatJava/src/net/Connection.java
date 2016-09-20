@@ -40,8 +40,6 @@ public class Connection {
     
     public boolean host(final JTextArea jTAChat){
         try {
-            
-            System.out.println(InetAddress.getLocalHost().getHostAddress());
             servidor = new ServerSocket(12345);
             cliente  = servidor.accept();
             jTAChat.append("Cliente "
@@ -96,6 +94,14 @@ public class Connection {
             jTAChat.append(msg2 + "\n");            
         }catch(IOException ex){
             ex.printStackTrace();
+        }
+    }
+    
+    public String getIP(){
+        try {
+            InetAddress.getLocalHost().getHostAddress();
+        } catch (UnknownHostException ex) {
+            Logger.getLogger(Connection.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 }
