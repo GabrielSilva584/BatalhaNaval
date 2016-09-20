@@ -4,21 +4,11 @@
  */
 package Forms;
 
-import java.awt.Rectangle;
-import java.awt.event.ActionEvent;
-import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.InputStreamReader;
-import java.io.PrintStream;
-import java.net.ServerSocket;
-import java.net.Socket;
-import java.net.UnknownHostException;
-import java.util.Scanner;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javax.swing.AbstractAction;
-import javax.swing.Action;
 import javax.swing.text.DefaultCaret;
+import net.Connection;
 
 /**
  *
@@ -26,10 +16,7 @@ import javax.swing.text.DefaultCaret;
  */
 public class Servidor2 extends javax.swing.JFrame {
 
-    private Socket cliente = null;
-    private ServerSocket servidor = null;
-    private Scanner scan = null;
-    private BufferedReader buffer = null;
+    private Connection connection = new Connection();
     boolean isConnected = false;
     
     public Servidor2() throws IOException {
@@ -187,53 +174,26 @@ public class Servidor2 extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jBFecharServerActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jBFecharServerActionPerformed
-        try {
-            scan.close();
-            cliente.close();
-            servidor.close();
-            statusCheck();
-        } catch (IOException ex) {
-            Logger.getLogger(Servidor2.class.getName()).log(Level.SEVERE, null, ex);
-        }
+        connection.close();
     }//GEN-LAST:event_jBFecharServerActionPerformed
 
     private void jBIniciarServerActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jBIniciarServerActionPerformed
         jTAChat.append("Aguardando Conexão...\n");
-        new Thread(new Runnable() {
+        isConnecting();
+        Thread t = new Thread(new Runnable() {
             @Override
             public void run() {
-                try {
-                    jBIniciarServer.setEnabled(false);
-                    servidor = new ServerSocket(12345);
-
-                    cliente  = servidor.accept();
-                    jTAChat.append("Cliente "
-                            +cliente.getInetAddress().getHostAddress()
-                            +" conectou-se...\n");
-                    isConnected = true;
-                    statusCheck();
-                    listen();
-                } catch (IOException ex) {
-                    Logger.getLogger(Servidor2.class.getName()).log(Level.SEVERE, null, ex);
-                }
+                isConnected = connection.host(jTAChat);
+                connection.listen(jTAChat);
+                statusCheck();
             }
-        }).start();
-        
-        
+        });
+        t.start();
     }//GEN-LAST:event_jBIniciarServerActionPerformed
 
     private void jBEnviarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jBEnviarActionPerformed
-        PrintStream ps;
-        try{
-            ps = new PrintStream(cliente.getOutputStream());
-            String msg = jTFNome.getText() + ": " + jTFMensagem.getText();
-            ps.println(msg);
-            jTAChat.append(msg + "\n");
-            jTFMensagem.setText("");
-            
-        }catch(IOException ex){
-            ex.printStackTrace();
-        }
+        connection.send(jTFNome.getText(), jTFMensagem.getText(), jTAChat);
+        jTFMensagem.setText("");
     }//GEN-LAST:event_jBEnviarActionPerformed
 
     private void jTFMensagemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTFMensagemActionPerformed
@@ -249,41 +209,17 @@ public class Servidor2 extends javax.swing.JFrame {
     }//GEN-LAST:event_jTFIPActionPerformed
 
     private void jBConectarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jBConectarActionPerformed
-        try {
-            cliente = new Socket(jTFIP.getText(), 12345);
-            jTAChat.append(jTFNome.getText()+" se conectou ao servidor!\n");
-        } catch (UnknownHostException ex) {
-            Logger.getLogger(Cliente.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (IOException ex) {
-            Logger.getLogger(Cliente.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        try {
-            listen();
-        } catch (IOException ex) {
-            Logger.getLogger(Cliente.class.getName()).log(Level.SEVERE, null, ex);
-        }
-    }//GEN-LAST:event_jBConectarActionPerformed
-
-    public void listen() throws IOException {
-        new Thread(new Runnable() {
-
+        isConnecting();
+        Thread t = new Thread(new Runnable() {
             @Override
             public void run() {
-                try{
-                    while(true){
-                        buffer = new BufferedReader(new InputStreamReader(
-                                cliente.getInputStream()));
-                        String msg = buffer.readLine();
-                        jTAChat.append(msg+"\n");
-                    }//Fim do While
-                }//Fim do try
-                catch(IOException ex){
-                    ex.printStackTrace();
-                }//Fim do catch
-            }//Fim do run
-            
-        }).start();//Fim do Runnable                       
-    }
+                isConnected = connection.connect(jTFNome.getText(), jTFIP.getText(), jTAChat);
+                connection.listen(jTAChat);
+                statusCheck();
+            }
+        });
+        t.start();
+    }//GEN-LAST:event_jBConectarActionPerformed
     
     public void statusCheck(){
         new Thread(new Runnable(){
@@ -291,8 +227,23 @@ public class Servidor2 extends javax.swing.JFrame {
             public void run() {
                 jBEnviar.setEnabled(isConnected);
                 jBFecharServer.setEnabled(isConnected);
+                jBConectar.setEnabled(!isConnected);
                 jBIniciarServer.setEnabled(!isConnected);
                 jTFMensagem.setEnabled(isConnected);
+                jTFIP.setEnabled(!isConnected);
+                jTFNome.setEnabled(!isConnected);
+            } 
+        }).start();
+    }
+    
+    public void isConnecting(){
+        new Thread(new Runnable(){
+            @Override
+            public void run() {
+                jBConectar.setEnabled(false);
+                jBIniciarServer.setEnabled(false);
+                jTFIP.setEnabled(false);
+                jTFNome.setEnabled(false);
             } 
         }).start();
     }
