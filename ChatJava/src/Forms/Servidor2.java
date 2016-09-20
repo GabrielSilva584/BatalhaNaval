@@ -26,6 +26,13 @@ public class Servidor2 extends javax.swing.JFrame {
         
         DefaultCaret caret = (DefaultCaret)jTAChat.getCaret();
         caret.setUpdatePolicy(DefaultCaret.ALWAYS_UPDATE);
+        
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                jLLocalIP.setText("IP: "+connection.getIP());
+            }
+        }).start();
     }
 
     /**
@@ -49,6 +56,7 @@ public class Servidor2 extends javax.swing.JFrame {
         jLPorta = new javax.swing.JLabel();
         jTFIP = new javax.swing.JTextField();
         jBConectar = new javax.swing.JButton();
+        jLLocalIP = new javax.swing.JLabel();
 
         javax.swing.GroupLayout jDesktopPane1Layout = new javax.swing.GroupLayout(jDesktopPane1);
         jDesktopPane1.setLayout(jDesktopPane1Layout);
@@ -120,6 +128,8 @@ public class Servidor2 extends javax.swing.JFrame {
             }
         });
 
+        jLLocalIP.setText("IP:");
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -146,7 +156,9 @@ public class Servidor2 extends javax.swing.JFrame {
                         .addComponent(jBConectar, javax.swing.GroupLayout.PREFERRED_SIZE, 81, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(jBIniciarServer)
-                        .addGap(0, 0, Short.MAX_VALUE)))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jLLocalIP)
+                        .addGap(0, 102, Short.MAX_VALUE)))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
@@ -159,7 +171,8 @@ public class Servidor2 extends javax.swing.JFrame {
                     .addComponent(jLPorta)
                     .addComponent(jTFIP, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jBIniciarServer)
-                    .addComponent(jBConectar))
+                    .addComponent(jBConectar)
+                    .addComponent(jLLocalIP))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jSPChat, javax.swing.GroupLayout.DEFAULT_SIZE, 274, Short.MAX_VALUE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
@@ -293,6 +306,7 @@ public class Servidor2 extends javax.swing.JFrame {
     private javax.swing.JButton jBFecharServer;
     private javax.swing.JButton jBIniciarServer;
     private javax.swing.JDesktopPane jDesktopPane1;
+    private javax.swing.JLabel jLLocalIP;
     private javax.swing.JLabel jLNome;
     private javax.swing.JLabel jLPorta;
     private javax.swing.JScrollPane jSPChat;
