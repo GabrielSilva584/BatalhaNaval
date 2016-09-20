@@ -30,7 +30,7 @@ public class Servidor2 extends javax.swing.JFrame {
         new Thread(new Runnable() {
             @Override
             public void run() {
-                jLLocalIP.setText("IP: "+connection.getIP());
+                while(true)jLLocalIP.setText("IP: "+connection.getIP());
             }
         }).start();
     }
