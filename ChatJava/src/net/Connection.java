@@ -5,6 +5,7 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.PrintStream;
+import java.net.InetAddress;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.net.UnknownHostException;
@@ -39,6 +40,8 @@ public class Connection {
     
     public boolean host(final JTextArea jTAChat){
         try {
+            
+            System.out.println(InetAddress.getLocalHost().getHostAddress());
             servidor = new ServerSocket(12345);
             cliente  = servidor.accept();
             jTAChat.append("Cliente "
