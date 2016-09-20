@@ -1,6 +1,6 @@
 package net;
 
-import Forms.Servidor2;
+import Forms.FormPrincipal;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -31,9 +31,9 @@ public class Connection {
     public void close(){
         try {
             cliente.close();
-            servidor.close();
+            if(servidor != null)servidor.close();
         } catch (IOException ex) {
-            Logger.getLogger(Servidor2.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(FormPrincipal.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
     
@@ -47,7 +47,7 @@ public class Connection {
             return true;
         } catch (IOException ex) {
             jTAChat.append("Erro de conexão!");
-            Logger.getLogger(Servidor2.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(FormPrincipal.class.getName()).log(Level.SEVERE, null, ex);
             return false;
         }
     }
