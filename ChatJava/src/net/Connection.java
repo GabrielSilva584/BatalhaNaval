@@ -21,11 +21,16 @@ public class Connection {
     private Socket cliente;
     private ServerSocket servidor;
     private BufferedReader buffer;
+    private ChatController chat;
+    private String name, IP, remoteName;
     
-    public Connection(){
+    public Connection(ChatController remoteChat){
         cliente = null;
         servidor = null;
         buffer = null;
+        chat = remoteChat;
+        name = null;
+        IP = null;
     }
     
     public void close(){
@@ -37,60 +42,75 @@ public class Connection {
         }
     }
     
-    public boolean host(final JTextArea jTAChat){
+    public boolean host(String n, String i){
+        PrintStream ps;
+        name = n;
+        IP = i;
         try {
             servidor = new ServerSocket(12345);
             cliente  = servidor.accept();
-            jTAChat.append("Cliente "
-                    +cliente.getInetAddress().getHostAddress()
-                    +" conectou-se...\n");
+            ps = new PrintStream(cliente.getOutputStream());
+            ps.println(name);
+            buffer = new BufferedReader(new InputStreamReader(cliente.getInputStream()));
+            remoteName = buffer.readLine();
+            chat.insertString(remoteName
+                    +" ("+cliente.getInetAddress().getHostAddress()+")"
+                    +" conectou-se...\n", 1);
             return true;
         } catch (IOException ex) {
-            jTAChat.append("Erro de conexão!");
+            chat.insertString("Erro de conexão!\n", 1);
             Logger.getLogger(FormPrincipal.class.getName()).log(Level.SEVERE, null, ex);
             return false;
         }
     }
     
-    public boolean connect(String nome, String IP, final JTextArea jTAChat){
+    public boolean connect(String n, String i){
+        PrintStream ps;
+        name = n;
+        IP = i;
         try {
             cliente = new Socket(IP, 12345);
-            jTAChat.append(nome+" se conectou ao servidor!\n");
+            ps = new PrintStream(cliente.getOutputStream());
+            ps.println(name);
+            buffer = new BufferedReader(new InputStreamReader(cliente.getInputStream()));
+            remoteName = buffer.readLine();
+            chat.insertString("Você se conectou ao servidor de "
+                    +remoteName+"!\n", 1);
             return true;
         } catch (IOException ex) {
+            chat.insertString("Erro de conexão!\n", 1);
             Logger.getLogger(Connection.class.getName()).log(Level.SEVERE, null, ex);
-            jTAChat.append("Erro de conexão!\n");
             return false;
         }
     }
     
-    public void listen(final JTextArea jTAChat){
+    public void listen(){
         new Thread(new Runnable() {
             @Override
             public void run() {
-                if(cliente != null){
-                    try{
-                        while(true){
-                            buffer = new BufferedReader(new InputStreamReader(
-                                    cliente.getInputStream()));
-                            String msg = buffer.readLine();
-                            jTAChat.append(msg+"\n");
+                try{
+                    while(cliente!=null){
+                        buffer = new BufferedReader(new InputStreamReader(
+                                cliente.getInputStream()));
+                        String aux = buffer.readLine();
+                        if(aux!=null && aux.equals("msg")){
+                            chat.insertMessage(remoteName, buffer.readLine(), 3);
                         }
                     }
-                    catch(IOException ex){
-                    }
+                }
+                catch(IOException ex){
                 }
             }
         }).start();     
     }
     
-    public void send(String nome, String msg, final JTextArea jTAChat){
+    public void send(String msg){
         PrintStream ps;
         try{
             ps = new PrintStream(cliente.getOutputStream());
-            String msg2 = nome + ": " + msg;
-            ps.println(msg2);
-            jTAChat.append(msg2 + "\n");            
+            ps.println("msg");
+            ps.println(msg);
+            chat.insertMessage(name, msg, 2);
         }catch(IOException ex){
             ex.printStackTrace();
         }

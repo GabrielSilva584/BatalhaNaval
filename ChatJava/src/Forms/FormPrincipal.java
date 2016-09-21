@@ -8,6 +8,7 @@ import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.text.DefaultCaret;
+import net.ChatController;
 import net.Connection;
 
 /**
@@ -15,19 +16,21 @@ import net.Connection;
  * @author Aluno
  */
 public class FormPrincipal extends javax.swing.JFrame {
-
-    private Connection connection = new Connection();
+    
+    private ChatController chat = null;
+    private Connection connection = null;
     boolean isConnected = false;
-    
-    
     
     public FormPrincipal() throws IOException {
         initComponents();
         setLocationRelativeTo(null);
         statusCheck();
         
-        DefaultCaret caret = (DefaultCaret)jTAChat.getCaret();
+        DefaultCaret caret = (DefaultCaret)jTPChat.getCaret();
         caret.setUpdatePolicy(DefaultCaret.ALWAYS_UPDATE);
+        
+        chat = new ChatController(jTPChat.getStyledDocument());
+        connection = new Connection(chat);
         
         atualizaIP();
     }
@@ -42,8 +45,6 @@ public class FormPrincipal extends javax.swing.JFrame {
     private void initComponents() {
 
         jDesktopPane1 = new javax.swing.JDesktopPane();
-        jSPChat = new javax.swing.JScrollPane();
-        jTAChat = new javax.swing.JTextArea();
         jTFMensagem = new javax.swing.JTextField();
         jBEnviar = new javax.swing.JButton();
         jBFecharServer = new javax.swing.JButton();
@@ -55,6 +56,8 @@ public class FormPrincipal extends javax.swing.JFrame {
         jBConectar = new javax.swing.JButton();
         jLLocalIP2 = new javax.swing.JLabel();
         jLLocalIP1 = new javax.swing.JLabel();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        jTPChat = new javax.swing.JTextPane();
 
         javax.swing.GroupLayout jDesktopPane1Layout = new javax.swing.GroupLayout(jDesktopPane1);
         jDesktopPane1.setLayout(jDesktopPane1Layout);
@@ -69,14 +72,6 @@ public class FormPrincipal extends javax.swing.JFrame {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Servidor");
-
-        jSPChat.setHorizontalScrollBarPolicy(javax.swing.ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
-
-        jTAChat.setEditable(false);
-        jTAChat.setColumns(20);
-        jTAChat.setLineWrap(true);
-        jTAChat.setRows(5);
-        jSPChat.setViewportView(jTAChat);
 
         jTFMensagem.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -142,6 +137,10 @@ public class FormPrincipal extends javax.swing.JFrame {
 
         jLLocalIP1.setText("Seu IP:");
 
+        jTPChat.setEditable(false);
+        jTPChat.setFont(new java.awt.Font("Lucida Sans", 1, 12)); // NOI18N
+        jScrollPane1.setViewportView(jTPChat);
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -149,6 +148,12 @@ public class FormPrincipal extends javax.swing.JFrame {
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(jTFMensagem)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jBEnviar)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jBFecharServer))
                     .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(layout.createSequentialGroup()
@@ -168,18 +173,10 @@ public class FormPrincipal extends javax.swing.JFrame {
                                     .addGroup(layout.createSequentialGroup()
                                         .addComponent(jLLocalIP1)
                                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                        .addComponent(jLLocalIP2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
-                                .addGap(0, 0, Short.MAX_VALUE))
-                            .addGroup(layout.createSequentialGroup()
-                                .addComponent(jTFMensagem)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(jBEnviar)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(jBFecharServer)))
-                        .addContainerGap())
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(jSPChat, javax.swing.GroupLayout.PREFERRED_SIZE, 250, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(199, 657, Short.MAX_VALUE))))
+                                        .addComponent(jLLocalIP2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
+                            .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 252, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(0, 531, Short.MAX_VALUE)))
+                .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -196,8 +193,8 @@ public class FormPrincipal extends javax.swing.JFrame {
                     .addComponent(jLPorta)
                     .addComponent(jLLocalIP2)
                     .addComponent(jLLocalIP1))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jSPChat, javax.swing.GroupLayout.DEFAULT_SIZE, 383, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 388, Short.MAX_VALUE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jTFMensagem, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -214,20 +211,20 @@ public class FormPrincipal extends javax.swing.JFrame {
     }//GEN-LAST:event_jBFecharServerActionPerformed
 
     private void jBIniciarServerActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jBIniciarServerActionPerformed
-        jTAChat.append("Aguardando Conexão...\n");
+        chat.insertString("Aguardando Conexão...\n", 1);
         isConnecting();
         new Thread(new Runnable() {
             @Override
             public void run() {
-                isConnected = connection.host(jTAChat);
-                connection.listen(jTAChat);
+                isConnected = connection.host(jTFNome.getText(),jTFIP.getText());
+                connection.listen();
                 statusCheck();
             }
         }).start();
     }//GEN-LAST:event_jBIniciarServerActionPerformed
 
     private void jBEnviarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jBEnviarActionPerformed
-        connection.send(jTFNome.getText(), jTFMensagem.getText(), jTAChat);
+        connection.send(jTFMensagem.getText());
         jTFMensagem.setText("");
     }//GEN-LAST:event_jBEnviarActionPerformed
 
@@ -248,8 +245,8 @@ public class FormPrincipal extends javax.swing.JFrame {
         new Thread(new Runnable() {
             @Override
             public void run() {
-                isConnected = connection.connect(jTFNome.getText(), jTFIP.getText(), jTAChat);
-                connection.listen(jTAChat);
+                isConnected = connection.connect(jTFNome.getText(), jTFIP.getText());
+                connection.listen();
                 statusCheck();
             }
         }).start();
@@ -346,10 +343,10 @@ public class FormPrincipal extends javax.swing.JFrame {
     private javax.swing.JLabel jLLocalIP2;
     private javax.swing.JLabel jLNome;
     private javax.swing.JLabel jLPorta;
-    private javax.swing.JScrollPane jSPChat;
-    private javax.swing.JTextArea jTAChat;
+    private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTextField jTFIP;
     private javax.swing.JTextField jTFMensagem;
     private javax.swing.JTextField jTFNome;
+    private javax.swing.JTextPane jTPChat;
     // End of variables declaration//GEN-END:variables
 }
