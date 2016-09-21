@@ -38,7 +38,7 @@ public class ChatController {
         blue.addAttribute(StyleConstants.Foreground, Color.blue);
         
         green = sc.addStyle("Green", null);
-        green.addAttribute(StyleConstants.Foreground, Color.green);
+        green.addAttribute(StyleConstants.Foreground, Color.green.darker());
         
     }
     
