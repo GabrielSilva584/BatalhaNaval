@@ -198,7 +198,7 @@
           <Properties>
             <Property name="editable" type="boolean" value="false"/>
             <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
-              <Font name="Lucida Sans" size="12" style="1"/>
+              <Font name="Segoe UI Semibold" size="12" style="0"/>
             </Property>
           </Properties>
           <Events>

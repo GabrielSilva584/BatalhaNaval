@@ -1,7 +1,3 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package Forms;
 
 import java.io.IOException;
@@ -13,7 +9,7 @@ import net.Connection;
 
 /**
  *
- * @author Aluno
+ * @author Gabriel
  */
 public class FormPrincipal extends javax.swing.JFrame {
     
@@ -138,7 +134,7 @@ public class FormPrincipal extends javax.swing.JFrame {
         jLLocalIP1.setText("Seu IP:");
 
         jTPChat.setEditable(false);
-        jTPChat.setFont(new java.awt.Font("Lucida Sans", 1, 12)); // NOI18N
+        jTPChat.setFont(new java.awt.Font("Segoe UI Semibold", 0, 12)); // NOI18N
         jTPChat.addCaretListener(new javax.swing.event.CaretListener() {
             public void caretUpdate(javax.swing.event.CaretEvent evt) {
                 jTPChatCaretUpdate(evt);
