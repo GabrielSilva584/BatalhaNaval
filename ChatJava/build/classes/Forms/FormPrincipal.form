@@ -57,13 +57,17 @@
                                   <Component id="jTFIP" pref="167" max="32767" attributes="0"/>
                               </Group>
                               <EmptySpace max="-2" attributes="0"/>
-                              <Group type="103" groupAlignment="0" attributes="0">
+                              <Group type="103" groupAlignment="0" max="-2" attributes="0">
                                   <Group type="102" attributes="0">
                                       <Component id="jBConectar" min="-2" pref="81" max="-2" attributes="0"/>
                                       <EmptySpace max="-2" attributes="0"/>
                                       <Component id="jBIniciarServer" min="-2" max="-2" attributes="0"/>
                                   </Group>
-                                  <Component id="jLLocalIP" alignment="0" min="-2" pref="158" max="-2" attributes="0"/>
+                                  <Group type="102" attributes="0">
+                                      <Component id="jLLocalIP1" min="-2" max="-2" attributes="0"/>
+                                      <EmptySpace max="-2" attributes="0"/>
+                                      <Component id="jLLocalIP2" max="32767" attributes="0"/>
+                                  </Group>
                               </Group>
                               <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
                           </Group>
@@ -99,10 +103,11 @@
               <Group type="103" groupAlignment="3" attributes="0">
                   <Component id="jTFIP" alignment="3" min="-2" max="-2" attributes="0"/>
                   <Component id="jLPorta" alignment="3" min="-2" max="-2" attributes="0"/>
-                  <Component id="jLLocalIP" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="jLLocalIP2" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="jLLocalIP1" alignment="3" min="-2" max="-2" attributes="0"/>
               </Group>
-              <EmptySpace pref="19" max="32767" attributes="0"/>
-              <Component id="jSPChat" min="-2" pref="263" max="-2" attributes="0"/>
+              <EmptySpace type="unrelated" max="-2" attributes="0"/>
+              <Component id="jSPChat" pref="383" max="32767" attributes="0"/>
               <EmptySpace max="-2" attributes="0"/>
               <Group type="103" groupAlignment="3" attributes="0">
                   <Component id="jTFMensagem" alignment="3" min="-2" max="-2" attributes="0"/>
@@ -195,7 +200,23 @@
         <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jBConectarActionPerformed"/>
       </Events>
     </Component>
-    <Component class="javax.swing.JLabel" name="jLLocalIP">
+    <Component class="javax.swing.JLabel" name="jLLocalIP2">
+      <Properties>
+        <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
+          <Font name="Tahoma" size="12" style="1"/>
+        </Property>
+        <Property name="foreground" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
+          <Color blue="ff" green="0" red="0" type="rgb"/>
+        </Property>
+        <Property name="horizontalAlignment" type="int" value="4"/>
+        <Property name="text" type="java.lang.String" value="127.0.0.1"/>
+        <Property name="toolTipText" type="java.lang.String" value="IP desta m&#xe1;quina, clique para atualizar."/>
+      </Properties>
+      <Events>
+        <EventHandler event="mouseClicked" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="jLLocalIP2MouseClicked"/>
+      </Events>
+    </Component>
+    <Component class="javax.swing.JLabel" name="jLLocalIP1">
       <Properties>
         <Property name="text" type="java.lang.String" value="Seu IP:"/>
       </Properties>

@@ -19,6 +19,8 @@ public class FormPrincipal extends javax.swing.JFrame {
     private Connection connection = new Connection();
     boolean isConnected = false;
     
+    
+    
     public FormPrincipal() throws IOException {
         initComponents();
         setLocationRelativeTo(null);
@@ -27,12 +29,7 @@ public class FormPrincipal extends javax.swing.JFrame {
         DefaultCaret caret = (DefaultCaret)jTAChat.getCaret();
         caret.setUpdatePolicy(DefaultCaret.ALWAYS_UPDATE);
         
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                while(true)jLLocalIP.setText("Seu IP: "+connection.getIP());
-            }
-        }).start();
+        atualizaIP();
     }
 
     /**
@@ -56,7 +53,8 @@ public class FormPrincipal extends javax.swing.JFrame {
         jLPorta = new javax.swing.JLabel();
         jTFIP = new javax.swing.JTextField();
         jBConectar = new javax.swing.JButton();
-        jLLocalIP = new javax.swing.JLabel();
+        jLLocalIP2 = new javax.swing.JLabel();
+        jLLocalIP1 = new javax.swing.JLabel();
 
         javax.swing.GroupLayout jDesktopPane1Layout = new javax.swing.GroupLayout(jDesktopPane1);
         jDesktopPane1.setLayout(jDesktopPane1Layout);
@@ -131,7 +129,18 @@ public class FormPrincipal extends javax.swing.JFrame {
             }
         });
 
-        jLLocalIP.setText("Seu IP:");
+        jLLocalIP2.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
+        jLLocalIP2.setForeground(new java.awt.Color(0, 0, 255));
+        jLLocalIP2.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
+        jLLocalIP2.setText("127.0.0.1");
+        jLLocalIP2.setToolTipText("IP desta máquina, clique para atualizar.");
+        jLLocalIP2.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jLLocalIP2MouseClicked(evt);
+            }
+        });
+
+        jLLocalIP1.setText("Seu IP:");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -151,12 +160,15 @@ public class FormPrincipal extends javax.swing.JFrame {
                                     .addComponent(jTFNome)
                                     .addComponent(jTFIP, javax.swing.GroupLayout.DEFAULT_SIZE, 167, Short.MAX_VALUE))
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                                     .addGroup(layout.createSequentialGroup()
                                         .addComponent(jBConectar, javax.swing.GroupLayout.PREFERRED_SIZE, 81, javax.swing.GroupLayout.PREFERRED_SIZE)
                                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                         .addComponent(jBIniciarServer))
-                                    .addComponent(jLLocalIP, javax.swing.GroupLayout.PREFERRED_SIZE, 158, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                    .addGroup(layout.createSequentialGroup()
+                                        .addComponent(jLLocalIP1)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                        .addComponent(jLLocalIP2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
                                 .addGap(0, 0, Short.MAX_VALUE))
                             .addGroup(layout.createSequentialGroup()
                                 .addComponent(jTFMensagem)
@@ -182,9 +194,10 @@ public class FormPrincipal extends javax.swing.JFrame {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jTFIP, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLPorta)
-                    .addComponent(jLLocalIP))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 19, Short.MAX_VALUE)
-                .addComponent(jSPChat, javax.swing.GroupLayout.PREFERRED_SIZE, 263, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLLocalIP2)
+                    .addComponent(jLLocalIP1))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(jSPChat, javax.swing.GroupLayout.DEFAULT_SIZE, 383, Short.MAX_VALUE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jTFMensagem, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -241,6 +254,10 @@ public class FormPrincipal extends javax.swing.JFrame {
             }
         }).start();
     }//GEN-LAST:event_jBConectarActionPerformed
+
+    private void jLLocalIP2MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLLocalIP2MouseClicked
+        atualizaIP();
+    }//GEN-LAST:event_jLLocalIP2MouseClicked
     
     public void statusCheck(){
         new Thread(new Runnable(){
@@ -266,6 +283,15 @@ public class FormPrincipal extends javax.swing.JFrame {
                 jTFIP.setEnabled(false);
                 jTFNome.setEnabled(false);
             } 
+        }).start();
+    }
+    
+    public void atualizaIP(){
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                jLLocalIP2.setText(connection.getIP());
+            }
         }).start();
     }
     
@@ -316,7 +342,8 @@ public class FormPrincipal extends javax.swing.JFrame {
     private javax.swing.JButton jBFecharServer;
     private javax.swing.JButton jBIniciarServer;
     private javax.swing.JDesktopPane jDesktopPane1;
-    private javax.swing.JLabel jLLocalIP;
+    private javax.swing.JLabel jLLocalIP1;
+    private javax.swing.JLabel jLLocalIP2;
     private javax.swing.JLabel jLNome;
     private javax.swing.JLabel jLPorta;
     private javax.swing.JScrollPane jSPChat;
