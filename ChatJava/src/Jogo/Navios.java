@@ -12,9 +12,23 @@ package Jogo;
 
 public class Navios {
     private int tam;
-    private int ini[][];
-    boolean rotacao;
-    void pos(int tam, int ini[][], boolean rotacao){
-        
+    private int vertIni;
+    private int horIni;
+    private boolean rotacao;
+    private final int ocupado[][] = new int[tam][2];
+    void pos(int tam, boolean rotacao){
+        ocupado[0][0]=vertIni;
+        ocupado[0][1]=horIni;
+        int i;
+        for(i=1;i==tam-1;i++){
+            if(!rotacao){
+                ocupado[i][0]=vertIni;
+                ocupado[i][1]=horIni+1;
+            }
+            else{
+                ocupado[i][0]=vertIni+1;
+                ocupado[i][1]=horIni;
+            }
+        }
     }
 }
