@@ -34,12 +34,35 @@ public class Connection {
     }
     
     public void close(){
+        PrintStream ps;
         try {
+            ps = new PrintStream(cliente.getOutputStream());
+            ps.println("flw");
+            chat.insertString("Você saiu...\n", 1);
             cliente.close();
             if(servidor != null)servidor.close();
+            reset();
         } catch (IOException ex) {
             Logger.getLogger(FormPrincipal.class.getName()).log(Level.SEVERE, null, ex);
         }
+    }
+    
+    public void disconnect(){
+        try {
+            cliente.close();
+            if(servidor != null)servidor.close();
+            reset();
+        } catch (IOException ex) {
+            Logger.getLogger(FormPrincipal.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+    
+    public void reset(){
+        cliente = null;
+        servidor = null;
+        buffer = null;
+        name = null;
+        IP = null;
     }
     
     public boolean host(String n, String i){
@@ -85,23 +108,24 @@ public class Connection {
     }
     
     public void listen(){
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                try{
-                    while(cliente!=null){
-                        buffer = new BufferedReader(new InputStreamReader(
-                                cliente.getInputStream()));
-                        String aux = buffer.readLine();
-                        if(aux!=null && aux.equals("msg")){
-                            chat.insertMessage(remoteName, buffer.readLine(), 3);
-                        }
+        try{
+            while(cliente!=null){
+                buffer = new BufferedReader(new InputStreamReader(
+                        cliente.getInputStream()));
+                String aux = buffer.readLine();
+                if(aux!=null){
+                    if(aux.equals("msg")){
+                        chat.insertMessage(remoteName, buffer.readLine(), 3);
+                    }else if(aux.equals("flw")){
+                        chat.insertString(remoteName + " saiu...\n", 1);
+                        cliente = null;
                     }
                 }
-                catch(IOException ex){
-                }
+
             }
-        }).start();     
+        }
+        catch(IOException ex){
+        }
     }
     
     public void send(String msg){
