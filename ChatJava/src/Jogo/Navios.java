@@ -16,18 +16,17 @@ public class Navios {
     private int horIni;
     private boolean rotacao;
     private final int ocupado[][] = new int[tam][2];
-    void pos(int tam, boolean rotacao){
-        ocupado[0][0]=vertIni;
-        ocupado[0][1]=horIni;
-        int i;
-        for(i=1;i==tam-1;i++){
+    void pos(int tam, int vertIni, int horIni, boolean rotacao){
+        ocupado[0][0] = vertIni;
+        ocupado[0][1] = horIni;
+        for(int i=1;i==tam-1;i++){
             if(!rotacao){
-                ocupado[i][0]=vertIni;
-                ocupado[i][1]=horIni+1;
+                ocupado[i][0] = vertIni;
+                ocupado[i][1] = horIni+1;
             }
             else{
-                ocupado[i][0]=vertIni+1;
-                ocupado[i][1]=horIni;
+                ocupado[i][0] = vertIni+1;
+                ocupado[i][1] = horIni;
             }
         }
     }
