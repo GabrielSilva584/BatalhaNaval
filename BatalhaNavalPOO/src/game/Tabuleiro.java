@@ -79,3 +79,4 @@ public class Tabuleiro extends JPanel{
         }
         return 1;//todos os navios foram destruidos
     }
+}
