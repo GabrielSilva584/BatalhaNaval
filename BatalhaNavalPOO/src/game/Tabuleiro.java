@@ -26,7 +26,7 @@ import javax.swing.JPanel;
 public class Tabuleiro extends JPanel{
     
     private ArrayList<Observer> observers;
-    protected final static String backgroundPath = "img/agua.png";
+    protected final static String backgroundPath = "img/agua.jpg";
     private BufferedImage image;
     private int matriz[][] = new int[10][10];
     public Tabuleiro() {
@@ -44,7 +44,7 @@ public class Tabuleiro extends JPanel{
     }
     
     private void drawBoard(Graphics2D g){
-        //g.drawImage(image, 0, 0, null);
+        g.drawImage(image, 0, 0, null);
         
         g.setColor(Color.black);
         g.setStroke(new BasicStroke(2));
