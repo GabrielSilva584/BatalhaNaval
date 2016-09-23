@@ -38,5 +38,12 @@ public class Main {
                 }
             }
         });
+        
+        if(boardP1.vence()){
+            System.out.println("Vc ganhou");
+        }
+        if(boardP2.vence()){
+            System.out.println("Vc perdeu");
+        }
     }
 }
