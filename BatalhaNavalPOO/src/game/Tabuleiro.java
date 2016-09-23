@@ -27,7 +27,7 @@ public class Tabuleiro extends JPanel{
     private ArrayList<Observer> observers;
     protected final static String backgroundPath = "img/agua.png";
     private BufferedImage image;
-    
+    private int matriz[][] = new int[10][10];
     public Tabuleiro() {
        try {
           URL url=getClass().getResource("");
@@ -59,5 +59,23 @@ public class Tabuleiro extends JPanel{
             ob.update(null, g);
         }
     }
-
-}
+    
+    void inicializarTabuleiro(){
+        for(int i=0; i<10; i++){
+            for(int j=0; j<10; j++){
+                matriz[i][j]=0;//0 é água
+            }
+        }
+    
+    }
+    
+    int vence(){
+        for(int i=0; i<10; i++){
+            for(int j=0; j<10; j++){
+                if(matriz[i][j]!=0 && matriz[i][j]!=-1) {//-1 é navio destruído
+                    return 0;//não acabou o jogo
+                } 
+            }
+        }
+        return 1;//todos os navios foram destruidos
+    }
