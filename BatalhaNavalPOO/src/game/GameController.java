@@ -34,18 +34,20 @@ public class GameController implements MouseListener, MouseMotionListener, Actio
     }
     
     public void drawMouseQuadrante(Graphics2D g) {
-        int width = view.getBoard1().getWidth()/10;
-        int height = view.getBoard1().getHeight()/10;
+        if(mouseInside){
+            int width = view.getBoard1().getWidth()/10;
+            int height = view.getBoard1().getHeight()/10;
 
-        int qx = model.getMouseCoord().x/width;
-        int qy = model.getMouseCoord().y/height;
+            int qx = model.getMouseCoord().x/width;
+            int qy = model.getMouseCoord().y/height;
 
-        int squareWidth = g.getClip().getBounds().width / 10;
-        int squareHeight = g.getClip().getBounds().height / 10;
+            int squareWidth = g.getClip().getBounds().width / 10;
+            int squareHeight = g.getClip().getBounds().height / 10;
 
-        g.setColor(Color.red);
-        g.drawRect(qx * squareWidth, qy * squareHeight, squareWidth, squareHeight);
-        g.setColor(Color.black);
+            g.setColor(Color.red);
+            g.drawRect(qx * squareWidth, qy * squareHeight, squareWidth, squareHeight);
+            g.setColor(Color.black);
+        }
     }
     
     @Override
@@ -76,12 +78,12 @@ public class GameController implements MouseListener, MouseMotionListener, Actio
 
     @Override
     public void mouseEntered(MouseEvent e) {
-        
+        mouseInside = true;
     }
 
     @Override
     public void mouseExited(MouseEvent e) {
-        
+        mouseInside = false;
     }
 
     @Override
