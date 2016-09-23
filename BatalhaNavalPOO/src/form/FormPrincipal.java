@@ -240,35 +240,35 @@ public class FormPrincipal extends javax.swing.JFrame implements Observer {
         jScrollPane1.setViewportView(jTPChat);
 
         jPJogo2.setBackground(new java.awt.Color(255, 255, 255));
-        jPJogo2.setMaximumSize(new java.awt.Dimension(301, 301));
-        jPJogo2.setMinimumSize(new java.awt.Dimension(301, 301));
-        jPJogo2.setPreferredSize(new java.awt.Dimension(301, 301));
+        jPJogo2.setMaximumSize(new java.awt.Dimension(300, 300));
+        jPJogo2.setMinimumSize(new java.awt.Dimension(300, 300));
+        jPJogo2.setPreferredSize(new java.awt.Dimension(300, 300));
 
         javax.swing.GroupLayout jPJogo2Layout = new javax.swing.GroupLayout(jPJogo2);
         jPJogo2.setLayout(jPJogo2Layout);
         jPJogo2Layout.setHorizontalGroup(
             jPJogo2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 301, Short.MAX_VALUE)
+            .addGap(0, 300, Short.MAX_VALUE)
         );
         jPJogo2Layout.setVerticalGroup(
             jPJogo2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 301, Short.MAX_VALUE)
+            .addGap(0, 300, Short.MAX_VALUE)
         );
 
         jPJogo1.setBackground(new java.awt.Color(255, 255, 255));
-        jPJogo1.setMaximumSize(new java.awt.Dimension(301, 301));
-        jPJogo1.setMinimumSize(new java.awt.Dimension(301, 301));
-        jPJogo1.setPreferredSize(new java.awt.Dimension(301, 301));
+        jPJogo1.setMaximumSize(new java.awt.Dimension(300, 300));
+        jPJogo1.setMinimumSize(new java.awt.Dimension(300, 300));
+        jPJogo1.setPreferredSize(new java.awt.Dimension(300, 300));
 
         javax.swing.GroupLayout jPJogo1Layout = new javax.swing.GroupLayout(jPJogo1);
         jPJogo1.setLayout(jPJogo1Layout);
         jPJogo1Layout.setHorizontalGroup(
             jPJogo1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 301, Short.MAX_VALUE)
+            .addGap(0, 300, Short.MAX_VALUE)
         );
         jPJogo1Layout.setVerticalGroup(
             jPJogo1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 301, Short.MAX_VALUE)
+            .addGap(0, 300, Short.MAX_VALUE)
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -316,7 +316,7 @@ public class FormPrincipal extends javax.swing.JFrame implements Observer {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addComponent(jPJogo2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jPJogo1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 37, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 38, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jTFIP, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLPorta)
@@ -354,7 +354,6 @@ public class FormPrincipal extends javax.swing.JFrame implements Observer {
                 isConnected = connection.host(jTFNome.getText(),jTFIP.getText());
                 statusCheck();
                 connection.listen();
-                connection.disconnect();
                 isConnected = false;
                 statusCheck();
             }

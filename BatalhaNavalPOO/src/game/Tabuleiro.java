@@ -5,6 +5,7 @@
  */
 package game;
 
+import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
@@ -46,6 +47,7 @@ public class Tabuleiro extends JPanel{
         //g.drawImage(image, 0, 0, null);
         
         g.setColor(Color.black);
+        g.setStroke(new BasicStroke(2));
         for(int i=0;i<=10;++i)g.drawLine(0, i*30, 300, i*30);
         for(int i=0;i<=10;++i)g.drawLine(i*30, 0, i*30, 300);
     }

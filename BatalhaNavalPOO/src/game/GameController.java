@@ -6,7 +6,6 @@
 package game;
 
 import form.FormPrincipal;
-import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.event.ActionEvent;
@@ -35,34 +34,30 @@ public class GameController implements MouseListener, MouseMotionListener, Actio
     }
     
     public void drawMouseQuadrante(Graphics2D g) {
-        if(mouseInside){
-            int width = view.getBoard1().getWidth()/10;
-            int height = view.getBoard1().getHeight()/10;
+        int width = view.getBoard1().getWidth()/10;
+        int height = view.getBoard1().getHeight()/10;
 
-            int qx = model.getMouseCoord().x/width;
-            int qy = model.getMouseCoord().y/height;
+        int qx = model.getMouseCoord().x/width;
+        int qy = model.getMouseCoord().y/height;
 
-            int squareWidth = g.getClip().getBounds().width / 10;
-            int squareHeight = g.getClip().getBounds().height / 10;
+        int squareWidth = g.getClip().getBounds().width / 10;
+        int squareHeight = g.getClip().getBounds().height / 10;
 
-            g.setColor(Color.red);
-            g.setStroke(new BasicStroke(2));
-            g.drawRect(qx * squareWidth, qy * squareHeight, squareWidth, squareHeight);
-            g.setColor(Color.BLACK);
-        }
+        g.setColor(Color.red);
+        g.drawRect(qx * squareWidth, qy * squareHeight, squareWidth, squareHeight);
+        g.setColor(Color.black);
     }
     
-   
     @Override
     public void mouseClicked(MouseEvent e) {
     }
 
     @Override
     public void mousePressed(MouseEvent e) {
-        System.out.println("X: " + e.getX() + "\tY: " + e.getY());
-        
         int width = view.getBoard1().getWidth()/10;
         int height = view.getBoard1().getHeight()/10;
+        
+        System.out.println("X: " + (e.getX()/width+1) + "\tY: " + (e.getY()/height+1));
         
         Navios n = model.findNavio(e.getX()/width, e.getY()/height);
         if(n != null){
@@ -81,12 +76,12 @@ public class GameController implements MouseListener, MouseMotionListener, Actio
 
     @Override
     public void mouseEntered(MouseEvent e) {
-       mouseInside = true;
+        
     }
 
     @Override
     public void mouseExited(MouseEvent e) {
-        mouseInside = false;
+        
     }
 
     @Override
@@ -104,5 +99,4 @@ public class GameController implements MouseListener, MouseMotionListener, Actio
     public void actionPerformed(ActionEvent e) {
         
     }
-    
 }

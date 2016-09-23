@@ -125,6 +125,7 @@ public class Connection {
                     }
                 }
             }
+            disconnect();
         }
         catch(IOException ex){
         }
