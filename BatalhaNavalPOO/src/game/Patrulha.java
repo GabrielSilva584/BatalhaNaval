@@ -12,10 +12,6 @@ import java.awt.Graphics2D;
  * @author viber
  */
 public class Patrulha extends Navios{
-    
-    void pos(int ini[][], boolean rotacao){
-        
-    }
 
     @Override
     public void draw(Graphics2D g) {
