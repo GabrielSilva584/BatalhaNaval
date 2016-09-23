@@ -11,7 +11,6 @@ import java.net.Socket;
 import java.net.UnknownHostException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javax.swing.JTextArea;
 
 /**
  *
@@ -31,6 +30,7 @@ public class Connection {
         chat = remoteChat;
         name = null;
         IP = null;
+        remoteName = null;
     }
     
     public void close(){
@@ -39,7 +39,7 @@ public class Connection {
             ps = new PrintStream(cliente.getOutputStream());
             ps.println("flw");
             chat.insertString("Você saiu...\n", 1);
-            cliente.close();
+            if(cliente != null)cliente.close();
             if(servidor != null)servidor.close();
             reset();
         } catch (IOException ex) {
@@ -49,7 +49,10 @@ public class Connection {
     
     public void disconnect(){
         try {
-            cliente.close();
+            if(cliente != null){
+                chat.insertString(remoteName + " saiu...\n", 1);
+                cliente.close();
+            }
             if(servidor != null)servidor.close();
             reset();
         } catch (IOException ex) {
@@ -63,6 +66,7 @@ public class Connection {
         buffer = null;
         name = null;
         IP = null;
+        remoteName = null;
     }
     
     public boolean host(String n, String i){
@@ -117,11 +121,9 @@ public class Connection {
                     if(aux.equals("msg")){
                         chat.insertMessage(remoteName, buffer.readLine(), 3);
                     }else if(aux.equals("flw")){
-                        chat.insertString(remoteName + " saiu...\n", 1);
-                        cliente = null;
+                        disconnect();
                     }
                 }
-
             }
         }
         catch(IOException ex){

@@ -32,7 +32,7 @@ public class Main {
                     controller.addView(view);
                     controller.addModel(model);
                     view.addController(controller);
-                    view.main(args,view);
+                    view.setVisible(true);
                 } catch (IOException ex) {
                     Logger.getLogger(Main.class.getName()).log(Level.SEVERE, null, ex);
                 }
