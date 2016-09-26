@@ -7,6 +7,7 @@ package game;
 
 import form.FormPrincipal;
 import java.awt.Color;
+import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -35,6 +36,7 @@ public class GameController implements MouseListener, MouseMotionListener, Actio
     
     public void drawMouseQuadrante(Graphics2D g) {
         if(mouseInside){
+            
             int width = view.getBoard1().getWidth()/10;
             int height = view.getBoard1().getHeight()/10;
 

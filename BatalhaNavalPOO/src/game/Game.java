@@ -7,7 +7,6 @@ package game;
 
 import java.awt.Graphics2D;
 import java.awt.Point;
-import java.util.ArrayList;
 import java.util.Observable;
 import java.util.Observer;
 
