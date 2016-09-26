@@ -29,9 +29,7 @@ public class Tabuleiro extends JPanel implements Observer{
     protected final static String backgroundPath = "src/img/agua.jpg";
     private BufferedImage image;
     private FormPrincipal view = null;
-    
     private int matriz[][] = new int[10][10];
-    
     private int player;
 
     public void setView(FormPrincipal view) {
@@ -46,7 +44,7 @@ public class Tabuleiro extends JPanel implements Observer{
            image = ImageIO.read(new File(backgroundPath));
         } catch (IOException ex) {
              JOptionPane.showMessageDialog(null, "Falha ao carregar arquivos!");
-        }//*/
+        }
         observers = new ArrayList<Observer>();
     }
     

@@ -5,7 +5,6 @@
  */
 package game;
 
-import form.FormPrincipal;
 import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.event.ActionEvent;
@@ -16,10 +15,6 @@ import java.awt.event.MouseEvent;
  * @author Gabriel
  */
 public class GameControllerP2 extends GameController{
-    
-    private boolean mouseInside = false;
-    private FormPrincipal view;
-    private Game model;
     
     @Override
     public void drawMouseQuadrante(Graphics2D g){

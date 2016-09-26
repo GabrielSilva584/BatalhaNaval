@@ -7,6 +7,7 @@ package game;
 
 import java.awt.Graphics2D;
 import java.awt.Point;
+import java.awt.image.BufferedImage;
 
 /**
  *
@@ -14,21 +15,33 @@ import java.awt.Point;
  */
 
 public abstract class Navios {
-    private int tam;
-    private final int ocupado[][] = new int[tam][2];
-    private boolean rotacao;
-    Point quadrante;
+    protected int tam;
+    private int ocupado[][] = null;
+    protected boolean rotacao = false;
+    protected int x, y;
+    protected final static String backgroundPath = "src/img/";
+    protected BufferedImage imageh;
+    protected BufferedImage imagev;
 
-    public Point getQuadrante() {
-        return quadrante;
+    public void initMatriz(){
+        ocupado = new int[tam][2];
+        for(int i=0;i<tam;i++){
+            for(int j=0;j<2;j++){
+                ocupado[i][j]=0;
+            }
+        }
     }
 
     public void setQuadrante(int x, int y){
-        quadrante.setLocation(x, y);
+        this.x = x;
+        this.y = y;
+    }
+    
+    public void rotacionar(){
+        rotacao = !rotacao;
     }
     
     void pos(int tam, int vertIni, int horIni, boolean rotacao){
-        setQuadrante(horIni,vertIni);
         ocupado[0][0] = vertIni;
         ocupado[0][1] = horIni;
         for(int i=1;i==tam-1;i++){
@@ -51,7 +64,32 @@ public abstract class Navios {
                 ocupado[j][0] = ocupado[j][0] - 1;
             }
         }
+        System.out.println(""+ocupado[0][1]+ocupado[0][0]);
+        setQuadrante(ocupado[0][1],ocupado[0][0]);
     }
     
-    public abstract void draw(Graphics2D g);
+    public void draw(Graphics2D g) {
+        BufferedImage aux = null;
+        
+        int squareWidth = g.getClip().getBounds().width / 10;
+        int squareHeight = g.getClip().getBounds().height / 10;
+        
+        int x0 = x * squareWidth;
+        int y0 = y * squareHeight;
+        if(!rotacao){
+            squareWidth*=tam;
+            aux = imageh;
+        }
+        else{
+            squareHeight*=tam;
+            aux = imagev;
+        }
+        
+        g.drawImage(aux, x0, y0, null);
+    }
+    
+    public void drawToCoord(Graphics2D g, int x, int y) {
+        pos(tam,y,x,rotacao);
+        draw(g);
+    }
 }

@@ -5,24 +5,27 @@
  */
 package game;
 
-import java.awt.Graphics2D;
+import java.io.File;
+import java.io.IOException;
+import javax.imageio.ImageIO;
+import javax.swing.JOptionPane;
 
 /**
  *
  * @author viber
  */
 public class Patrulha extends Navios{
-
-    @Override
-    public void draw(Graphics2D g) {
-        int squareWidth = g.getClip().getBounds().width / 8;
-        int squareHeight = g.getClip().getBounds().height / 8;
+    
+    public Patrulha(){
+        tam = 2;
         
-        int x0 = quadrante.x * squareWidth;
-        int y0 = quadrante.y * squareHeight;
-        int x1 = x0 + squareWidth;
-        int y1 = y0 + squareHeight;
+        initMatriz();
         
-        //g.drawImage(pecasImg, x0, y0, x1, y1, 320, 20, 360, 60, null);
+        try {
+           imageh = ImageIO.read(new File(backgroundPath+"patrulha.png"));
+           imagev = ImageIO.read(new File(backgroundPath+"patrulha - vertical.png"));
+        } catch (IOException ex) {
+             JOptionPane.showMessageDialog(null, "Falha ao carregar arquivos!");
+        }
     }
 }

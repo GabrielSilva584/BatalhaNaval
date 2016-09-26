@@ -5,6 +5,7 @@ import board.LabelLeft;
 import board.LabelTop;
 import game.GameControllerP1;
 import board.Tabuleiro;
+import game.Patrulha;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
@@ -398,8 +399,18 @@ public class FormPrincipal extends javax.swing.JFrame{
         jLSubmarino.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/submarino.png"))); // NOI18N
 
         jLPatrulha.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/patrulha.png"))); // NOI18N
+        jLPatrulha.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jLPatrulhaMouseClicked(evt);
+            }
+        });
 
         jBRotacionar.setText("Rotacionar");
+        jBRotacionar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jBRotacionarActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -577,6 +588,14 @@ public class FormPrincipal extends javax.swing.JFrame{
     private void jBAjudaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jBAjudaActionPerformed
         new FormAjuda(null,true).setVisible(true);
     }//GEN-LAST:event_jBAjudaActionPerformed
+
+    private void jLPatrulhaMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLPatrulhaMouseClicked
+        controller1.setN(new Patrulha());
+    }//GEN-LAST:event_jLPatrulhaMouseClicked
+
+    private void jBRotacionarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jBRotacionarActionPerformed
+        controller1.rotacionarN();
+    }//GEN-LAST:event_jBRotacionarActionPerformed
      
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jBAjuda;

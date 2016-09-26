@@ -5,7 +5,6 @@
  */
 package game;
 
-import form.FormPrincipal;
 import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.event.ActionEvent;
@@ -17,13 +16,16 @@ import java.awt.event.MouseEvent;
  */
 public class GameControllerP1 extends GameController{
     
-    private boolean mouseInside = false;
-    private FormPrincipal view;
-    private Game model;
     private Navios n = null;
 
     public void setN(Navios n) {
         this.n = n;
+    }
+    
+    public void rotacionarN(){
+        if(n!=null){
+            n.rotacionar();
+        }
     }
     
     @Override
@@ -43,7 +45,7 @@ public class GameControllerP1 extends GameController{
             g.setColor(Color.black);
             
             if(n!=null){
-                //n.draw(g);
+                n.drawToCoord(g,qx,qy);
             }
         }
     }
