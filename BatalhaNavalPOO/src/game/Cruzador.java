@@ -18,6 +18,7 @@ import javax.swing.JOptionPane;
 public class Cruzador extends Navios {
      public Cruzador(){
         tam = 4;
+        type = "Cruzador";
         
         initMatriz();
         

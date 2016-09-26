@@ -18,6 +18,7 @@ import javax.swing.JOptionPane;
 public class Destroyer extends Navios {
      public Destroyer(){
         tam = 4;
+        type = "Destroyer";
         
         initMatriz();
         

@@ -18,7 +18,7 @@ import javax.swing.JOptionPane;
 public class PortaAvioes extends Navios {
      public PortaAvioes(){
         tam = 5;
-        
+        type = "PortaAvioes";
         initMatriz();
         
         try {
