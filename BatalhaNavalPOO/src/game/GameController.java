@@ -25,8 +25,8 @@ public class GameController implements MouseListener, MouseMotionListener, Actio
     private FormPrincipal view;
     private Game model;
     
-    public void addView(Observer view){
-        this.view = (FormPrincipal)view;
+    public void addView(FormPrincipal view){
+        this.view = view;
     }
     
     public void addModel(Game model){
@@ -35,6 +35,7 @@ public class GameController implements MouseListener, MouseMotionListener, Actio
     
     public void drawMouseQuadrante(Graphics2D g) {
         if(mouseInside){
+            
             int width = view.getBoard1().getWidth()/10;
             int height = view.getBoard1().getHeight()/10;
 

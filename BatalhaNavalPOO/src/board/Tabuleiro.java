@@ -3,8 +3,9 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package game;
+package board;
 
+import form.FormPrincipal;
 import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.Graphics;
@@ -12,7 +13,6 @@ import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
-import java.net.URL;
 import java.util.ArrayList;
 import java.util.Observer;
 import javax.imageio.ImageIO;
@@ -23,20 +23,31 @@ import javax.swing.JPanel;
  *
  * @author viber
  */
-public class Tabuleiro extends JPanel{
+public class Tabuleiro extends JPanel implements Observer{
     
     private ArrayList<Observer> observers;
-    protected final static String backgroundPath = "img/agua.jpg";
+    protected final static String backgroundPath = "src/img/agua.jpg";
     private BufferedImage image;
+    private FormPrincipal view = null;
+    
     private int matriz[][] = new int[10][10];
-    public Tabuleiro() {
-       try {
-          URL url=getClass().getResource("");
-          image = ImageIO.read(new File(backgroundPath));
-       } catch (IOException ex) {
-            JOptionPane.showMessageDialog(null, "Falha ao carregar arquivos!");
-       }//*/
-       observers = new ArrayList<Observer>();
+    
+    private int player;
+
+    public void setView(FormPrincipal view) {
+        this.view = view;
+    }
+    
+    public Tabuleiro(int i) {
+        
+        player = i;
+        
+        try {
+           image = ImageIO.read(new File(backgroundPath));
+        } catch (IOException ex) {
+             JOptionPane.showMessageDialog(null, "Falha ao carregar arquivos!");
+        }//*/
+        observers = new ArrayList<Observer>();
     }
     
     public void registerObserver(Observer ob){
@@ -60,6 +71,7 @@ public class Tabuleiro extends JPanel{
         for(Observer ob : observers){
             ob.update(null, g);
         }
+        update(null, g);
     }
     
     void inicializarTabuleiro(){
@@ -80,5 +92,10 @@ public class Tabuleiro extends JPanel{
             }
         }
         return 1;//todos os navios foram destruidos
+    }
+
+    @Override
+    public void update(java.util.Observable o, Object arg) {
+        view.update(player, (Graphics2D) arg);
     }
 }

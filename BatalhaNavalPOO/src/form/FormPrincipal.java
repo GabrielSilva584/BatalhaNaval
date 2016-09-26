@@ -1,9 +1,13 @@
 package form;
 
+import board.Label;
+import board.LabelLeft;
+import board.LabelTop;
 import game.GameController;
-import game.Tabuleiro;
+import board.Tabuleiro;
 import java.awt.Color;
 import java.awt.Dimension;
+import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.GridLayout;
 import java.io.IOException;
@@ -22,15 +26,18 @@ import net.Connection;
  *
  * @author Gabriel
  */
-public class FormPrincipal extends javax.swing.JFrame implements Observer {
+public class FormPrincipal extends javax.swing.JFrame{
     
     private Tabuleiro boardP1 = null, boardP2 = null;
+    private LabelLeft labelL1 = null, labelL2 = null;
+    private LabelTop labelT1 = null, labelT2 = null;
     private ChatController chat = null;
-    private GameController controller = null;
+    private GameController controller1 = null, controller2 = null;
     private Connection connection = null;
     boolean isConnected = false;
     
     public FormPrincipal(Tabuleiro boardP1, Tabuleiro boardP2) throws IOException {
+        
         try {
             UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
         } catch (ClassNotFoundException ex) {
@@ -47,6 +54,8 @@ public class FormPrincipal extends javax.swing.JFrame implements Observer {
         
         this.boardP1 = boardP1;
         this.boardP2 = boardP2;
+        
+        initBoardLabels();
         
         initBoards(jPJogo1, boardP1);
         initBoards(jPJogo2, boardP2);
@@ -74,12 +83,40 @@ public class FormPrincipal extends javax.swing.JFrame implements Observer {
         panel.add(board);  
     }
     
-    public void addController(GameController controller){
-        this.controller = controller;
-        this.boardP1.addMouseListener(controller);
-        this.boardP1.addMouseMotionListener(controller);
-        this.boardP2.addMouseListener(controller);
-        this.boardP2.addMouseMotionListener(controller);
+    private void initLabel(JPanel panel, Label board){
+      
+        Dimension area = new Dimension(panel.getWidth(), panel.getHeight());
+
+        board.setPreferredSize(area);
+        board.setBackground(Color.white);
+        panel.setLayout(new GridLayout(1, 1));
+        
+        panel.add(board);  
+    }
+    
+    private void initBoardLabels(){
+        labelL1 = new LabelLeft();
+        initLabel(jPLeft1, labelL1);
+        labelL2 = new LabelLeft();
+        initLabel(jPLeft2, labelL2);
+        
+        labelT1 = new LabelTop();
+        initLabel(jPTop1, labelT1);
+        labelT2 = new LabelTop();
+        initLabel(jPTop2, labelT2);
+    }
+    
+    public void setController1(GameController controller){
+        this.controller1 = controller;
+    }
+    
+    public void setController2(GameController controller){
+        this.controller2 = controller;
+    }
+    
+    public void addController(Tabuleiro board, GameController controller){
+        board.addMouseListener(controller);
+        board.addMouseMotionListener(controller);
     }
     
     public void statusCheck(){
@@ -87,7 +124,7 @@ public class FormPrincipal extends javax.swing.JFrame implements Observer {
             @Override
             public void run() {
                 jBEnviar.setEnabled(isConnected);
-                jBSair.setEnabled(isConnected);
+                jBDesconectar.setEnabled(isConnected);
                 jBConectar.setEnabled(!isConnected);
                 jBIniciarServer.setEnabled(!isConnected);
                 jTFMensagem.setEnabled(isConnected);
@@ -138,7 +175,7 @@ public class FormPrincipal extends javax.swing.JFrame implements Observer {
         jDesktopPane1 = new javax.swing.JDesktopPane();
         jTFMensagem = new javax.swing.JTextField();
         jBEnviar = new javax.swing.JButton();
-        jBSair = new javax.swing.JButton();
+        jBDesconectar = new javax.swing.JButton();
         jBIniciarServer = new javax.swing.JButton();
         jLNome = new javax.swing.JLabel();
         jTFNome = new javax.swing.JTextField();
@@ -151,6 +188,11 @@ public class FormPrincipal extends javax.swing.JFrame implements Observer {
         jTPChat = new javax.swing.JTextPane();
         jPJogo2 = new javax.swing.JPanel();
         jPJogo1 = new javax.swing.JPanel();
+        jPLeft1 = new javax.swing.JPanel();
+        jPTop1 = new javax.swing.JPanel();
+        jPLeft2 = new javax.swing.JPanel();
+        jPTop2 = new javax.swing.JPanel();
+        jBAjuda = new javax.swing.JButton();
 
         javax.swing.GroupLayout jDesktopPane1Layout = new javax.swing.GroupLayout(jDesktopPane1);
         jDesktopPane1.setLayout(jDesktopPane1Layout);
@@ -179,10 +221,10 @@ public class FormPrincipal extends javax.swing.JFrame implements Observer {
             }
         });
 
-        jBSair.setText("Sair");
-        jBSair.addActionListener(new java.awt.event.ActionListener() {
+        jBDesconectar.setText("Desconectar");
+        jBDesconectar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jBSairActionPerformed(evt);
+                jBDesconectarActionPerformed(evt);
             }
         });
 
@@ -271,6 +313,75 @@ public class FormPrincipal extends javax.swing.JFrame implements Observer {
             .addGap(0, 300, Short.MAX_VALUE)
         );
 
+        jPLeft1.setBackground(new java.awt.Color(255, 255, 255));
+        jPLeft1.setMaximumSize(new java.awt.Dimension(20, 300));
+        jPLeft1.setMinimumSize(new java.awt.Dimension(20, 300));
+        jPLeft1.setPreferredSize(new java.awt.Dimension(20, 300));
+
+        javax.swing.GroupLayout jPLeft1Layout = new javax.swing.GroupLayout(jPLeft1);
+        jPLeft1.setLayout(jPLeft1Layout);
+        jPLeft1Layout.setHorizontalGroup(
+            jPLeft1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 20, Short.MAX_VALUE)
+        );
+        jPLeft1Layout.setVerticalGroup(
+            jPLeft1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 0, Short.MAX_VALUE)
+        );
+
+        jPTop1.setBackground(new java.awt.Color(255, 255, 255));
+        jPTop1.setMaximumSize(new java.awt.Dimension(300, 20));
+        jPTop1.setMinimumSize(new java.awt.Dimension(300, 20));
+        jPTop1.setPreferredSize(new java.awt.Dimension(300, 20));
+
+        javax.swing.GroupLayout jPTop1Layout = new javax.swing.GroupLayout(jPTop1);
+        jPTop1.setLayout(jPTop1Layout);
+        jPTop1Layout.setHorizontalGroup(
+            jPTop1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 0, Short.MAX_VALUE)
+        );
+        jPTop1Layout.setVerticalGroup(
+            jPTop1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 20, Short.MAX_VALUE)
+        );
+
+        jPLeft2.setBackground(new java.awt.Color(255, 255, 255));
+        jPLeft2.setMaximumSize(new java.awt.Dimension(20, 300));
+        jPLeft2.setMinimumSize(new java.awt.Dimension(20, 300));
+        jPLeft2.setPreferredSize(new java.awt.Dimension(20, 300));
+
+        javax.swing.GroupLayout jPLeft2Layout = new javax.swing.GroupLayout(jPLeft2);
+        jPLeft2.setLayout(jPLeft2Layout);
+        jPLeft2Layout.setHorizontalGroup(
+            jPLeft2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 20, Short.MAX_VALUE)
+        );
+        jPLeft2Layout.setVerticalGroup(
+            jPLeft2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 0, Short.MAX_VALUE)
+        );
+
+        jPTop2.setBackground(new java.awt.Color(255, 255, 255));
+        jPTop2.setPreferredSize(new java.awt.Dimension(300, 20));
+
+        javax.swing.GroupLayout jPTop2Layout = new javax.swing.GroupLayout(jPTop2);
+        jPTop2.setLayout(jPTop2Layout);
+        jPTop2Layout.setHorizontalGroup(
+            jPTop2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 0, Short.MAX_VALUE)
+        );
+        jPTop2Layout.setVerticalGroup(
+            jPTop2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 20, Short.MAX_VALUE)
+        );
+
+        jBAjuda.setText("Ajuda");
+        jBAjuda.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jBAjudaActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -283,7 +394,9 @@ public class FormPrincipal extends javax.swing.JFrame implements Observer {
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(jBEnviar)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jBSair))
+                        .addComponent(jBAjuda)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jBDesconectar))
                     .addComponent(jScrollPane1)
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(jLPorta)
@@ -292,8 +405,8 @@ public class FormPrincipal extends javax.swing.JFrame implements Observer {
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(jLNome)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jTFNome, javax.swing.GroupLayout.PREFERRED_SIZE, 180, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jTFNome, javax.swing.GroupLayout.PREFERRED_SIZE, 174, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(jLLocalIP1)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(jLLocalIP2, javax.swing.GroupLayout.PREFERRED_SIZE, 118, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -302,48 +415,68 @@ public class FormPrincipal extends javax.swing.JFrame implements Observer {
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(jBIniciarServer))
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(326, 326, 326)
-                        .addComponent(jPJogo1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(25, 25, 25)
-                        .addComponent(jPJogo2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(289, 289, 289)
+                        .addComponent(jPLeft1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(jPTop1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(jPJogo1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(jPLeft2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(jPTop2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(jPJogo2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                         .addGap(0, 0, Short.MAX_VALUE)))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(30, 30, 30)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(jPJogo2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jPJogo1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 38, Short.MAX_VALUE)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jTFIP, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLPorta)
-                    .addComponent(jLNome)
-                    .addComponent(jTFNome, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLLocalIP1)
-                    .addComponent(jLLocalIP2)
-                    .addComponent(jBConectar)
-                    .addComponent(jBIniciarServer))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap()
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(jPTop2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(jPLeft2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(jPJogo2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addGap(43, 43, 43))
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(jPTop1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(8, 8, 8)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(jPLeft1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(jPJogo1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 14, Short.MAX_VALUE)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jTFIP, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jLPorta)
+                            .addComponent(jLNome)
+                            .addComponent(jTFNome, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jLLocalIP1)
+                            .addComponent(jLLocalIP2)
+                            .addComponent(jBConectar)
+                            .addComponent(jBIniciarServer))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)))
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 165, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jTFMensagem, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jBEnviar)
-                    .addComponent(jBSair))
+                    .addComponent(jBDesconectar)
+                    .addComponent(jBAjuda))
                 .addContainerGap())
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void jBSairActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jBSairActionPerformed
+    private void jBDesconectarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jBDesconectarActionPerformed
         connection.close();
         isConnected = false;
         statusCheck();
-    }//GEN-LAST:event_jBSairActionPerformed
+    }//GEN-LAST:event_jBDesconectarActionPerformed
 
     private void jBIniciarServerActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jBIniciarServerActionPerformed
         chat.insertString("Aguardando Conexão...\n", 1);
@@ -399,12 +532,17 @@ public class FormPrincipal extends javax.swing.JFrame implements Observer {
     private void jTPChatCaretUpdate(javax.swing.event.CaretEvent evt) {//GEN-FIRST:event_jTPChatCaretUpdate
         // TODO add your handling code here:
     }//GEN-LAST:event_jTPChatCaretUpdate
+
+    private void jBAjudaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jBAjudaActionPerformed
+        new FormAjuda(null,true).setVisible(true);
+    }//GEN-LAST:event_jBAjudaActionPerformed
      
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton jBAjuda;
     private javax.swing.JButton jBConectar;
+    private javax.swing.JButton jBDesconectar;
     private javax.swing.JButton jBEnviar;
     private javax.swing.JButton jBIniciarServer;
-    private javax.swing.JButton jBSair;
     private javax.swing.JDesktopPane jDesktopPane1;
     private javax.swing.JLabel jLLocalIP1;
     private javax.swing.JLabel jLLocalIP2;
@@ -412,15 +550,23 @@ public class FormPrincipal extends javax.swing.JFrame implements Observer {
     private javax.swing.JLabel jLPorta;
     private javax.swing.JPanel jPJogo1;
     private javax.swing.JPanel jPJogo2;
+    private javax.swing.JPanel jPLeft1;
+    private javax.swing.JPanel jPLeft2;
+    private javax.swing.JPanel jPTop1;
+    private javax.swing.JPanel jPTop2;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTextField jTFIP;
     private javax.swing.JTextField jTFMensagem;
     private javax.swing.JTextField jTFNome;
     private javax.swing.JTextPane jTPChat;
     // End of variables declaration//GEN-END:variables
-
-    @Override
-    public void update(Observable o, Object arg) {
-        controller.drawMouseQuadrante((Graphics2D) arg);
+    
+    public void update(int i, Graphics g){
+        if(i==1){
+            controller1.drawMouseQuadrante((Graphics2D) g);
+        }
+        if(i==2){
+            controller2.drawMouseQuadrante((Graphics2D) g);
+        }
     }
 }
