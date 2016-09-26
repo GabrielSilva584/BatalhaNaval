@@ -485,6 +485,9 @@
         </Property>
         <Property name="toolTipText" type="java.lang.String" value=""/>
       </Properties>
+      <Events>
+        <EventHandler event="mouseClicked" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="jLPortaAvioesMouseClicked"/>
+      </Events>
     </Component>
     <Component class="javax.swing.JLabel" name="jLDestroyer">
       <Properties>
@@ -492,6 +495,9 @@
           <Image iconType="3" name="/img/destroyer.png"/>
         </Property>
       </Properties>
+      <Events>
+        <EventHandler event="mouseClicked" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="jLDestroyerMouseClicked"/>
+      </Events>
     </Component>
     <Component class="javax.swing.JLabel" name="jLCruzador">
       <Properties>
@@ -499,6 +505,9 @@
           <Image iconType="3" name="/img/cruzador.png"/>
         </Property>
       </Properties>
+      <Events>
+        <EventHandler event="mouseClicked" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="jLCruzadorMouseClicked"/>
+      </Events>
     </Component>
     <Component class="javax.swing.JLabel" name="jLSubmarino">
       <Properties>
@@ -506,6 +515,9 @@
           <Image iconType="3" name="/img/submarino.png"/>
         </Property>
       </Properties>
+      <Events>
+        <EventHandler event="mouseClicked" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="jLSubmarinoMouseClicked"/>
+      </Events>
     </Component>
     <Component class="javax.swing.JLabel" name="jLPatrulha">
       <Properties>

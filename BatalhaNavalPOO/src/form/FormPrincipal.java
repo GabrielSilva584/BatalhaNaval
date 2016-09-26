@@ -5,8 +5,12 @@ import board.LabelLeft;
 import board.LabelTop;
 import game.GameController;
 import board.Tabuleiro;
+import game.Cruzador;
+import game.Destroyer;
 import game.GameControllerP1;
 import game.Patrulha;
+import game.PortaAvioes;
+import game.Submarino;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
@@ -397,12 +401,32 @@ public class FormPrincipal extends javax.swing.JFrame{
 
         jLPortaAvioes.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/portaavioes.png"))); // NOI18N
         jLPortaAvioes.setToolTipText("");
+        jLPortaAvioes.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jLPortaAvioesMouseClicked(evt);
+            }
+        });
 
         jLDestroyer.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/destroyer.png"))); // NOI18N
+        jLDestroyer.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jLDestroyerMouseClicked(evt);
+            }
+        });
 
         jLCruzador.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/cruzador.png"))); // NOI18N
+        jLCruzador.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jLCruzadorMouseClicked(evt);
+            }
+        });
 
         jLSubmarino.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/submarino.png"))); // NOI18N
+        jLSubmarino.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jLSubmarinoMouseClicked(evt);
+            }
+        });
 
         jLPatrulha.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/patrulha.png"))); // NOI18N
         jLPatrulha.addMouseListener(new java.awt.event.MouseAdapter() {
@@ -634,6 +658,22 @@ public class FormPrincipal extends javax.swing.JFrame{
     private void jBRotacionarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jBRotacionarActionPerformed
         controller1.rotacionarN();
     }//GEN-LAST:event_jBRotacionarActionPerformed
+
+    private void jLSubmarinoMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLSubmarinoMouseClicked
+        controller1.setN(new Submarino());
+    }//GEN-LAST:event_jLSubmarinoMouseClicked
+
+    private void jLCruzadorMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLCruzadorMouseClicked
+        controller1.setN(new Cruzador());
+    }//GEN-LAST:event_jLCruzadorMouseClicked
+
+    private void jLDestroyerMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLDestroyerMouseClicked
+        controller1.setN(new Destroyer());
+    }//GEN-LAST:event_jLDestroyerMouseClicked
+
+    private void jLPortaAvioesMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLPortaAvioesMouseClicked
+        controller1.setN(new PortaAvioes());
+    }//GEN-LAST:event_jLPortaAvioesMouseClicked
      
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jBAjuda;
