@@ -15,8 +15,6 @@ import java.awt.Point;
 
 public abstract class Navios {
     private int tam;
-    private int vertIni;
-    private int horIni;
     private final int ocupado[][] = new int[tam][2];
     private boolean rotacao;
     Point quadrante;
@@ -30,6 +28,7 @@ public abstract class Navios {
     }
     
     void pos(int tam, int vertIni, int horIni, boolean rotacao){
+        setQuadrante(horIni,vertIni);
         ocupado[0][0] = vertIni;
         ocupado[0][1] = horIni;
         for(int i=1;i==tam-1;i++){
