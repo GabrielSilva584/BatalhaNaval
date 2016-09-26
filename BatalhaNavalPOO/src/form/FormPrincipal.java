@@ -3,7 +3,7 @@ package form;
 import board.Label;
 import board.LabelLeft;
 import board.LabelTop;
-import game.GameControllerP1;
+import game.GameController;
 import board.Tabuleiro;
 import java.awt.Color;
 import java.awt.Dimension;
@@ -32,7 +32,7 @@ public class FormPrincipal extends javax.swing.JFrame{
     private LabelLeft labelL1 = null, labelL2 = null;
     private LabelTop labelT1 = null, labelT2 = null;
     private ChatController chat = null;
-    private GameControllerP1 controller1 = null, controller2 = null;
+    private GameController controller1 = null, controller2 = null;
     private Connection connection = null;
     boolean isConnected = false;
     
@@ -106,15 +106,15 @@ public class FormPrincipal extends javax.swing.JFrame{
         initLabel(jPTop2, labelT2);
     }
     
-    public void setController1(GameControllerP1 controller){
+    public void setController1(GameController controller){
         this.controller1 = controller;
     }
     
-    public void setController2(GameControllerP1 controller){
+    public void setController2(GameController controller){
         this.controller2 = controller;
     }
     
-    public void addController(Tabuleiro board, GameControllerP1 controller){
+    public void addController(Tabuleiro board, GameController controller){
         board.addMouseListener(controller);
         board.addMouseMotionListener(controller);
     }
@@ -199,6 +199,11 @@ public class FormPrincipal extends javax.swing.JFrame{
         jLSubmarino = new javax.swing.JLabel();
         jLPatrulha = new javax.swing.JLabel();
         jBRotacionar = new javax.swing.JButton();
+        jLNomePortaAvioes = new javax.swing.JLabel();
+        jLNomeDestroyer = new javax.swing.JLabel();
+        jLNomeCruzador = new javax.swing.JLabel();
+        jLNomeSubmarino = new javax.swing.JLabel();
+        jLNomePatrulha = new javax.swing.JLabel();
 
         javax.swing.GroupLayout jDesktopPane1Layout = new javax.swing.GroupLayout(jDesktopPane1);
         jDesktopPane1.setLayout(jDesktopPane1Layout);
@@ -401,6 +406,16 @@ public class FormPrincipal extends javax.swing.JFrame{
 
         jBRotacionar.setText("Rotacionar");
 
+        jLNomePortaAvioes.setText("Porta-aviões");
+
+        jLNomeDestroyer.setText("Destroyer");
+
+        jLNomeCruzador.setText("Cruzador");
+
+        jLNomeSubmarino.setText("Submarino");
+
+        jLNomePatrulha.setText("Patrulha");
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -429,7 +444,19 @@ public class FormPrincipal extends javax.swing.JFrame{
                                     .addComponent(jLSubmarino)
                                     .addComponent(jLPatrulha)
                                     .addComponent(jBRotacionar))
-                                .addGap(243, 243, 243)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                                        .addGap(7, 7, 7)
+                                        .addComponent(jLNomeSubmarino, javax.swing.GroupLayout.PREFERRED_SIZE, 68, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                    .addGroup(layout.createSequentialGroup()
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                            .addComponent(jLNomeCruzador, javax.swing.GroupLayout.PREFERRED_SIZE, 69, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                            .addComponent(jLNomePatrulha, javax.swing.GroupLayout.PREFERRED_SIZE, 69, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                                .addComponent(jLNomePortaAvioes, javax.swing.GroupLayout.DEFAULT_SIZE, 69, Short.MAX_VALUE)
+                                                .addComponent(jLNomeDestroyer, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))))
+                                .addGap(195, 195, 195)
                                 .addComponent(jPLeft1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
@@ -441,7 +468,7 @@ public class FormPrincipal extends javax.swing.JFrame{
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                                     .addComponent(jPTop2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                     .addComponent(jPJogo2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                                .addGap(0, 32, Short.MAX_VALUE))
+                                .addGap(0, 5, Short.MAX_VALUE))
                             .addGroup(layout.createSequentialGroup()
                                 .addComponent(jTFIP, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
@@ -478,15 +505,25 @@ public class FormPrincipal extends javax.swing.JFrame{
                                 .addComponent(jPLeft1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                 .addComponent(jPJogo1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                             .addGroup(layout.createSequentialGroup()
-                                .addComponent(jLPortaAvioes)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                    .addComponent(jLNomePortaAvioes, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                    .addComponent(jLPortaAvioes, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                                 .addGap(18, 18, 18)
-                                .addComponent(jLDestroyer)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                    .addComponent(jLNomeDestroyer, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                    .addComponent(jLDestroyer, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                                 .addGap(18, 18, 18)
-                                .addComponent(jLCruzador)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                    .addComponent(jLCruzador, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                    .addComponent(jLNomeCruzador, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                                 .addGap(18, 18, 18)
-                                .addComponent(jLSubmarino)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                    .addComponent(jLNomeSubmarino, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                    .addComponent(jLSubmarino, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                                 .addGap(18, 18, 18)
-                                .addComponent(jLPatrulha)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                    .addComponent(jLNomePatrulha, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                    .addComponent(jLPatrulha, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                                 .addGap(18, 18, 18)
                                 .addComponent(jBRotacionar)))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 14, Short.MAX_VALUE)
@@ -591,6 +628,11 @@ public class FormPrincipal extends javax.swing.JFrame{
     private javax.swing.JLabel jLLocalIP1;
     private javax.swing.JLabel jLLocalIP2;
     private javax.swing.JLabel jLNome;
+    private javax.swing.JLabel jLNomeCruzador;
+    private javax.swing.JLabel jLNomeDestroyer;
+    private javax.swing.JLabel jLNomePatrulha;
+    private javax.swing.JLabel jLNomePortaAvioes;
+    private javax.swing.JLabel jLNomeSubmarino;
     private javax.swing.JLabel jLPatrulha;
     private javax.swing.JLabel jLPorta;
     private javax.swing.JLabel jLPortaAvioes;

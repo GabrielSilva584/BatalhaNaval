@@ -67,7 +67,24 @@
                                   <Component id="jLPatrulha" min="-2" max="-2" attributes="0"/>
                                   <Component id="jBRotacionar" min="-2" max="-2" attributes="0"/>
                               </Group>
-                              <EmptySpace min="-2" pref="243" max="-2" attributes="0"/>
+                              <Group type="103" groupAlignment="0" attributes="0">
+                                  <Group type="102" alignment="1" attributes="0">
+                                      <EmptySpace min="-2" pref="7" max="-2" attributes="0"/>
+                                      <Component id="jLNomeSubmarino" min="-2" pref="68" max="-2" attributes="0"/>
+                                  </Group>
+                                  <Group type="102" alignment="0" attributes="0">
+                                      <EmptySpace max="-2" attributes="0"/>
+                                      <Group type="103" groupAlignment="0" attributes="0">
+                                          <Component id="jLNomeCruzador" min="-2" pref="69" max="-2" attributes="0"/>
+                                          <Component id="jLNomePatrulha" min="-2" pref="69" max="-2" attributes="0"/>
+                                          <Group type="103" groupAlignment="0" max="-2" attributes="0">
+                                              <Component id="jLNomePortaAvioes" pref="69" max="32767" attributes="0"/>
+                                              <Component id="jLNomeDestroyer" max="32767" attributes="0"/>
+                                          </Group>
+                                      </Group>
+                                  </Group>
+                              </Group>
+                              <EmptySpace min="-2" pref="195" max="-2" attributes="0"/>
                               <Component id="jPLeft1" min="-2" max="-2" attributes="0"/>
                               <EmptySpace max="-2" attributes="0"/>
                               <Group type="103" groupAlignment="0" max="-2" attributes="0">
@@ -81,7 +98,7 @@
                                   <Component id="jPTop2" max="32767" attributes="0"/>
                                   <Component id="jPJogo2" max="32767" attributes="0"/>
                               </Group>
-                              <EmptySpace min="0" pref="32" max="32767" attributes="0"/>
+                              <EmptySpace min="0" pref="5" max="32767" attributes="0"/>
                           </Group>
                           <Group type="102" attributes="0">
                               <Component id="jTFIP" min="-2" pref="120" max="-2" attributes="0"/>
@@ -128,15 +145,30 @@
                               <Component id="jPJogo1" max="32767" attributes="0"/>
                           </Group>
                           <Group type="102" attributes="0">
-                              <Component id="jLPortaAvioes" min="-2" max="-2" attributes="0"/>
+                              <Group type="103" groupAlignment="0" max="-2" attributes="0">
+                                  <Component id="jLNomePortaAvioes" max="32767" attributes="0"/>
+                                  <Component id="jLPortaAvioes" max="32767" attributes="0"/>
+                              </Group>
                               <EmptySpace type="separate" max="-2" attributes="0"/>
-                              <Component id="jLDestroyer" min="-2" max="-2" attributes="0"/>
+                              <Group type="103" groupAlignment="0" max="-2" attributes="0">
+                                  <Component id="jLNomeDestroyer" max="32767" attributes="0"/>
+                                  <Component id="jLDestroyer" max="32767" attributes="0"/>
+                              </Group>
                               <EmptySpace type="separate" max="-2" attributes="0"/>
-                              <Component id="jLCruzador" min="-2" max="-2" attributes="0"/>
+                              <Group type="103" groupAlignment="0" max="-2" attributes="0">
+                                  <Component id="jLCruzador" max="32767" attributes="0"/>
+                                  <Component id="jLNomeCruzador" max="32767" attributes="0"/>
+                              </Group>
                               <EmptySpace type="separate" max="-2" attributes="0"/>
-                              <Component id="jLSubmarino" min="-2" max="-2" attributes="0"/>
+                              <Group type="103" groupAlignment="0" max="-2" attributes="0">
+                                  <Component id="jLNomeSubmarino" max="32767" attributes="0"/>
+                                  <Component id="jLSubmarino" max="32767" attributes="0"/>
+                              </Group>
                               <EmptySpace type="separate" max="-2" attributes="0"/>
-                              <Component id="jLPatrulha" min="-2" max="-2" attributes="0"/>
+                              <Group type="103" groupAlignment="0" max="-2" attributes="0">
+                                  <Component id="jLNomePatrulha" max="32767" attributes="0"/>
+                                  <Component id="jLPatrulha" max="32767" attributes="0"/>
+                              </Group>
                               <EmptySpace type="separate" max="-2" attributes="0"/>
                               <Component id="jBRotacionar" min="-2" max="-2" attributes="0"/>
                           </Group>
@@ -485,6 +517,31 @@
     <Component class="javax.swing.JButton" name="jBRotacionar">
       <Properties>
         <Property name="text" type="java.lang.String" value="Rotacionar"/>
+      </Properties>
+    </Component>
+    <Component class="javax.swing.JLabel" name="jLNomePortaAvioes">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="Porta-avi&#xf5;es"/>
+      </Properties>
+    </Component>
+    <Component class="javax.swing.JLabel" name="jLNomeDestroyer">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="Destroyer"/>
+      </Properties>
+    </Component>
+    <Component class="javax.swing.JLabel" name="jLNomeCruzador">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="Cruzador"/>
+      </Properties>
+    </Component>
+    <Component class="javax.swing.JLabel" name="jLNomeSubmarino">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="Submarino"/>
+      </Properties>
+    </Component>
+    <Component class="javax.swing.JLabel" name="jLNomePatrulha">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="Patrulha"/>
       </Properties>
     </Component>
   </SubComponents>
