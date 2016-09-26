@@ -26,7 +26,7 @@ import javax.swing.JPanel;
 public class Tabuleiro extends JPanel implements Observer{
     
     private ArrayList<Observer> observers;
-    protected final static String backgroundPath = "img/agua.jpg";
+    protected final static String backgroundPath = "src/img/agua.jpg";
     private BufferedImage image;
     private FormPrincipal view = null;
     

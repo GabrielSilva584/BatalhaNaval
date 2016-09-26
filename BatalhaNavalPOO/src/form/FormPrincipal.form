@@ -49,6 +49,8 @@
                       <EmptySpace max="-2" attributes="0"/>
                       <Component id="jBEnviar" min="-2" max="-2" attributes="0"/>
                       <EmptySpace max="-2" attributes="0"/>
+                      <Component id="jBAjuda" min="-2" max="-2" attributes="0"/>
+                      <EmptySpace max="-2" attributes="0"/>
                       <Component id="jBDesconectar" min="-2" max="-2" attributes="0"/>
                   </Group>
                   <Component id="jScrollPane1" alignment="0" max="32767" attributes="0"/>
@@ -132,6 +134,7 @@
                   <Component id="jTFMensagem" alignment="3" min="-2" max="-2" attributes="0"/>
                   <Component id="jBEnviar" alignment="3" min="-2" max="-2" attributes="0"/>
                   <Component id="jBDesconectar" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="jBAjuda" alignment="3" min="-2" max="-2" attributes="0"/>
               </Group>
               <EmptySpace max="-2" attributes="0"/>
           </Group>
@@ -408,5 +411,13 @@
         </DimensionLayout>
       </Layout>
     </Container>
+    <Component class="javax.swing.JButton" name="jBAjuda">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="Ajuda"/>
+      </Properties>
+      <Events>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jBAjudaActionPerformed"/>
+      </Events>
+    </Component>
   </SubComponents>
 </Form>

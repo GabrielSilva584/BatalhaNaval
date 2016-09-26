@@ -37,6 +37,7 @@ public class FormPrincipal extends javax.swing.JFrame{
     boolean isConnected = false;
     
     public FormPrincipal(Tabuleiro boardP1, Tabuleiro boardP2) throws IOException {
+        
         try {
             UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
         } catch (ClassNotFoundException ex) {
@@ -191,6 +192,7 @@ public class FormPrincipal extends javax.swing.JFrame{
         jPTop1 = new javax.swing.JPanel();
         jPLeft2 = new javax.swing.JPanel();
         jPTop2 = new javax.swing.JPanel();
+        jBAjuda = new javax.swing.JButton();
 
         javax.swing.GroupLayout jDesktopPane1Layout = new javax.swing.GroupLayout(jDesktopPane1);
         jDesktopPane1.setLayout(jDesktopPane1Layout);
@@ -373,6 +375,13 @@ public class FormPrincipal extends javax.swing.JFrame{
             .addGap(0, 20, Short.MAX_VALUE)
         );
 
+        jBAjuda.setText("Ajuda");
+        jBAjuda.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jBAjudaActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -384,6 +393,8 @@ public class FormPrincipal extends javax.swing.JFrame{
                         .addComponent(jTFMensagem)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(jBEnviar)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jBAjuda)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(jBDesconectar))
                     .addComponent(jScrollPane1)
@@ -453,7 +464,8 @@ public class FormPrincipal extends javax.swing.JFrame{
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jTFMensagem, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jBEnviar)
-                    .addComponent(jBDesconectar))
+                    .addComponent(jBDesconectar)
+                    .addComponent(jBAjuda))
                 .addContainerGap())
         );
 
@@ -520,8 +532,13 @@ public class FormPrincipal extends javax.swing.JFrame{
     private void jTPChatCaretUpdate(javax.swing.event.CaretEvent evt) {//GEN-FIRST:event_jTPChatCaretUpdate
         // TODO add your handling code here:
     }//GEN-LAST:event_jTPChatCaretUpdate
+
+    private void jBAjudaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jBAjudaActionPerformed
+        new FormAjuda(null,true).setVisible(true);
+    }//GEN-LAST:event_jBAjudaActionPerformed
      
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton jBAjuda;
     private javax.swing.JButton jBConectar;
     private javax.swing.JButton jBDesconectar;
     private javax.swing.JButton jBEnviar;

@@ -7,7 +7,6 @@ package game;
 
 import form.FormPrincipal;
 import java.awt.Color;
-import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -26,8 +25,8 @@ public class GameController implements MouseListener, MouseMotionListener, Actio
     private FormPrincipal view;
     private Game model;
     
-    public void addView(Observer view){
-        this.view = (FormPrincipal)view;
+    public void addView(FormPrincipal view){
+        this.view = view;
     }
     
     public void addModel(Game model){
