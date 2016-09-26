@@ -37,6 +37,17 @@ public abstract class Navios {
         this.y = y;
     }
     
+    public Point getCoord(int i){
+        Point p = new Point();
+        p.x = ocupado[i][1];
+        p.y = ocupado[i][0];
+        return p;
+    }
+
+    public int getTam() {
+        return tam;
+    }
+    
     public void rotacionar(){
         rotacao = !rotacao;
     }

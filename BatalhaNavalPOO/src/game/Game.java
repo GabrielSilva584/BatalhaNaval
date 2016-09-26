@@ -29,7 +29,38 @@ public class Game implements Observer{
         
         init();
     }
-
+    
+    public boolean addNavio(Navios n){
+        if(verifySpaces(n)){
+            for(int i=0;i<n.getTam();i++){
+                Point p = n.getCoord(i);
+                n1[p.x][p.y]=n;
+            }
+            return true;
+        }else{
+            return false;
+        }
+    }
+    
+    public boolean verifySpaces(Navios n){
+        for(int i=0;i<n.getTam();i++){
+            Point p = n.getCoord(i);
+            if(p.x+1<=9 && (n1[p.x+1][p.y])!=null){
+                return false;
+            }
+            if(p.x-1>=0 && (n1[p.x-1][p.y])!=null){
+                return false;
+            }
+            if(p.y+1<=9 && (n1[p.x][p.y+1])!=null){
+                return false;
+            }
+            if(p.y-1>=0 && (n1[p.x][p.y-1])!=null){
+                return false;
+            }
+        }
+        return true;
+    }
+    
     public Point getMouseCoord() {
         return mouseCoord;
     }

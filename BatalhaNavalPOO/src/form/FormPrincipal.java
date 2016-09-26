@@ -8,6 +8,7 @@ import board.Tabuleiro;
 import game.Cruzador;
 import game.Destroyer;
 import game.GameControllerP1;
+import game.GameControllerP2;
 import game.Patrulha;
 import game.PortaAvioes;
 import game.Submarino;
@@ -16,11 +17,13 @@ import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.GridLayout;
+import java.io.File;
 import java.io.IOException;
 import java.util.Observable;
 import java.util.Observer;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.imageio.ImageIO;
 import javax.swing.JPanel;
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
@@ -38,11 +41,14 @@ public class FormPrincipal extends javax.swing.JFrame{
     private LabelLeft labelL1 = null, labelL2 = null;
     private LabelTop labelT1 = null, labelT2 = null;
     private ChatController chat = null;
-    private GameControllerP1 controller1 = null, controller2 = null;
+    private GameControllerP1 controller1 = null;
+    private GameControllerP2 controller2 = null;
     private Connection connection = null;
     boolean isConnected = false;
     
     public FormPrincipal(Tabuleiro boardP1, Tabuleiro boardP2) throws IOException {
+        setIconImage(ImageIO.read(new File("src/img/icon32.png")));
+        
         
         try {
             UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
@@ -116,7 +122,7 @@ public class FormPrincipal extends javax.swing.JFrame{
         this.controller1 = controller;
     }
     
-    public void setController2(GameControllerP1 controller){
+    public void setController2(GameControllerP2 controller){
         this.controller2 = controller;
     }
     

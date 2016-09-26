@@ -63,7 +63,9 @@ public class GameControllerP1 extends GameController{
     @Override
     public void mouseClicked(MouseEvent e) {
         if(n!=null){
-            
+            if(model.addNavio(n)){
+                n = null;
+            }
         }
     }
 
@@ -74,7 +76,7 @@ public class GameControllerP1 extends GameController{
 
     @Override
     public void mouseReleased(MouseEvent e) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+
     }
     
 }

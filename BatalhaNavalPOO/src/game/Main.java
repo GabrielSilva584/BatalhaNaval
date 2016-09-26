@@ -27,22 +27,23 @@ public class Main {
                     
                     FormPrincipal view = new FormPrincipal(boardP1, boardP2);
                     
-                    Game model = new Game();
+                    Game model1 = new Game();
+                    Game model2 = new Game();
                     
                     boardP1.setView(view);
-                    boardP1.registerObserver(model);
+                    boardP1.registerObserver(model1);
                     
                     boardP2.setView(view);
-                    boardP2.registerObserver(model);
+                    boardP2.registerObserver(model2);
                     
                     GameControllerP1 controller1 = new GameControllerP1();
-                    GameControllerP1 controller2 = new GameControllerP1();
+                    GameControllerP2 controller2 = new GameControllerP2();
                     
                     controller1.addView(view);
-                    controller1.addModel(model);
+                    controller1.addModel(model1);
                     
                     controller2.addView(view);
-                    controller2.addModel(model);
+                    controller2.addModel(model2);
                     
                     view.setController1(controller1);
                     view.setController2(controller2);
