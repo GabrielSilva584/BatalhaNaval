@@ -35,8 +35,8 @@ public class Main {
                     boardP2.setView(view);
                     boardP2.registerObserver(model);
                     
-                    GameController controller1 = new GameController();
-                    GameController controller2 = new GameController();
+                    GameControllerP1 controller1 = new GameControllerP1();
+                    GameControllerP1 controller2 = new GameControllerP1();
                     
                     controller1.addView(view);
                     controller1.addModel(model);
