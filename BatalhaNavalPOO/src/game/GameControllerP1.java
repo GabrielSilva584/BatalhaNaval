@@ -62,14 +62,14 @@ public class GameControllerP1 extends GameController{
 
     @Override
     public void mouseClicked(MouseEvent e) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        if(n!=null){
+            
+        }
     }
 
     @Override
     public void mousePressed(MouseEvent e) {
-        if(n!=null){
-            
-        }
+        
     }
 
     @Override
