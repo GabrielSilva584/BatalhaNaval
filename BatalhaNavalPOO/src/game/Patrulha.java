@@ -19,7 +19,7 @@ public class Patrulha extends Navios{
     
     public Patrulha(){
         tam = 2;
-        
+        type = "Patrulha";
         initMatriz();
         
         try {

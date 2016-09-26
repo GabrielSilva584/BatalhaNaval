@@ -18,6 +18,7 @@ import javax.swing.JOptionPane;
 public class Submarino extends Navios {
      public Submarino(){
         tam = 3;
+        type = "Submarino";
         
         initMatriz();
         
