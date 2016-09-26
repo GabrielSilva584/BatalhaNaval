@@ -42,9 +42,7 @@ public abstract class Navios {
     }
     
     void pos(int tam, int vertIni, int horIni, boolean rotacao){
-        ocupado[0][0] = vertIni;
-        ocupado[0][1] = horIni;
-        for(int i=1;i==tam-1;i++){
+        for(int i=0;i<tam;i++){
             if(!rotacao){
                 ocupado[i][0] = vertIni;
                 ocupado[i][1] = horIni+i;
@@ -64,7 +62,6 @@ public abstract class Navios {
                 ocupado[j][0] = ocupado[j][0] - 1;
             }
         }
-        System.out.println(""+ocupado[0][1]+ocupado[0][0]);
         setQuadrante(ocupado[0][1],ocupado[0][0]);
     }
     
