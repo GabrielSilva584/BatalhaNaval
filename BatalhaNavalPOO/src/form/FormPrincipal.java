@@ -187,7 +187,7 @@ public class FormPrincipal extends javax.swing.JFrame{
         jBCruzador.setEnabled(b);
     }
     
-    public void setEnabledSubmarinos(boolean b){
+    public void setEnabledSubmarino(boolean b){
         jBSubmarino.setEnabled(b);
     }
     

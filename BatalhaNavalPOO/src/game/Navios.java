@@ -48,6 +48,10 @@ public abstract class Navios {
     public int getTam() {
         return tam;
     }
+
+    public String getType() {
+        return type;
+    }
     
     public void rotacionar(){
         rotacao = !rotacao;
