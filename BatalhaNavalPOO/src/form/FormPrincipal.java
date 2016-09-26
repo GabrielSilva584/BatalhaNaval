@@ -174,6 +174,26 @@ public class FormPrincipal extends javax.swing.JFrame{
     public JPanel getBoard2() {
         return jPJogo2;
     }
+    
+    public void setEnabledPortaAvioes(boolean b){
+        jBPortaAvioes.setEnabled(b);
+    }
+    
+    public void setEnabledDestroyer(boolean b){
+        jBDestroyer.setEnabled(b);
+    }
+    
+    public void setEnabledCruzador(boolean b){
+        jBCruzador.setEnabled(b);
+    }
+    
+    public void setEnabledSubmarinos(boolean b){
+        jBSubmarino.setEnabled(b);
+    }
+    
+    public void setEnabledPatrulha(boolean b){
+        jBPatrulha.setEnabled(b);
+    }
 
     /**
      * This method is called from within the constructor to initialize the form.

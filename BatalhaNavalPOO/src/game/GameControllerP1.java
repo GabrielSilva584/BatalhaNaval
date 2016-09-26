@@ -5,6 +5,7 @@
  */
 package game;
 
+import form.FormPrincipal;
 import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.event.ActionEvent;
@@ -52,31 +53,42 @@ public class GameControllerP1 extends GameController{
     
     @Override
     public void actionPerformed(ActionEvent e) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        //not needed
     }
 
     @Override
     public void mouseDragged(MouseEvent e) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        //not needed
     }
 
     @Override
     public void mouseClicked(MouseEvent e) {
         if(n!=null){
             if(model.addNavio(n)){
+                String type = n.getType();
                 n = null;
+                if(type.equals("PortaAvioes")){
+                    view.setEnabledPortaAvioes(false);
+                }else if(type.equals("Destroyer")){
+                    view.setEnabledDestroyer(false);
+                }else if(type.equals("Cruzador")){
+                    view.setEnabledCruzador(false);
+                }else if(type.equals("Submarino")){
+                    view.setEnabledSubmarino(false);
+                }else if(type.equals("Patrulha")){
+                    view.setEnabledPatrulha(false);
+                }
             }
         }
     }
 
     @Override
     public void mousePressed(MouseEvent e) {
-        
+        //not needed
     }
 
     @Override
     public void mouseReleased(MouseEvent e) {
-
+        //not needed
     }
-    
 }

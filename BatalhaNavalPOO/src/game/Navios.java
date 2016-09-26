@@ -16,6 +16,7 @@ import java.awt.image.BufferedImage;
 
 public abstract class Navios {
     protected int tam;
+    protected String type;
     private int ocupado[][] = null;
     protected boolean rotacao = false;
     protected int x, y;
