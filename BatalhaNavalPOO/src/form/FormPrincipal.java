@@ -3,7 +3,7 @@ package form;
 import board.Label;
 import board.LabelLeft;
 import board.LabelTop;
-import game.GameController;
+import game.GameControllerP1;
 import board.Tabuleiro;
 import java.awt.Color;
 import java.awt.Dimension;
@@ -32,7 +32,7 @@ public class FormPrincipal extends javax.swing.JFrame{
     private LabelLeft labelL1 = null, labelL2 = null;
     private LabelTop labelT1 = null, labelT2 = null;
     private ChatController chat = null;
-    private GameController controller1 = null, controller2 = null;
+    private GameControllerP1 controller1 = null, controller2 = null;
     private Connection connection = null;
     boolean isConnected = false;
     
@@ -106,15 +106,15 @@ public class FormPrincipal extends javax.swing.JFrame{
         initLabel(jPTop2, labelT2);
     }
     
-    public void setController1(GameController controller){
+    public void setController1(GameControllerP1 controller){
         this.controller1 = controller;
     }
     
-    public void setController2(GameController controller){
+    public void setController2(GameControllerP1 controller){
         this.controller2 = controller;
     }
     
-    public void addController(Tabuleiro board, GameController controller){
+    public void addController(Tabuleiro board, GameControllerP1 controller){
         board.addMouseListener(controller);
         board.addMouseMotionListener(controller);
     }
