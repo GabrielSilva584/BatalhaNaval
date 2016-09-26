@@ -35,11 +35,21 @@ public abstract class Navios {
         for(int i=1;i==tam-1;i++){
             if(!rotacao){
                 ocupado[i][0] = vertIni;
-                ocupado[i][1] = horIni+1;
+                ocupado[i][1] = horIni+i;
             }
             else{
-                ocupado[i][0] = vertIni+1;
+                ocupado[i][0] = vertIni+i;
                 ocupado[i][1] = horIni;
+            }
+        }
+        while(ocupado[tam-1][1]>9){
+            for(int j=0;j<tam;j++){
+                ocupado[j][1] = ocupado[j][1] - 1;
+            }
+        }
+        while(ocupado[tam-1][0]>9){
+            for(int j=0;j<tam;j++){
+                ocupado[j][0] = ocupado[j][0] - 1;
             }
         }
     }
