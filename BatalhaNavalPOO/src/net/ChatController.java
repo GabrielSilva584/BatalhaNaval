@@ -71,23 +71,24 @@ public class ChatController {
         }
     }
     
-    public void attackResultMessage(boolean acertou, String type){
+    public void attackResultMessage(boolean acertou, String type, int rest){
         try {
             if(acertou){
-                doc.insertString(doc.getLength(), "Acertou um(a) " + type + "\n", orange);
+                doc.insertString(doc.getLength(), "Acertou um(a) " + type, orange);
             }else{
-                doc.insertString(doc.getLength(), "Não acertou nada!\n", orange);
+                doc.insertString(doc.getLength(), "Não acertou nada!", orange);
             }
+            doc.insertString(doc.getLength(), " (" + rest + "torpedos restantes)\n", orange);
         } catch (BadLocationException ex) {
             Logger.getLogger(FormPrincipal.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
     
-    public void attackedMessage(String remoteName, int x, int y, boolean acertou, String type){
+    public void attackedMessage(String remoteName, int x, int y, boolean acertou, String type, int rest){
         try {
             doc.insertString(doc.getLength(), remoteName + " te atacou na Coordenada "
                     + new LabelLeft().coordToString(y+1) + (x+1) +"! ", orange);
-            attackResultMessage(acertou, type);
+            attackResultMessage(acertou, type, rest);
         } catch (BadLocationException ex) {
             Logger.getLogger(FormPrincipal.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -120,6 +121,16 @@ public class ChatController {
     public void remoteTurnMessage(String remoteName){
         try {
             doc.insertString(doc.getLength(), "Turno de " + remoteName + "...\n", red);
+        } catch (BadLocationException ex) {
+            Logger.getLogger(FormPrincipal.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+    
+    // 0 = Player Local, 1 = Player Remoto
+    public void readyMessage(String remoteName, int i){
+        if(i==0)remoteName = "Você";
+        try {
+            doc.insertString(doc.getLength(), remoteName + " está pronto!\n", red);
         } catch (BadLocationException ex) {
             Logger.getLogger(FormPrincipal.class.getName()).log(Level.SEVERE, null, ex);
         }

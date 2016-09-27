@@ -68,9 +68,9 @@ public class GameControllerP2 extends GameController{
     public void mouseClicked(MouseEvent e) {
         if(ataques>0){
             if(model.recebeAtaque(e.getX()/30, e.getY()/30)){
-                conn.atk(e.getX()/30, e.getY()/30, ataques-1);
+                ataques = ataques -1;
+                conn.atk(e.getX()/30, e.getY()/30, ataques);
                 view.repaint();
-                ataques-=1;
             }
         }
     }

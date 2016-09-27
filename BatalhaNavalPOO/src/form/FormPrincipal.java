@@ -737,6 +737,8 @@ public class FormPrincipal extends javax.swing.JFrame{
 
     private void jBIniciarJogoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jBIniciarJogoActionPerformed
         connection.ready();
+        jBIniciarJogo.setEnabled(false);
+        jBRotacionar.setEnabled(false);
     }//GEN-LAST:event_jBIniciarJogoActionPerformed
      
     // Variables declaration - do not modify//GEN-BEGIN:variables

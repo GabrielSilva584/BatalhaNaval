@@ -172,12 +172,7 @@ public class Connection {
                             type = model1.findNavio(p.x, p.y).getType();
                         }
                         
-                        chat.attackedMessage(remoteName, p.x, p.y, acertou, type);
-                        if(atkRestantes==0){
-                            controller2.seuTurno();
-                            chat.yourTurnMessage();
-                            fimDeTurno();
-                        }
+                        chat.attackedMessage(remoteName, p.x, p.y, acertou, type, atkRestantes);
                         
                         PrintStream ps;
                         try{
@@ -186,6 +181,7 @@ public class Connection {
                             ps.println(p.x);
                             ps.println(p.y);
                             ps.println(type);
+                            ps.println(atkRestantes);
                             if(model1.FimDeJogo()){
                                 ps.println("perdi");
                                 chat.youLoseMessage(remoteName);
@@ -194,22 +190,31 @@ public class Connection {
                             ex.printStackTrace();
                         }
                         
+                        if(atkRestantes==0){
+                            controller2.seuTurno();
+                            chat.yourTurnMessage();
+                            fimDeTurno();
+                        }
+                        
                     }else if(aux.equals("ai")){
                         
                         int xAux = Integer.parseInt(buffer.readLine());
                         int yAux = Integer.parseInt(buffer.readLine());
                         aux = buffer.readLine();
+                        int atkRestantes = Integer.parseInt(buffer.readLine());
                         if(aux.equals("")){
-                            chat.attackResultMessage(false, "");
+                            chat.attackResultMessage(false, "", atkRestantes);
                         }else{
                             model2.addMarker(xAux, yAux, aux);
-                            chat.attackResultMessage(true, aux);
+                            chat.attackResultMessage(true, aux, atkRestantes);
                         }
                         
                     }else if(aux.equals("rdy")){
                         
+                        chat.readyMessage(remoteName, 1);
                         remoteReady = true;
                         if(isEveryoneReady() && servidor!=null){
+                            fimDeTurno();
                             controller2.seuTurno();
                             chat.yourTurnMessage();
                         }
@@ -266,7 +271,9 @@ public class Connection {
         }catch(IOException ex){
             ex.printStackTrace();
         }
+        chat.readyMessage(remoteName, 0);
         if(isEveryoneReady() && servidor!=null){
+            fimDeTurno();
             controller2.seuTurno();
             chat.yourTurnMessage();
         }
