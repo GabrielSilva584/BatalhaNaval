@@ -24,11 +24,11 @@ public class Connection {
     private Socket cliente;
     private ServerSocket servidor;
     private BufferedReader buffer;
+    private PrintStream ps;
     private ChatController chat;
     private String name, IP, remoteName;
     private Game model1 = null, model2 = null;
     private GameControllerP2 controller2 = null;
-    private Auxiliar boatAux = null;
     private boolean localReady, remoteReady;
     
     public Connection(ChatController remoteChat){
@@ -56,7 +56,6 @@ public class Connection {
     }
     
     public void close(){
-        PrintStream ps;
         try {
             ps = new PrintStream(cliente.getOutputStream());
             ps.println("flw");
@@ -142,10 +141,13 @@ public class Connection {
     
     public void listen(){
         try{
-            while(cliente!=null){
-                buffer = new BufferedReader(new InputStreamReader(
+            
+            buffer = new BufferedReader(new InputStreamReader(
                         cliente.getInputStream()));
-                String aux = buffer.readLine();
+            String aux;
+            
+            while(cliente!=null){
+                aux = buffer.readLine();
                 if(aux!=null){
                     if(aux.equals("msg")){
                         
@@ -157,69 +159,34 @@ public class Connection {
                         
                     }else if(aux.equals("atk")){
                         
-                        Point p = new Point();
-                        p.x = Integer.parseInt(buffer.readLine());
-                        p.y = Integer.parseInt(buffer.readLine());
+                        int x = Integer.parseInt(buffer.readLine());
+                        int y = Integer.parseInt(buffer.readLine());
                         int atkRestantes = Integer.parseInt(buffer.readLine());
                         
-                        model1.recebeAtaque(p.x, p.y);
-                        
-                        boolean acertou = false;
-                        String type = "";
-                        
-                        if(model1.findNavio(p.x, p.y)!=null){
-                            acertou = true;
-                            type = model1.findNavio(p.x, p.y).getType();
-                        }
-                        
-                        chat.attackedMessage(remoteName, p.x, p.y, acertou, type, atkRestantes);
-                        
-                        PrintStream ps;
-                        try{
-                            ps = new PrintStream(cliente.getOutputStream());
-                            ps.println("ai");
-                            ps.println(p.x);
-                            ps.println(p.y);
-                            ps.println(type);
-                            ps.println(atkRestantes);
-                        }catch(IOException ex){
-                            ex.printStackTrace();
-                        }
-                        
-                        if(model1.FimDeJogo()){
-                            ps = new PrintStream(cliente.getOutputStream());
-                            ps.println("perdi");
-                            chat.youLoseMessage(remoteName);
-                        }else if(atkRestantes==0){
-                            controller2.seuTurno();
-                            chat.yourTurnMessage();
-                            fimDeTurno();
-                        }
+                        listenAtk(x, y, atkRestantes);
                         
                     }else if(aux.equals("ai")){
                         
-                        int xAux = Integer.parseInt(buffer.readLine());
-                        int yAux = Integer.parseInt(buffer.readLine());
-                        aux = buffer.readLine();
+                        int x = Integer.parseInt(buffer.readLine());
+                        int y = Integer.parseInt(buffer.readLine());
+                        String type = buffer.readLine();
                         int atkRestantes = Integer.parseInt(buffer.readLine());
-                        if(aux.equals("")){
-                            chat.attackResultMessage(false, "", atkRestantes);
-                        }else{
-                            model2.addMarker(xAux, yAux, aux);
-                            chat.attackResultMessage(true, aux, atkRestantes);
-                        }
+                        
+                        listenAi(x, y, atkRestantes, type);
                         
                     }else if(aux.equals("rdy")){
                         
                         chat.readyMessage(remoteName, 1);
                         remoteReady = true;
+                        
                         if(isEveryoneReady() && servidor!=null){
                             fimDeTurno();
-                            controller2.seuTurno();
                             chat.yourTurnMessage();
+                            controller2.seuTurno();
                         }
                         
-                    }else if(aux.equals("minhavez")){
+                    }else if(aux.equals("mt")){
+                        
                         chat.remoteTurnMessage(remoteName);
                         
                     }else if(aux.equals("perdi")){
@@ -236,8 +203,66 @@ public class Connection {
         }
     }
     
+    public void listenAtk(final int x, final int y, final int atkRestantes){
+        new Thread(new Runnable(){
+            @Override
+            public void run() {
+                model1.recebeAtaque(x, y);
+
+                boolean acertou = false;
+                String type = "";
+
+                if(model1.findNavio(x, y)!=null){
+                    acertou = true;
+                    type = model1.findNavio(x, y).getType();
+                }
+
+                chat.attackedMessage(remoteName, x, y, acertou, type, atkRestantes);
+
+                PrintStream ps;
+                try{
+                    ps = new PrintStream(cliente.getOutputStream());
+                    ps.println("ai");
+                    ps.println(x);
+                    ps.println(y);
+                    ps.println(type);
+                    ps.println(atkRestantes);
+                }catch(IOException ex){
+                    ex.printStackTrace();
+                }
+
+                if(model1.FimDeJogo()){
+                    try {
+                        ps = new PrintStream(cliente.getOutputStream());
+                        ps.println("perdi");
+                    } catch (IOException ex) {
+                        Logger.getLogger(Connection.class.getName()).log(Level.SEVERE, null, ex);
+                    }
+                    
+                    chat.youLoseMessage(remoteName);
+                }else if(atkRestantes==0){
+                    controller2.seuTurno();
+                    chat.yourTurnMessage();
+                    fimDeTurno();
+                }
+            } 
+        }).start();
+    }
+    
+    public void listenAi(final int x, final int y, final int atkRestantes, final String type){
+        new Thread(new Runnable(){
+            @Override
+            public void run() {   
+                if(type.equals("")){
+                    chat.attackResultMessage(false, "", atkRestantes);
+                }else{
+                    model2.addMarker(x, y, type);
+                    chat.attackResultMessage(true, type, atkRestantes);
+                }
+            }}).start();
+    }
+    
     public void send(String msg){
-        PrintStream ps;
         try{
             ps = new PrintStream(cliente.getOutputStream());
             ps.println("msg");
@@ -249,7 +274,6 @@ public class Connection {
     }
     
     public void atk(int x, int y, int atkRestantes){
-        PrintStream ps;
         try{
             ps = new PrintStream(cliente.getOutputStream());
             ps.println("atk");
@@ -264,7 +288,6 @@ public class Connection {
     
     public void ready(){
         localReady = true;
-        PrintStream ps;
         try{
             ps = new PrintStream(cliente.getOutputStream());
             ps.println("rdy");
@@ -280,10 +303,9 @@ public class Connection {
     }
     
     public void fimDeTurno(){
-        PrintStream ps;
         try{
             ps = new PrintStream(cliente.getOutputStream());
-            ps.println("minhavez");
+            ps.println("mt");
         }catch(IOException ex){
             ex.printStackTrace();
         }
