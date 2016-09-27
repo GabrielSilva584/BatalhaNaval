@@ -41,9 +41,9 @@ public class Tabuleiro extends JPanel implements Observer{
         player = i;
         
         try {
-           image = ImageIO.read(new File(backgroundPath));
+            image = ImageIO.read(new File(backgroundPath));
         } catch (IOException ex) {
-             JOptionPane.showMessageDialog(null, "Falha ao carregar arquivos!");
+            JOptionPane.showMessageDialog(null, "Falha ao carregar arquivos!");
         }
         observers = new ArrayList<Observer>();
     }

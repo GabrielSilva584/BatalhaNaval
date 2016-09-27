@@ -5,8 +5,10 @@
  */
 package game;
 
+import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.Point;
+import java.util.ArrayList;
 import java.util.Observable;
 import java.util.Observer;
 
@@ -16,10 +18,12 @@ import java.util.Observer;
  */
 public class Game implements Observer{
     private Navios n1[][] = new Navios[10][10];
+    private ArrayList<Point> atacados; 
     private Point mouseCoord;
     private Navios selectedNavio = null;
     
     public Game(){
+        this.atacados = new ArrayList<Point>();
         for(int i=0;i<10;i++){
             for(int j=0;j<10;j++){
                 n1[i][j] = null;
@@ -40,6 +44,13 @@ public class Game implements Observer{
         }else{
             return false;
         }
+    }
+    
+    public void recebeAtaque(int x, int y){
+        Point aux = new Point();
+        aux.x = x;
+        aux.y = y;
+        atacados.add(aux);
     }
     
     public boolean verifySpaces(Navios n){
@@ -85,12 +96,27 @@ public class Game implements Observer{
         return n1[x][y];
     }
     
+    public void drawAttackedCoord(Graphics2D g){
+        for(Point p : atacados){
+            Color c;
+            if(n1[p.x][p.y]==null){
+                c = new Color(255,0,0,75);
+            }else{
+                c = new Color(0,255,0,75);
+            }
+            g.setColor(c);
+            g.fillRect(30*p.x, 30*p.y, 30, 30);
+            g.setColor(Color.black);
+        }
+    }
+    
     public void draw(Graphics2D g){
         for(int i=0;i<10;i++){
             for(int j=0;j<10;j++){
                 if(n1[i][j]!=null)n1[i][j].draw(g);
             }
         }
+        drawAttackedCoord(g);
     }
 
     @Override
