@@ -50,7 +50,9 @@ public class Game implements Observer{
         Point aux = new Point();
         aux.x = x;
         aux.y = y;
-        atacados.add(aux);
+        if(!atacados.contains(aux)){
+            atacados.add(aux);
+        }
     }
     
     public boolean verifySpaces(Navios n){
