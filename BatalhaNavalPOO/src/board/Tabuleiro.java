@@ -38,8 +38,12 @@ public class Tabuleiro extends JPanel implements Observer{
         this.view = view;
     }
     
-    public Tabuleiro(int i) {
+    public void allHailOgrelord(){
         easterEgg = true;
+    }
+    
+    public Tabuleiro(int i) {
+        easterEgg = false;
         
         player = i;
         
