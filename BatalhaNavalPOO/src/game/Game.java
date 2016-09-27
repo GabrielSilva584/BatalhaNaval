@@ -128,4 +128,11 @@ public class Game implements Observer{
         draw((Graphics2D) arg);
     }
     
+    public boolean FimDeJogo(){
+        int total=0;
+        for(Point p: atacados){
+            if(n1[p.x][p.y]!=null)total++;
+        }
+        return total==18;
+    }
 }
