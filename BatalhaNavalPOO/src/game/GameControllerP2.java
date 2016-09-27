@@ -9,12 +9,28 @@ import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.event.ActionEvent;
 import java.awt.event.MouseEvent;
+import net.Connection;
 
 /**
  *
  * @author Gabriel
  */
 public class GameControllerP2 extends GameController{
+    
+    Connection conn = null;
+    int ataques = 5;
+    
+    public void setConn(Connection conn){
+        this.conn = conn;
+    }
+    
+    public void seuTurno(){
+        ataques = 3;
+    }
+    
+    public boolean fimDeTurno(){
+        return ataques == 0;
+    }
     
     @Override
     public void drawMouseQuadrante(Graphics2D g){
@@ -46,8 +62,12 @@ public class GameControllerP2 extends GameController{
 
     @Override
     public void mouseClicked(MouseEvent e) {
-        model.recebeAtaque(e.getX()/30, e.getY()/30);
-        view.repaint();
+        if(ataques>0){
+            model.recebeAtaque(e.getX()/30, e.getY()/30);
+            conn.atk(e.getX()/30, e.getY()/30);
+            view.repaint();
+            ataques--;
+        }
     }
 
     @Override

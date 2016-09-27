@@ -1,6 +1,8 @@
 package net;
 
 import form.FormPrincipal;
+import game.Game;
+import java.awt.Point;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -22,6 +24,11 @@ public class Connection {
     private BufferedReader buffer;
     private ChatController chat;
     private String name, IP, remoteName;
+    private Game model = null;
+
+    public void setModel(Game model) {
+        this.model = model;
+    }
     
     public Connection(ChatController remoteChat){
         cliente = null;
@@ -122,6 +129,11 @@ public class Connection {
                         chat.insertMessage(remoteName, buffer.readLine(), 3);
                     }else if(aux.equals("flw")){
                         disconnect();
+                    }else if(aux.equals("atk")){
+                        Point p = new Point();
+                        p.x = Integer.parseInt(buffer.readLine());
+                        p.y = Integer.parseInt(buffer.readLine());
+                        model.recebeAtaque(p.x, p.y);
                     }
                 }
             }
@@ -138,6 +150,18 @@ public class Connection {
             ps.println("msg");
             ps.println(msg);
             chat.insertMessage(name, msg, 2);
+        }catch(IOException ex){
+            ex.printStackTrace();
+        }
+    }
+    
+    public void atk(int x, int y){
+        PrintStream ps;
+        try{
+            ps = new PrintStream(cliente.getOutputStream());
+            ps.println("atk");
+            ps.println(x);
+            ps.println(y);
         }catch(IOException ex){
             ex.printStackTrace();
         }

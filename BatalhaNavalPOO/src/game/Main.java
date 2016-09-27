@@ -11,6 +11,7 @@ import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JOptionPane;
+import net.Connection;
 
 /**
  *
@@ -29,6 +30,8 @@ public class Main {
                     
                     Game model1 = new Game();
                     Game model2 = new Game();
+                    
+                    view.getConnection().setModel(model1);
                     
                     boardP1.setView(view);
                     boardP1.registerObserver(model1);

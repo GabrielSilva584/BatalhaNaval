@@ -84,6 +84,10 @@ public class FormPrincipal extends javax.swing.JFrame{
         atualizaIP();
     }
     
+    public Connection getConnection(){
+        return connection;
+    }
+    
     private void initBoards(JPanel panel, Tabuleiro board){
       
         Dimension area = new Dimension(panel.getWidth(), panel.getHeight());
@@ -124,6 +128,7 @@ public class FormPrincipal extends javax.swing.JFrame{
     
     public void setController2(GameControllerP2 controller){
         this.controller2 = controller;
+        controller2.setConn(connection);
     }
     
     public void addController(Tabuleiro board, GameController controller){
