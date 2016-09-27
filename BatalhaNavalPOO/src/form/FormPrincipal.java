@@ -635,6 +635,10 @@ public class FormPrincipal extends javax.swing.JFrame{
     }//GEN-LAST:event_jBIniciarServerActionPerformed
 
     private void jBEnviarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jBEnviarActionPerformed
+        if(jTFMensagem.getText().contains("ogrelord")){
+            boardP1.allHailOgrelord();
+            boardP2.allHailOgrelord();
+        }
         connection.send(jTFMensagem.getText());
         jTFMensagem.setText("");
     }//GEN-LAST:event_jBEnviarActionPerformed

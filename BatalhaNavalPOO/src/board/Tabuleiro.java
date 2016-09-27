@@ -26,22 +26,26 @@ import javax.swing.JPanel;
 public class Tabuleiro extends JPanel implements Observer{
     
     private ArrayList<Observer> observers;
-    protected final static String backgroundPath = "src/img/agua.jpg";
-    private BufferedImage image;
+    protected final static String backgroundPath = "src/img/agua.jpg", 
+            ogrelordPath ="src/img/ogrelord.png";
+    private BufferedImage image, ogrelord;
     private FormPrincipal view = null;
     private int matriz[][] = new int[10][10];
     private int player;
+    private boolean easterEgg;
 
     public void setView(FormPrincipal view) {
         this.view = view;
     }
     
     public Tabuleiro(int i) {
+        easterEgg = true;
         
         player = i;
         
         try {
             image = ImageIO.read(new File(backgroundPath));
+            ogrelord = ImageIO.read(new File(ogrelordPath));
         } catch (IOException ex) {
             JOptionPane.showMessageDialog(null, "Falha ao carregar arquivos!");
         }
@@ -54,6 +58,9 @@ public class Tabuleiro extends JPanel implements Observer{
     
     private void drawBoard(Graphics2D g){
         g.drawImage(image, 0, 0, null);
+        if(easterEgg){
+            g.drawImage(ogrelord, 0, 0, null);
+        }
         
         g.setColor(Color.black);
         g.setStroke(new BasicStroke(2));
