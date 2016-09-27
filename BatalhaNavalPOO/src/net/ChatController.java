@@ -5,6 +5,7 @@
  */
 package net;
 
+import board.LabelLeft;
 import form.FormPrincipal;
 import java.awt.Color;
 import java.util.logging.Level;
@@ -54,6 +55,27 @@ public class ChatController {
         try {
             doc.insertString(doc.getLength(), name + ": ", selectColor(nameColor));
             doc.insertString(doc.getLength(), msg+"\n", selectColor(0));
+        } catch (BadLocationException ex) {
+            Logger.getLogger(FormPrincipal.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+    
+    public void attackMessage(int x, int y){
+        try {
+            doc.insertString(doc.getLength(), "Você atacou a Coordenada "+ (x+1)
+                    + new LabelLeft().coordToString(y+1) +"! ", red);
+        } catch (BadLocationException ex) {
+            Logger.getLogger(FormPrincipal.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+    
+    public void attackResultMessage(boolean b, String type){
+        try {
+            if(b){
+                doc.insertString(doc.getLength(), "Acertou um(a) "+type, red);
+            }else{
+                doc.insertString(doc.getLength(), "Não acertou nada!", red);
+            }
         } catch (BadLocationException ex) {
             Logger.getLogger(FormPrincipal.class.getName()).log(Level.SEVERE, null, ex);
         }

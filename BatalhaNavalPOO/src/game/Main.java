@@ -31,7 +31,8 @@ public class Main {
                     Game model1 = new Game();
                     Game model2 = new Game();
                     
-                    view.getConnection().setModel(model1);
+                    view.getConnection().setModel1(model1);
+                    view.getConnection().setModel2(model2);
                     
                     boardP1.setView(view);
                     boardP1.registerObserver(model1);

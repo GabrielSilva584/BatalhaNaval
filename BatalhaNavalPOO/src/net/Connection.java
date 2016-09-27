@@ -24,10 +24,14 @@ public class Connection {
     private BufferedReader buffer;
     private ChatController chat;
     private String name, IP, remoteName;
-    private Game model = null;
+    private Game model1 = null, model2 = null;
 
-    public void setModel(Game model) {
-        this.model = model;
+    public void setModel1(Game model) {
+        this.model1 = model;
+    }
+    
+    public void setModel2(Game model) {
+        this.model2 = model;
     }
     
     public Connection(ChatController remoteChat){
@@ -133,7 +137,28 @@ public class Connection {
                         Point p = new Point();
                         p.x = Integer.parseInt(buffer.readLine());
                         p.y = Integer.parseInt(buffer.readLine());
-                        model.recebeAtaque(p.x, p.y);
+                        model1.recebeAtaque(p.x, p.y);
+                        PrintStream ps;
+                        chat.attackMessage(p.x, p.y);
+                        try{
+                            ps = new PrintStream(cliente.getOutputStream());
+                            ps.println("ai");
+                            boolean acertou = model1.findNavio(p.x, p.y)!=null;
+                            if(acertou){
+                                ps.println(model1.findNavio(p.x, p.y).getType());
+                            }else{
+                                ps.println("");
+                            }
+                        }catch(IOException ex){
+                            ex.printStackTrace();
+                        }
+                    }else if(aux.equals("ai")){
+                        aux = buffer.readLine();
+                        if(aux.equals("")){
+                            chat.attackResultMessage(false, "");
+                        }else{
+                            chat.attackResultMessage(true, aux);
+                        }
                     }
                 }
             }

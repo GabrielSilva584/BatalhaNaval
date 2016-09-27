@@ -40,7 +40,7 @@ public class LabelLeft extends Label{
         for(int i=1;i<=10;++i)g.drawString(coordToString(i), 8, -10+30*i);
     }
     
-    private String coordToString(int i){
+    public String coordToString(int i){
         switch(i){
             case 1:
                 return "A";

@@ -21,7 +21,6 @@ public class Game implements Observer{
     private Navios n1[][] = new Navios[10][10];
     private ArrayList<Point> atacados; 
     private Point mouseCoord;
-    private Navios selectedNavio = null;
     
     public Game(){
         this.atacados = new ArrayList<Point>();
@@ -81,14 +80,6 @@ public class Game implements Observer{
 
     public void setMouseCoord(Point mouseCoord) {
         this.mouseCoord = mouseCoord;
-    }
-
-    public Navios getSelectedNavio() {
-        return selectedNavio;
-    }
-
-    public void setSelectedNavio(Navios selectedNavio) {
-        this.selectedNavio = selectedNavio;
     }
     
     private void init() {
