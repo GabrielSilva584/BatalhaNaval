@@ -22,7 +22,7 @@ import javax.swing.text.StyledDocument;
  */
 public class ChatController {
     private StyledDocument doc = null;
-    private Style red = null, black = null, blue = null, green = null;
+    private Style red = null, black = null, blue = null, green = null, orange = null;
     
     public ChatController(StyledDocument remoteDoc){
         doc = remoteDoc;
@@ -41,6 +41,8 @@ public class ChatController {
         green = sc.addStyle("Green", null);
         green.addAttribute(StyleConstants.Foreground, Color.green.darker());
         
+        orange = sc.addStyle("Orange", null);
+        orange.addAttribute(StyleConstants.Foreground, Color.orange.darker());
     }
     
     public void insertString(String msg, int color){
@@ -63,7 +65,7 @@ public class ChatController {
     public void attackMessage(int x, int y){
         try {
             doc.insertString(doc.getLength(), "Você atacou a Coordenada " 
-                    + new LabelLeft().coordToString(y+1) + (x+1) +"! ", red);
+                    + new LabelLeft().coordToString(y+1) + (x+1) +"! ", orange);
         } catch (BadLocationException ex) {
             Logger.getLogger(FormPrincipal.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -72,9 +74,9 @@ public class ChatController {
     public void attackResultMessage(boolean acertou, String type){
         try {
             if(acertou){
-                doc.insertString(doc.getLength(), "Acertou um(a) " + type + "\n", red);
+                doc.insertString(doc.getLength(), "Acertou um(a) " + type + "\n", orange);
             }else{
-                doc.insertString(doc.getLength(), "Não acertou nada!\n", red);
+                doc.insertString(doc.getLength(), "Não acertou nada!\n", orange);
             }
         } catch (BadLocationException ex) {
             Logger.getLogger(FormPrincipal.class.getName()).log(Level.SEVERE, null, ex);
@@ -84,7 +86,7 @@ public class ChatController {
     public void attackedMessage(String remoteName, int x, int y, boolean acertou, String type){
         try {
             doc.insertString(doc.getLength(), remoteName + " te atacou na Coordenada "
-                    + new LabelLeft().coordToString(y+1) + (x+1) +"! ", red);
+                    + new LabelLeft().coordToString(y+1) + (x+1) +"! ", orange);
             attackResultMessage(acertou, type);
         } catch (BadLocationException ex) {
             Logger.getLogger(FormPrincipal.class.getName()).log(Level.SEVERE, null, ex);
@@ -93,7 +95,7 @@ public class ChatController {
     
     public void youWinMessage(){
         try {
-            doc.insertString(doc.getLength(), "Você venceu!", red);
+            doc.insertString(doc.getLength(), "Você venceu!\n", red);
         } catch (BadLocationException ex) {
             Logger.getLogger(FormPrincipal.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -101,7 +103,7 @@ public class ChatController {
     
     public void youLoseMessage(String remoteName){
         try {
-            doc.insertString(doc.getLength(), remoteName +" venceu!", red);
+            doc.insertString(doc.getLength(), remoteName +" venceu!\n", red);
         } catch (BadLocationException ex) {
             Logger.getLogger(FormPrincipal.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -109,7 +111,7 @@ public class ChatController {
     
     public void yourTurnMessage(){
         try {
-            doc.insertString(doc.getLength(), "Seu turno...", red);
+            doc.insertString(doc.getLength(), "Seu turno...\n", red);
         } catch (BadLocationException ex) {
             Logger.getLogger(FormPrincipal.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -117,7 +119,7 @@ public class ChatController {
     
     public void remoteTurnMessage(String remoteName){
         try {
-            doc.insertString(doc.getLength(), "Turno de " + remoteName + "...", red);
+            doc.insertString(doc.getLength(), "Turno de " + remoteName + "...\n", red);
         } catch (BadLocationException ex) {
             Logger.getLogger(FormPrincipal.class.getName()).log(Level.SEVERE, null, ex);
         }

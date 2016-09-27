@@ -160,6 +160,8 @@ public class Connection {
                         Point p = new Point();
                         p.x = Integer.parseInt(buffer.readLine());
                         p.y = Integer.parseInt(buffer.readLine());
+                        int atkRestantes = Integer.parseInt(buffer.readLine());
+                        
                         model1.recebeAtaque(p.x, p.y);
                         
                         boolean acertou = false;
@@ -171,6 +173,11 @@ public class Connection {
                         }
                         
                         chat.attackedMessage(remoteName, p.x, p.y, acertou, type);
+                        if(atkRestantes==0 && !model1.FimDeJogo()){
+                            controller2.seuTurno();
+                            chat.yourTurnMessage();
+                            fimDeTurno();
+                        }
                         
                         PrintStream ps;
                         try{
@@ -207,10 +214,8 @@ public class Connection {
                             chat.yourTurnMessage();
                         }
                         
-                    }else if(aux.equals("suavez")){
-                        
-                        controller2.seuTurno();
-                        chat.yourTurnMessage();
+                    }else if(aux.equals("minhavez")){
+                        chat.remoteTurnMessage(remoteName);
                         
                     }else if(aux.equals("perdi")){
                         
@@ -238,13 +243,14 @@ public class Connection {
         }
     }
     
-    public void atk(int x, int y){
+    public void atk(int x, int y, int atkRestantes){
         PrintStream ps;
         try{
             ps = new PrintStream(cliente.getOutputStream());
             ps.println("atk");
             ps.println(x);
             ps.println(y);
+            ps.println(atkRestantes);
             chat.attackMessage(x, y);
         }catch(IOException ex){
             ex.printStackTrace();
@@ -270,8 +276,7 @@ public class Connection {
         PrintStream ps;
         try{
             ps = new PrintStream(cliente.getOutputStream());
-            ps.println("suavez");
-            chat.remoteTurnMessage(remoteName);
+            ps.println("minhavez");
         }catch(IOException ex){
             ex.printStackTrace();
         }

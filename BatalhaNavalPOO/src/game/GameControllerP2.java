@@ -63,18 +63,15 @@ public class GameControllerP2 extends GameController{
     public void mouseDragged(MouseEvent e) {
         //not needed
     }
-
+    
     @Override
     public void mouseClicked(MouseEvent e) {
         if(ataques>0){
             if(model.recebeAtaque(e.getX()/30, e.getY()/30)){
-                conn.atk(e.getX()/30, e.getY()/30);
+                conn.atk(e.getX()/30, e.getY()/30, ataques-1);
                 view.repaint();
-                ataques--;
+                ataques-=1;
             }
-        }
-        if(ataques==0){
-            conn.fimDeTurno();
         }
     }
 
