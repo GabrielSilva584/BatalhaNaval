@@ -3,9 +3,9 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package game;
+package boats;
 
-import static game.Navios.backgroundPath;
+import static boats.Navios.backgroundPath;
 import java.io.File;
 import java.io.IOException;
 import javax.imageio.ImageIO;

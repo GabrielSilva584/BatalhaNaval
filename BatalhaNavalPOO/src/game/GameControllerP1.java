@@ -5,6 +5,7 @@
  */
 package game;
 
+import boats.Navios;
 import form.FormPrincipal;
 import java.awt.Color;
 import java.awt.Graphics2D;
