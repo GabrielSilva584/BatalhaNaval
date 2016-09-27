@@ -62,20 +62,62 @@ public class ChatController {
     
     public void attackMessage(int x, int y){
         try {
-            doc.insertString(doc.getLength(), "Você atacou a Coordenada "+ (x+1)
-                    + new LabelLeft().coordToString(y+1) +"! ", red);
+            doc.insertString(doc.getLength(), "Você atacou a Coordenada " 
+                    + new LabelLeft().coordToString(y+1) + (x+1) +"! ", red);
         } catch (BadLocationException ex) {
             Logger.getLogger(FormPrincipal.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
     
-    public void attackResultMessage(boolean b, String type){
+    public void attackResultMessage(boolean acertou, String type){
         try {
-            if(b){
-                doc.insertString(doc.getLength(), "Acertou um(a) "+type, red);
+            if(acertou){
+                doc.insertString(doc.getLength(), "Acertou um(a) " + type + "\n", red);
             }else{
-                doc.insertString(doc.getLength(), "Não acertou nada!", red);
+                doc.insertString(doc.getLength(), "Não acertou nada!\n", red);
             }
+        } catch (BadLocationException ex) {
+            Logger.getLogger(FormPrincipal.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+    
+    public void attackedMessage(String remoteName, int x, int y, boolean acertou, String type){
+        try {
+            doc.insertString(doc.getLength(), remoteName + " te atacou na Coordenada "
+                    + new LabelLeft().coordToString(y+1) + (x+1) +"! ", red);
+            attackResultMessage(acertou, type);
+        } catch (BadLocationException ex) {
+            Logger.getLogger(FormPrincipal.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+    
+    public void youWinMessage(){
+        try {
+            doc.insertString(doc.getLength(), "Você venceu!", red);
+        } catch (BadLocationException ex) {
+            Logger.getLogger(FormPrincipal.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+    
+    public void youLoseMessage(String remoteName){
+        try {
+            doc.insertString(doc.getLength(), remoteName +" venceu!", red);
+        } catch (BadLocationException ex) {
+            Logger.getLogger(FormPrincipal.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+    
+    public void yourTurnMessage(){
+        try {
+            doc.insertString(doc.getLength(), "Seu turno...", red);
+        } catch (BadLocationException ex) {
+            Logger.getLogger(FormPrincipal.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+    
+    public void remoteTurnMessage(String remoteName){
+        try {
+            doc.insertString(doc.getLength(), "Turno de " + remoteName + "...", red);
         } catch (BadLocationException ex) {
             Logger.getLogger(FormPrincipal.class.getName()).log(Level.SEVERE, null, ex);
         }

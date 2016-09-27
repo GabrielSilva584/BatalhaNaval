@@ -43,6 +43,8 @@ public class Main {
                     GameControllerP1 controller1 = new GameControllerP1();
                     GameControllerP2 controller2 = new GameControllerP2();
                     
+                    view.getConnection().setController2(controller2);
+                    
                     controller1.addView(view);
                     controller1.addModel(model1);
                     

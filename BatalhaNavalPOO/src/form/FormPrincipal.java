@@ -182,22 +182,38 @@ public class FormPrincipal extends javax.swing.JFrame{
     
     public void setEnabledPortaAvioes(boolean b){
         jBPortaAvioes.setEnabled(b);
+        allowIniciar();
     }
     
     public void setEnabledDestroyer(boolean b){
         jBDestroyer.setEnabled(b);
+        allowIniciar();
     }
     
     public void setEnabledCruzador(boolean b){
         jBCruzador.setEnabled(b);
+        allowIniciar();
     }
     
     public void setEnabledSubmarino(boolean b){
         jBSubmarino.setEnabled(b);
+        allowIniciar();
     }
     
     public void setEnabledPatrulha(boolean b){
         jBPatrulha.setEnabled(b);
+        allowIniciar();
+    }
+    
+    public void allowIniciar(){
+        if(!jBPatrulha.isEnabled()
+                && !jBSubmarino.isEnabled()
+                && !jBCruzador.isEnabled()
+                && !jBDestroyer.isEnabled()
+                && !jBPortaAvioes.isEnabled()
+                && isConnected){
+            jBIniciarJogo.setEnabled(true);
+        }
     }
 
     /**
@@ -484,6 +500,12 @@ public class FormPrincipal extends javax.swing.JFrame{
         });
 
         jBIniciarJogo.setText("Iniciar Jogo");
+        jBIniciarJogo.setEnabled(false);
+        jBIniciarJogo.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jBIniciarJogoActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -631,6 +653,7 @@ public class FormPrincipal extends javax.swing.JFrame{
             @Override
             public void run() {
                 isConnected = connection.host(jTFNome.getText(),jTFIP.getText());
+                allowIniciar();
                 statusCheck();
                 connection.listen();
                 isConnected = false;
@@ -667,6 +690,7 @@ public class FormPrincipal extends javax.swing.JFrame{
             public void run() {
                 isConnected = connection.connect(jTFNome.getText(), jTFIP.getText());
                 statusCheck();
+                allowIniciar();
                 connection.listen();
                 isConnected = false;
                 statusCheck();
@@ -710,6 +734,10 @@ public class FormPrincipal extends javax.swing.JFrame{
     private void jBPatrulhaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jBPatrulhaActionPerformed
         controller1.setN(new Patrulha());
     }//GEN-LAST:event_jBPatrulhaActionPerformed
+
+    private void jBIniciarJogoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jBIniciarJogoActionPerformed
+        connection.ready();
+    }//GEN-LAST:event_jBIniciarJogoActionPerformed
      
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jBAjuda;

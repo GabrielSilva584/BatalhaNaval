@@ -18,7 +18,7 @@ import net.Connection;
 public class GameControllerP2 extends GameController{
     
     Connection conn = null;
-    int ataques = 5;
+    int ataques = -1;
     
     public void setConn(Connection conn){
         this.conn = conn;
@@ -30,6 +30,10 @@ public class GameControllerP2 extends GameController{
     
     public boolean fimDeTurno(){
         return ataques == 0;
+    }
+    
+    public void finalizaJogo(){
+        ataques = -1;
     }
     
     @Override
@@ -63,10 +67,14 @@ public class GameControllerP2 extends GameController{
     @Override
     public void mouseClicked(MouseEvent e) {
         if(ataques>0){
-            model.recebeAtaque(e.getX()/30, e.getY()/30);
-            conn.atk(e.getX()/30, e.getY()/30);
-            view.repaint();
-            ataques--;
+            if(model.recebeAtaque(e.getX()/30, e.getY()/30)){
+                conn.atk(e.getX()/30, e.getY()/30);
+                view.repaint();
+                ataques--;
+            }
+        }
+        if(ataques==0){
+            conn.fimDeTurno();
         }
     }
 

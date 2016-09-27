@@ -1,7 +1,9 @@
 package net;
 
+import boats.Auxiliar;
 import form.FormPrincipal;
 import game.Game;
+import game.GameControllerP2;
 import java.awt.Point;
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -25,14 +27,9 @@ public class Connection {
     private ChatController chat;
     private String name, IP, remoteName;
     private Game model1 = null, model2 = null;
-
-    public void setModel1(Game model) {
-        this.model1 = model;
-    }
-    
-    public void setModel2(Game model) {
-        this.model2 = model;
-    }
+    private GameControllerP2 controller2 = null;
+    private Auxiliar boatAux = null;
+    private boolean localReady, remoteReady;
     
     public Connection(ChatController remoteChat){
         cliente = null;
@@ -42,6 +39,20 @@ public class Connection {
         name = null;
         IP = null;
         remoteName = null;
+        localReady = false;
+        remoteReady = false;
+    }
+    
+    public void setModel1(Game model) {
+        this.model1 = model;
+    }
+    
+    public void setModel2(Game model) {
+        this.model2 = model;
+    }
+    
+    public void setController2(GameControllerP2 controller) {
+        this.controller2 = controller;
     }
     
     public void close(){
@@ -78,11 +89,15 @@ public class Connection {
         name = null;
         IP = null;
         remoteName = null;
+        notReady();
     }
     
     public boolean host(String n, String i){
         PrintStream ps;
         name = n;
+        if(name.equals("")){
+            name = "Host";
+        }
         IP = i;
         try {
             servidor = new ServerSocket(12345);
@@ -105,6 +120,9 @@ public class Connection {
     public boolean connect(String n, String i){
         PrintStream ps;
         name = n;
+        if(name.equals("")){
+            name = "Client";
+        }
         IP = i;
         try {
             cliente = new Socket(IP, 12345);
@@ -130,35 +148,75 @@ public class Connection {
                 String aux = buffer.readLine();
                 if(aux!=null){
                     if(aux.equals("msg")){
+                        
                         chat.insertMessage(remoteName, buffer.readLine(), 3);
+                        
                     }else if(aux.equals("flw")){
+                        
                         disconnect();
+                        
                     }else if(aux.equals("atk")){
+                        
                         Point p = new Point();
                         p.x = Integer.parseInt(buffer.readLine());
                         p.y = Integer.parseInt(buffer.readLine());
                         model1.recebeAtaque(p.x, p.y);
+                        
+                        boolean acertou = false;
+                        String type = "";
+                        
+                        if(model1.findNavio(p.x, p.y)!=null){
+                            acertou = true;
+                            type = model1.findNavio(p.x, p.y).getType();
+                        }
+                        
+                        chat.attackedMessage(remoteName, p.x, p.y, acertou, type);
+                        
                         PrintStream ps;
-                        chat.attackMessage(p.x, p.y);
                         try{
                             ps = new PrintStream(cliente.getOutputStream());
                             ps.println("ai");
-                            boolean acertou = model1.findNavio(p.x, p.y)!=null;
-                            if(acertou){
-                                ps.println(model1.findNavio(p.x, p.y).getType());
-                            }else{
-                                ps.println("");
+                            ps.println(p.x);
+                            ps.println(p.y);
+                            ps.println(type);
+                            if(model1.FimDeJogo()){
+                                ps.println("perdi");
+                                chat.youLoseMessage(remoteName);
                             }
                         }catch(IOException ex){
                             ex.printStackTrace();
                         }
+                        
                     }else if(aux.equals("ai")){
+                        
+                        int xAux = Integer.parseInt(buffer.readLine());
+                        int yAux = Integer.parseInt(buffer.readLine());
                         aux = buffer.readLine();
                         if(aux.equals("")){
                             chat.attackResultMessage(false, "");
                         }else{
+                            model2.addMarker(xAux, yAux, aux);
                             chat.attackResultMessage(true, aux);
                         }
+                        
+                    }else if(aux.equals("rdy")){
+                        
+                        remoteReady = true;
+                        if(isEveryoneReady() && servidor!=null){
+                            controller2.seuTurno();
+                            chat.yourTurnMessage();
+                        }
+                        
+                    }else if(aux.equals("suavez")){
+                        
+                        controller2.seuTurno();
+                        chat.yourTurnMessage();
+                        
+                    }else if(aux.equals("perdi")){
+                        
+                        controller2.finalizaJogo();
+                        chat.youWinMessage();
+                        
                     }
                 }
             }
@@ -187,9 +245,45 @@ public class Connection {
             ps.println("atk");
             ps.println(x);
             ps.println(y);
+            chat.attackMessage(x, y);
         }catch(IOException ex){
             ex.printStackTrace();
         }
+    }
+    
+    public void ready(){
+        localReady = true;
+        PrintStream ps;
+        try{
+            ps = new PrintStream(cliente.getOutputStream());
+            ps.println("rdy");
+        }catch(IOException ex){
+            ex.printStackTrace();
+        }
+        if(isEveryoneReady() && servidor!=null){
+            controller2.seuTurno();
+            chat.yourTurnMessage();
+        }
+    }
+    
+    public void fimDeTurno(){
+        PrintStream ps;
+        try{
+            ps = new PrintStream(cliente.getOutputStream());
+            ps.println("suavez");
+            chat.remoteTurnMessage(remoteName);
+        }catch(IOException ex){
+            ex.printStackTrace();
+        }
+    }
+    
+    public void notReady(){
+        localReady = false;
+        remoteReady = false;
+    }
+    
+    public boolean isEveryoneReady(){
+        return (localReady && remoteReady);
     }
     
     public String getIP(){

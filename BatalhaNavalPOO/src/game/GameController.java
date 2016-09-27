@@ -36,6 +36,14 @@ public abstract class GameController implements MouseListener, MouseMotionListen
     @Override
     public void mouseEntered(MouseEvent e) {
         mouseInside = true;
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                while(mouseInside){
+                    view.repaint();
+                }
+            }
+        }).start();
     }
 
     @Override

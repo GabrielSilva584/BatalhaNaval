@@ -5,6 +5,7 @@
  */
 package game;
 
+import boats.Auxiliar;
 import boats.Navios;
 import java.awt.Color;
 import java.awt.Graphics2D;
@@ -46,13 +47,23 @@ public class Game implements Observer{
         }
     }
     
-    public void recebeAtaque(int x, int y){
+    public void addMarker(int x, int y, String type){
+        Auxiliar n = new Auxiliar(x, y, type);
+        for(int i=0;i<n.getTam();i++){
+            Point p = n.getCoord(i);
+            n1[p.x][p.y]=n;
+        }
+    }
+    
+    public boolean recebeAtaque(int x, int y){
         Point aux = new Point();
         aux.x = x;
         aux.y = y;
         if(!atacados.contains(aux)){
             atacados.add(aux);
+            return true;
         }
+        return false;
     }
     
     public boolean verifySpaces(Navios n){
