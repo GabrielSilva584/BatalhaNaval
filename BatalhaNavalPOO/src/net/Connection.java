@@ -173,7 +173,7 @@ public class Connection {
                         }
                         
                         chat.attackedMessage(remoteName, p.x, p.y, acertou, type);
-                        if(atkRestantes==0 && !model1.FimDeJogo()){
+                        if(atkRestantes==0){
                             controller2.seuTurno();
                             chat.yourTurnMessage();
                             fimDeTurno();
