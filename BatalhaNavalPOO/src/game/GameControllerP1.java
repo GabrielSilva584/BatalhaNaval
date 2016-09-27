@@ -80,6 +80,7 @@ public class GameControllerP1 extends GameController{
                 }
             }
         }
+        view.repaint();
     }
 
     @Override
