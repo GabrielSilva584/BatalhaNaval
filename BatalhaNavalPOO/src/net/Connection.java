@@ -182,15 +182,15 @@ public class Connection {
                             ps.println(p.y);
                             ps.println(type);
                             ps.println(atkRestantes);
-                            if(model1.FimDeJogo()){
-                                ps.println("perdi");
-                                chat.youLoseMessage(remoteName);
-                            }
                         }catch(IOException ex){
                             ex.printStackTrace();
                         }
                         
-                        if(atkRestantes==0){
+                        if(model1.FimDeJogo()){
+                            ps = new PrintStream(cliente.getOutputStream());
+                            ps.println("perdi");
+                            chat.youLoseMessage(remoteName);
+                        }else if(atkRestantes==0){
                             controller2.seuTurno();
                             chat.yourTurnMessage();
                             fimDeTurno();

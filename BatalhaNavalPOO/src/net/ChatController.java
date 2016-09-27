@@ -78,7 +78,7 @@ public class ChatController {
             }else{
                 doc.insertString(doc.getLength(), "Não acertou nada!", orange);
             }
-            doc.insertString(doc.getLength(), " (" + rest + "torpedos restantes)\n", orange);
+            doc.insertString(doc.getLength(), " (" + rest + " torpedos restantes)\n", orange);
         } catch (BadLocationException ex) {
             Logger.getLogger(FormPrincipal.class.getName()).log(Level.SEVERE, null, ex);
         }
