@@ -104,10 +104,14 @@ public class Game implements Observer{
             }else{
                 c = new Color(0,255,0,75);
             }
-            g.setColor(c);
-            g.fillRect(30*p.x, 30*p.y, 30, 30);
-            g.setColor(Color.black);
+            drawRect(g, c, p);
         }
+    }
+    
+    public void drawRect(Graphics2D g, Color c, Point p){
+        g.setColor(c);
+        g.fillRect(30*p.x, 30*p.y, 30, 30);
+        g.setColor(Color.black);
     }
     
     public void draw(Graphics2D g){
