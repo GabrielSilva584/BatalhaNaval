@@ -654,7 +654,7 @@ public class FormPrincipal extends javax.swing.JFrame{
                 isConnected = connection.host(jTFNome.getText(),jTFIP.getText());
                 allowIniciar();
                 statusCheck();
-                connection.listen();
+                if(isConnected)connection.listen();
                 isConnected = false;
                 statusCheck();
             }
@@ -690,7 +690,7 @@ public class FormPrincipal extends javax.swing.JFrame{
                 isConnected = connection.connect(jTFNome.getText(), jTFIP.getText());
                 statusCheck();
                 allowIniciar();
-                connection.listen();
+                if(isConnected)connection.listen();
                 isConnected = false;
                 statusCheck();
                 connection.disconnect();
@@ -735,9 +735,9 @@ public class FormPrincipal extends javax.swing.JFrame{
     }//GEN-LAST:event_jBPatrulhaActionPerformed
 
     private void jBIniciarJogoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jBIniciarJogoActionPerformed
-        connection.ready();
         jBIniciarJogo.setEnabled(false);
         jBRotacionar.setEnabled(false);
+        connection.synchronizeSend();
     }//GEN-LAST:event_jBIniciarJogoActionPerformed
      
     // Variables declaration - do not modify//GEN-BEGIN:variables

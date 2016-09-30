@@ -21,6 +21,13 @@ import javax.swing.text.StyledDocument;
  * @author Gabriel
  */
 public class ChatController {
+    static final int COLOR_BLACK = 0;
+    static final int COLOR_RED = 1;
+    static final int COLOR_BLUE = 2;
+    static final int COLOR_GREEN = 3;
+    static final int COLOR_ORANGE = 4;
+    
+    
     private StyledDocument doc = null;
     private Style red = null, black = null, blue = null, green = null, orange = null;
     
@@ -54,96 +61,34 @@ public class ChatController {
     }
     
     public void insertMessage(String name, String msg, int nameColor){
-        try {
-            doc.insertString(doc.getLength(), name + ": ", selectColor(nameColor));
-            doc.insertString(doc.getLength(), msg+"\n", selectColor(0));
-        } catch (BadLocationException ex) {
-            Logger.getLogger(FormPrincipal.class.getName()).log(Level.SEVERE, null, ex);
-        }
-    }
-    
-    public void attackMessage(int x, int y){
-        try {
-            doc.insertString(doc.getLength(), "Você atacou a Coordenada " 
-                    + new LabelLeft().coordToString(y+1) + (x+1) +"! ", orange);
-        } catch (BadLocationException ex) {
-            Logger.getLogger(FormPrincipal.class.getName()).log(Level.SEVERE, null, ex);
-        }
-    }
-    
-    public void attackResultMessage(boolean acertou, String type, int rest){
-        try {
-            if(acertou){
-                doc.insertString(doc.getLength(), "Acertou um(a) " + type, orange);
-            }else{
-                doc.insertString(doc.getLength(), "Não acertou nada!", orange);
-            }
-            doc.insertString(doc.getLength(), " (" + rest + " torpedos restantes)\n", orange);
-        } catch (BadLocationException ex) {
-            Logger.getLogger(FormPrincipal.class.getName()).log(Level.SEVERE, null, ex);
-        }
-    }
-    
-    public void attackedMessage(String remoteName, int x, int y, boolean acertou, String type, int rest){
-        try {
-            doc.insertString(doc.getLength(), remoteName + " te atacou na Coordenada "
-                    + new LabelLeft().coordToString(y+1) + (x+1) +"! ", orange);
-            attackResultMessage(acertou, type, rest);
-        } catch (BadLocationException ex) {
-            Logger.getLogger(FormPrincipal.class.getName()).log(Level.SEVERE, null, ex);
-        }
-    }
-    
-    public void youWinMessage(){
-        try {
-            doc.insertString(doc.getLength(), "Você venceu!\n", red);
-        } catch (BadLocationException ex) {
-            Logger.getLogger(FormPrincipal.class.getName()).log(Level.SEVERE, null, ex);
-        }
-    }
-    
-    public void youLoseMessage(String remoteName){
-        try {
-            doc.insertString(doc.getLength(), remoteName +" venceu!\n", red);
-        } catch (BadLocationException ex) {
-            Logger.getLogger(FormPrincipal.class.getName()).log(Level.SEVERE, null, ex);
-        }
-    }
-    
-    public void yourTurnMessage(){
-        try {
-            doc.insertString(doc.getLength(), "Seu turno...\n", red);
-        } catch (BadLocationException ex) {
-            Logger.getLogger(FormPrincipal.class.getName()).log(Level.SEVERE, null, ex);
-        }
-    }
-    
-    public void remoteTurnMessage(String remoteName){
-        try {
-            doc.insertString(doc.getLength(), "Turno de " + remoteName + "...\n", red);
-        } catch (BadLocationException ex) {
-            Logger.getLogger(FormPrincipal.class.getName()).log(Level.SEVERE, null, ex);
-        }
+        insertString( name + ": ", nameColor);
+        insertString( msg+"\n", 0);
     }
     
     // 0 = Player Local, 1 = Player Remoto
-    public void readyMessage(String remoteName, int i){
-        if(i==0)remoteName = "Você";
-        try {
-            doc.insertString(doc.getLength(), remoteName + " está pronto!\n", red);
-        } catch (BadLocationException ex) {
-            Logger.getLogger(FormPrincipal.class.getName()).log(Level.SEVERE, null, ex);
+    public void attackMessage(String remoteName, int x, int y, boolean acertou, String type, int player){
+        if(player==0)remoteName = "Você";
+        else remoteName += " te";
+        
+        insertString(remoteName + " atacou na Coordenada "
+                + new LabelLeft().coordToString(y+1) + (x+1) +"! ", COLOR_ORANGE);
+        if(acertou){
+            insertString("Acertou um(a) " + type+"\n", COLOR_ORANGE);
+        }else{
+            insertString("Não acertou nada!\n", COLOR_ORANGE);
         }
     }
     
     public Style selectColor(int color){
         switch (color) {
-            case 1:
+            case COLOR_RED:
                 return red;
-            case 2:
+            case COLOR_BLUE:
                 return blue;
-            case 3:
+            case COLOR_GREEN:
                 return green;
+            case COLOR_ORANGE:
+                return orange;
             default:
                 return black;
         }
