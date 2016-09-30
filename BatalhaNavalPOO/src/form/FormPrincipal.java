@@ -711,6 +711,7 @@ public class FormPrincipal extends javax.swing.JFrame{
                 if(isConnected)connection.listen();
                 isConnected = false;
                 statusCheck();
+                enableBoats();
                 connection.disconnect();
             }
         }).start();
