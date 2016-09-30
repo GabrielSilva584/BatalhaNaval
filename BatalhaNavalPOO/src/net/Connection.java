@@ -86,7 +86,7 @@ public class Connection {
     public void close(){
         try {
             ps = new PrintStream(cliente.getOutputStream());
-            ps.println("flw");
+            ps.println(INPUT_END);
             chat.insertString("Você saiu...\n", COLOR_RED);
             if(cliente != null)cliente.close();
             if(servidor != null)servidor.close();
@@ -111,10 +111,6 @@ public class Connection {
         } catch (IOException ex) {
             Logger.getLogger(FormPrincipal.class.getName()).log(Level.SEVERE, null, ex);
         }
-    }
-    
-    public void enableBoats(){
-        
     }
     
     public void reset(){
