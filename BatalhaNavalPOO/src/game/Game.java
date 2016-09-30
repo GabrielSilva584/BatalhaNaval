@@ -24,6 +24,10 @@ public class Game implements Observer{
     private Point mouseCoord;
     
     public Game(){
+        init();
+    }
+    
+    public void init(){
         this.atacados = new ArrayList<Point>();
         for(int i=0;i<10;i++){
             for(int j=0;j<10;j++){
