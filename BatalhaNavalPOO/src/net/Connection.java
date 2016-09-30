@@ -194,17 +194,33 @@ public class Connection {
                         int x = Integer.parseInt(buffer.readLine());
                         int y = Integer.parseInt(buffer.readLine());
                         
-                        listenAtk(x, y);
-                    /*    
-                    }else if(aux.equals("ai")){
+                        model1.recebeAtaque(x, y);
+
+                        boolean acertou = false;
+                        String type = "";
+
+                        if(model1.findNavio(x, y)!=null){
+                            acertou = true;
+                            type = model1.findNavio(x, y).getType();
+                        }
+
+                        chat.attackMessage(remoteName, x, y, acertou, type, REMOTE_PLAYER);
+
+                        if(model1.FimDeJogo()){
+                            try {
+                                ps = new PrintStream(cliente.getOutputStream());
+                                ps.println(INPUT_LOST);
+                            } catch (IOException ex) {
+                                Logger.getLogger(Connection.class.getName()).log(Level.SEVERE, null, ex);
+                            }
+
+                            chat.insertString(MSG_YOU + MSG_LOST, COLOR_RED);
+                        }else if(ataques==0){
+                            controller2.seuTurno();
+                            chat.insertString(MSG_YOUR_TURN, COLOR_RED);
+                            fimDeTurno();
+                        }
                         
-                        int x = Integer.parseInt(buffer.readLine());
-                        int y = Integer.parseInt(buffer.readLine());
-                        String type = buffer.readLine();
-                        int atkRestantes = Integer.parseInt(buffer.readLine());
-                        
-                        listenAi(x, y, atkRestantes, type);    
-                    //*/
                     }else if(aux.equals(INPUT_READY)){
                         
                         chat.insertString(remoteName + MSG_READY, COLOR_RED);
@@ -240,66 +256,6 @@ public class Connection {
         }
     }
     
-    public void listenAtk(final int x, final int y){
-        new Thread(new Runnable(){
-            @Override
-            public void run() {
-                model1.recebeAtaque(x, y);
-
-                boolean acertou = false;
-                String type = "";
-
-                if(model1.findNavio(x, y)!=null){
-                    acertou = true;
-                    type = model1.findNavio(x, y).getType();
-                }
-
-                chat.attackMessage(remoteName, x, y, acertou, type, REMOTE_PLAYER);
-
-                /*
-                PrintStream ps;
-                try{
-                    ps = new PrintStream(cliente.getOutputStream());
-                    ps.println("ai");
-                    ps.println(x);
-                    ps.println(y);
-                    ps.println(type);
-                    ps.println(atkRestantes);
-                }catch(IOException ex){
-                    ex.printStackTrace();
-                }//*/
-
-                if(model1.FimDeJogo()){
-                    try {
-                        ps = new PrintStream(cliente.getOutputStream());
-                        ps.println(INPUT_LOST);
-                    } catch (IOException ex) {
-                        Logger.getLogger(Connection.class.getName()).log(Level.SEVERE, null, ex);
-                    }
-                    
-                    chat.insertString(MSG_YOU + MSG_LOST, COLOR_RED);
-                }else if(ataques==0){
-                    controller2.seuTurno();
-                    chat.insertString(MSG_YOUR_TURN, COLOR_RED);
-                    fimDeTurno();
-                }
-            } 
-        }).start();
-    }
-    /*
-    public void listenAi(final int x, final int y, final int atkRestantes, final String type){
-        new Thread(new Runnable(){
-            @Override
-            public void run() {   
-                if(type.equals("")){
-                    chat.attackResultMessage(false, "", atkRestantes);
-                }else{
-                    model2.addMarker(x, y, type);
-                    chat.attackResultMessage(true, type, atkRestantes);
-                }
-            }}).start();
-    }//*/
-    
     public void send(String msg){
         try{
             ps = new PrintStream(cliente.getOutputStream());
@@ -330,18 +286,6 @@ public class Connection {
             ex.printStackTrace();
         }
     }
-    /*
-    public void ready(){
-        localReady = true;
-        try{
-            ps = new PrintStream(cliente.getOutputStream());
-            
-        }catch(IOException ex){
-            ex.printStackTrace();
-        }
-        chat.insertString(MSG_YOU + MSG_READY, COLOR_RED);
-        
-    }//*/
     
     public void synchronizeSend(){
         try{
@@ -375,7 +319,6 @@ public class Connection {
     
     public void synchronizeReceive(){
         try{
-            //buffer = new BufferedReader(new InputStreamReader(cliente.getInputStream()));
             String aux = buffer.readLine();
             while(!aux.equals(INPUT_SYNC_END)){
                 int x = Integer.parseInt(aux);
