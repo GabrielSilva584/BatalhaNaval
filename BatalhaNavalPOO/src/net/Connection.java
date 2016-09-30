@@ -276,7 +276,7 @@ public class Connection {
             ps.println(y);
             String type = "";
             boolean acertou = false;
-            Navios n = model1.findNavio(x, y);
+            Navios n = model2.findNavio(x, y);
             if(n!=null){
                 acertou = true;
                 type = n.getType();
