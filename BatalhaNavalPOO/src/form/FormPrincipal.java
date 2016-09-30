@@ -647,6 +647,8 @@ public class FormPrincipal extends javax.swing.JFrame{
     }//GEN-LAST:event_jBDesconectarActionPerformed
 
     private void jBIniciarServerActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jBIniciarServerActionPerformed
+        jBConectar.setEnabled(false);
+        jBIniciarServer.setEnabled(false);
         chat.insertString("Aguardando Conexão...\n", 1);
         isConnecting();
         new Thread(new Runnable() {
@@ -684,6 +686,8 @@ public class FormPrincipal extends javax.swing.JFrame{
     }//GEN-LAST:event_jTFIPActionPerformed
 
     private void jBConectarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jBConectarActionPerformed
+        jBConectar.setEnabled(false);
+        jBIniciarServer.setEnabled(false);
         isConnecting();
         new Thread(new Runnable() {
             @Override
