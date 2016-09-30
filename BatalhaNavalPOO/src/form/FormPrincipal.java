@@ -215,6 +215,16 @@ public class FormPrincipal extends javax.swing.JFrame{
             jBIniciarJogo.setEnabled(true);
         }
     }
+    
+    public void enableBoats(){
+        jBIniciarJogo.setEnabled(false);
+        jBPatrulha.setEnabled(true);
+        jBSubmarino.setEnabled(true);
+        jBCruzador.setEnabled(true);
+        jBDestroyer.setEnabled(true);
+        jBPortaAvioes.setEnabled(true);
+        jBRotacionar.setEnabled(true);
+    }
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -643,6 +653,7 @@ public class FormPrincipal extends javax.swing.JFrame{
     private void jBDesconectarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jBDesconectarActionPerformed
         connection.close();
         isConnected = false;
+        enableBoats();
         statusCheck();
     }//GEN-LAST:event_jBDesconectarActionPerformed
 
@@ -659,7 +670,9 @@ public class FormPrincipal extends javax.swing.JFrame{
                 statusCheck();
                 if(isConnected)connection.listen();
                 isConnected = false;
+                enableBoats();
                 statusCheck();
+                connection.close();
             }
         }).start();
     }//GEN-LAST:event_jBIniciarServerActionPerformed

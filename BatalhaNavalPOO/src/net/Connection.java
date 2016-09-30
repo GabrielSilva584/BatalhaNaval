@@ -90,6 +90,8 @@ public class Connection {
             chat.insertString("Você saiu...\n", COLOR_RED);
             if(cliente != null)cliente.close();
             if(servidor != null)servidor.close();
+            model1.init();
+            model2.init();
             reset();
         } catch (IOException ex) {
             Logger.getLogger(FormPrincipal.class.getName()).log(Level.SEVERE, null, ex);
@@ -109,6 +111,10 @@ public class Connection {
         } catch (IOException ex) {
             Logger.getLogger(FormPrincipal.class.getName()).log(Level.SEVERE, null, ex);
         }
+    }
+    
+    public void enableBoats(){
+        
     }
     
     public void reset(){
