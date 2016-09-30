@@ -500,6 +500,7 @@ public class FormPrincipal extends javax.swing.JFrame{
         });
 
         jBIniciarJogo.setText("Iniciar Jogo");
+        jBIniciarJogo.setEnabled(false);
         jBIniciarJogo.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jBIniciarJogoActionPerformed(evt);
