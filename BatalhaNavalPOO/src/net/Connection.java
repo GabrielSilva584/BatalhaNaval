@@ -104,6 +104,8 @@ public class Connection {
             }
             if(servidor != null)servidor.close();
             reset();
+            model1 = new Game();
+            model2 = new Game();
         } catch (IOException ex) {
             Logger.getLogger(FormPrincipal.class.getName()).log(Level.SEVERE, null, ex);
         }

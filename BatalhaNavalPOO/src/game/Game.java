@@ -31,8 +31,6 @@ public class Game implements Observer{
             }
         }
         mouseCoord = new Point();
-        
-        init();
     }
     
     public boolean addNavio(Navios n){
@@ -91,10 +89,6 @@ public class Game implements Observer{
 
     public void setMouseCoord(Point mouseCoord) {
         this.mouseCoord = mouseCoord;
-    }
-    
-    private void init() {
-        
     }
     
     public Navios findNavio(int x, int y) {
