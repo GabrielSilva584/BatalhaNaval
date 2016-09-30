@@ -301,8 +301,6 @@ public class Connection {
                         ps.println(i);
                         ps.println(j);
                         ps.println(aux.getType());
-                        
-                        System.out.println(i + " " + j + " " + aux.getType());
                     }
                 }
             }
