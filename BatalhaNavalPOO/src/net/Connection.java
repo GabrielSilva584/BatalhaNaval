@@ -88,28 +88,27 @@ public class Connection {
             ps = new PrintStream(cliente.getOutputStream());
             ps.println(INPUT_END);
             chat.insertString("Você saiu...\n", COLOR_RED);
-            if(cliente != null)cliente.close();
-            if(servidor != null)servidor.close();
-            model1.init();
-            model2.init();
-            reset();
+            connectionEnded();
         } catch (IOException ex) {
-            Logger.getLogger(FormPrincipal.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(Connection.class.getName()).log(Level.SEVERE, null, ex);
         }
+        
     }
     
     public void disconnect(){
+        chat.insertString(remoteName + " saiu...\n", COLOR_RED);
+        connectionEnded();
+    }
+    
+    public void connectionEnded(){
         try {
-            if(cliente != null){
-                chat.insertString(remoteName + " saiu...\n", COLOR_RED);
-                cliente.close();
-            }
+            if(cliente != null)cliente.close();
             if(servidor != null)servidor.close();
             reset();
             model1.init();
             model2.init();
         } catch (IOException ex) {
-            Logger.getLogger(FormPrincipal.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(Connection.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
     

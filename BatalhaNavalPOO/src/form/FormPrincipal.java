@@ -672,7 +672,6 @@ public class FormPrincipal extends javax.swing.JFrame{
                 isConnected = false;
                 enableBoats();
                 statusCheck();
-                connection.close();
             }
         }).start();
     }//GEN-LAST:event_jBIniciarServerActionPerformed
@@ -712,7 +711,6 @@ public class FormPrincipal extends javax.swing.JFrame{
                 isConnected = false;
                 statusCheck();
                 enableBoats();
-                connection.disconnect();
             }
         }).start();
     }//GEN-LAST:event_jBConectarActionPerformed
