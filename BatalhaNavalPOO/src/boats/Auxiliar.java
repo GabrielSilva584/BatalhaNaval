@@ -5,12 +5,6 @@
  */
 package boats;
 
-import static boats.Navios.backgroundPath;
-import java.io.File;
-import java.io.IOException;
-import javax.imageio.ImageIO;
-import javax.swing.JOptionPane;
-
 /**
  *
  * @author Gabriel

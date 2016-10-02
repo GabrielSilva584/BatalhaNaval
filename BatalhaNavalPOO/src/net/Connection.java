@@ -20,6 +20,14 @@ import java.util.logging.Logger;
  * @author Gabriel
  */
 public class Connection {
+    static final int COLOR_BLACK = 0;
+    static final int COLOR_RED = 1;
+    static final int COLOR_BLUE = 2;
+    static final int COLOR_GREEN = 3;
+    static final int COLOR_ORANGE = 4;
+    
+    static final int LOCAL_PLAYER = 0;
+    static final int REMOTE_PLAYER = 1;
     
     static final String INPUT_MSG = "a";
     static final String INPUT_END = "b";
@@ -30,15 +38,6 @@ public class Connection {
     static final String INPUT_SYNC_INIT = "g";
     static final String INPUT_SYNC_END = "h";
     
-    static final int COLOR_BLACK = 0;
-    static final int COLOR_RED = 1;
-    static final int COLOR_BLUE = 2;
-    static final int COLOR_GREEN = 3;
-    static final int COLOR_ORANGE = 4;
-    
-    static final int LOCAL_PLAYER = 0;
-    static final int REMOTE_PLAYER = 1;
-    
     static final String MSG_YOU = "Você ";
     static final String MSG_WIN = "ganhou!\n";
     static final String MSG_LOST = "perdeu!\n";
@@ -46,6 +45,11 @@ public class Connection {
     static final String MSG_REMOTE_TURN1 = "Turno de ";
     static final String MSG_REMOTE_TURN2 = "...\n";
     static final String MSG_READY = " está pronto\n";
+    static final String MSG_CONN_ERROR = "Erro de conexão!\n";
+    static final String MSG_EXITED = " saiu...\n";
+    static final String MSG_REMOTE_CONNECTED = " conectou-se...\n";
+    static final String MSG_YOU_CONNECTED = "Você se conectou ao servidor de ";
+    
     
     private Socket cliente;
     private ServerSocket servidor;
@@ -87,7 +91,7 @@ public class Connection {
         try {
             ps = new PrintStream(cliente.getOutputStream());
             ps.println(INPUT_END);
-            chat.insertString("Você saiu...\n", COLOR_RED);
+            chat.insertString(MSG_YOU + MSG_EXITED, COLOR_RED);
             connectionEnded();
         } catch (IOException ex) {
             Logger.getLogger(Connection.class.getName()).log(Level.SEVERE, null, ex);
@@ -96,7 +100,7 @@ public class Connection {
     }
     
     public void disconnect(){
-        chat.insertString(remoteName + " saiu...\n", COLOR_RED);
+        if(remoteName!=null)chat.insertString(remoteName + MSG_EXITED, COLOR_RED);
         connectionEnded();
     }
     
@@ -141,11 +145,11 @@ public class Connection {
             
             chat.insertString(remoteName
                     +" ("+cliente.getInetAddress().getHostAddress()+")"
-                    +" conectou-se...\n", COLOR_RED);
+                    + MSG_REMOTE_CONNECTED, COLOR_RED);
             
             return true;
         } catch (IOException ex) {
-            chat.insertString("Erro de conexão!\n", COLOR_RED);
+            chat.insertString(MSG_CONN_ERROR, COLOR_RED);
             Logger.getLogger(FormPrincipal.class.getName()).log(Level.SEVERE, null, ex);
             return false;
         }
@@ -165,11 +169,10 @@ public class Connection {
             
             buffer = new BufferedReader(new InputStreamReader(cliente.getInputStream()));
             remoteName = buffer.readLine();
-            chat.insertString("Você se conectou ao servidor de "
-                    +remoteName+"!\n", COLOR_RED);
+            chat.insertString(MSG_YOU_CONNECTED +remoteName + "!\n", COLOR_RED);
             return true;
         } catch (IOException ex) {
-            chat.insertString("Erro de conexão!\n", COLOR_RED);
+            chat.insertString(MSG_CONN_ERROR, COLOR_RED);
             Logger.getLogger(Connection.class.getName()).log(Level.SEVERE, null, ex);
             return false;
         }
@@ -253,7 +256,6 @@ public class Connection {
                     }
                 }
             }
-            disconnect();
         }
         catch(IOException ex){
         }

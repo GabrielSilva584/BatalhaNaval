@@ -19,8 +19,6 @@ import java.awt.Graphics2D;
 import java.awt.GridLayout;
 import java.io.File;
 import java.io.IOException;
-import java.util.Observable;
-import java.util.Observer;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.imageio.ImageIO;
@@ -668,7 +666,10 @@ public class FormPrincipal extends javax.swing.JFrame{
                 isConnected = connection.host(jTFNome.getText(),jTFIP.getText());
                 allowIniciar();
                 statusCheck();
-                if(isConnected)connection.listen();
+                if(isConnected){
+                    connection.listen();
+                    connection.disconnect();
+                }
                 isConnected = false;
                 enableBoats();
                 statusCheck();
@@ -707,7 +708,10 @@ public class FormPrincipal extends javax.swing.JFrame{
                 isConnected = connection.connect(jTFNome.getText(), jTFIP.getText());
                 statusCheck();
                 allowIniciar();
-                if(isConnected)connection.listen();
+                if(isConnected){
+                    connection.listen();
+                    connection.disconnect();
+                }
                 isConnected = false;
                 statusCheck();
                 enableBoats();
