@@ -12,6 +12,8 @@ import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  *
@@ -41,6 +43,11 @@ public abstract class GameController implements MouseListener, MouseMotionListen
             public void run() {
                 while(mouseInside){
                     view.repaint();
+                    try {
+                        Thread.sleep(17);
+                    } catch (InterruptedException ex) {
+                        Logger.getLogger(GameController.class.getName()).log(Level.SEVERE, null, ex);
+                    }
                 }
             }
         }).start();
@@ -54,6 +61,11 @@ public abstract class GameController implements MouseListener, MouseMotionListen
             public void run() {
                 while(!mouseInside){
                     view.repaint();
+                    try {
+                        Thread.sleep(17);
+                    } catch (InterruptedException ex) {
+                        Logger.getLogger(GameController.class.getName()).log(Level.SEVERE, null, ex);
+                    }
                 }
             }
         }).start();
