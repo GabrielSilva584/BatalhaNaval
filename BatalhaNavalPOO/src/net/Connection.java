@@ -65,7 +65,7 @@ public class Connection {
     private String name, IP, remoteName;
     private Game model1 = null, model2 = null;
     private GameControllerP2 controller2 = null;
-    private boolean localReady, remoteReady;
+    private boolean localReady, remoteReady, isSynchronizing = false;
     private int ataques;
     private FormPrincipal view;
     
@@ -195,7 +195,8 @@ public class Connection {
             String aux;
             
             while(cliente!=null){
-                aux = buffer.readLine();
+                aux = null;
+                if(!isSynchronizing)aux = buffer.readLine();
                 if(aux!=null){
                     if(aux.equals(INPUT_MSG)){
                         
@@ -346,6 +347,7 @@ public class Connection {
     
     public void synchronizeSend(){
         try{
+            isSynchronizing = true;
             localReady = true;
             ps = new PrintStream(cliente.getOutputStream());
             ps.println(INPUT_READY);
@@ -359,6 +361,7 @@ public class Connection {
                 controller2.seuTurno();
                 chat.insertString(MSG_YOUR_TURN, COLOR_RED);
             }
+            isSynchronizing = false;
         }catch(IOException ex){
             ex.printStackTrace();
         }
@@ -366,10 +369,10 @@ public class Connection {
     
     public void synchronizeReceive(){
         try{
+            isSynchronizing = true;
             ObjectInputStream is = new ObjectInputStream(cliente.getInputStream());
             model2.changeInto((Game)is.readObject());
-            ps = new PrintStream(cliente.getOutputStream());
-            ps.println(INPUT_SYNC_END);
+            isSynchronizing = false;
         }catch(IOException ex){
             ex.printStackTrace();
         } catch (ClassNotFoundException ex) {
