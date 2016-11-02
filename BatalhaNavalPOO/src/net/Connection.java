@@ -65,7 +65,7 @@ public class Connection {
     private String name, IP, remoteName;
     private Game model1 = null, model2 = null;
     private GameControllerP2 controller2 = null;
-    private boolean localReady, remoteReady, isSynchronizing = false;
+    private boolean localReady, remoteReady, isSynchronizing = false, remoteSynchronizing = false;
     private int ataques;
     private FormPrincipal view;
     
@@ -267,6 +267,10 @@ public class Connection {
                         
                         synchronizeReceive();
                         
+                    }else if(aux.equals(INPUT_SYNC_INIT)){
+                        
+                        remoteSynchronizing = false;
+                        
                     }else if(aux.equals(INPUT_LOAD_STATE_CONFIRM)){
                         
                         int i = JOptionPane.showConfirmDialog(null, remoteName 
@@ -348,6 +352,7 @@ public class Connection {
     public void synchronizeSend(){
         try{
             isSynchronizing = true;
+            remoteSynchronizing = true;
             localReady = true;
             ps = new PrintStream(cliente.getOutputStream());
             ps.println(INPUT_READY);
@@ -355,6 +360,7 @@ public class Connection {
             ps.println(INPUT_SYNC_INIT);
             ObjectOutputStream os = new ObjectOutputStream(cliente.getOutputStream());
             os.writeObject(model1);
+            while(!remoteSynchronizing);
             if(isEveryoneReady() && servidor!=null){
                 view.setEnabledCarregar(false);
                 fimDeTurno();
@@ -373,6 +379,8 @@ public class Connection {
             ObjectInputStream is = new ObjectInputStream(cliente.getInputStream());
             model2.changeInto((Game)is.readObject());
             isSynchronizing = false;
+            ps = new PrintStream(cliente.getOutputStream());
+            ps.println(INPUT_SYNC_END);
         }catch(IOException ex){
             ex.printStackTrace();
         } catch (ClassNotFoundException ex) {
