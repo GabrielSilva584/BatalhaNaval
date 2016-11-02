@@ -7,6 +7,8 @@ import game.GameControllerP2;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.io.PrintStream;
 import java.net.InetAddress;
 import java.net.ServerSocket;
@@ -14,6 +16,7 @@ import java.net.Socket;
 import java.net.UnknownHostException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.JOptionPane;
 
 /**
  *
@@ -37,6 +40,9 @@ public class Connection {
     static final String INPUT_READY = "f";
     static final String INPUT_SYNC_INIT = "g";
     static final String INPUT_SYNC_END = "h";
+    static final String INPUT_LOAD_STATE_CONFIRM = "i";
+    static final String INPUT_LOAD_YES = "j";
+    static final String INPUT_LOAD_NO= "k";
     
     static final String MSG_YOU = "Você ";
     static final String MSG_WIN = "ganhou!\n";
@@ -50,7 +56,7 @@ public class Connection {
     static final String MSG_REMOTE_CONNECTED = " conectou-se...\n";
     static final String MSG_YOU_CONNECTED = "Você se conectou ao servidor de ";
     
-    
+    private Game[] state;
     private Socket cliente;
     private ServerSocket servidor;
     private BufferedReader buffer;
@@ -61,6 +67,7 @@ public class Connection {
     private GameControllerP2 controller2 = null;
     private boolean localReady, remoteReady;
     private int ataques;
+    private FormPrincipal view;
     
     public Connection(ChatController remoteChat){
         cliente = null;
@@ -85,6 +92,10 @@ public class Connection {
     
     public void setController2(GameControllerP2 controller) {
         this.controller2 = controller;
+    }
+
+    public void setView(FormPrincipal view) {
+        this.view = view;
     }
     
     public void close(){
@@ -233,6 +244,8 @@ public class Connection {
                         remoteReady = true;
                         
                         if(isEveryoneReady() && servidor!=null){
+                            view.setEnabledCarregar(false);
+                            view.setEnabledSalvar(true);
                             fimDeTurno();
                             chat.insertString(MSG_YOUR_TURN, COLOR_RED);
                             controller2.seuTurno();
@@ -253,11 +266,49 @@ public class Connection {
                         
                         synchronizeReceive();
                         
+                    }else if(aux.equals(INPUT_LOAD_STATE_CONFIRM)){
+                        
+                        int i = JOptionPane.showConfirmDialog(null, remoteName 
+                                + " está carregando um estado anterior. Você Aceita?",
+                                "Carregar Estado", JOptionPane.YES_NO_OPTION );
+                        
+                        ps = new PrintStream(cliente.getOutputStream());
+                        if(i == 0){
+                            view.enableBoats(false);
+                            view.setEnabledCarregar(false);
+                            view.setEnabledIniciar(false);
+                            ps.println(INPUT_LOAD_YES);
+                            ObjectInputStream is = new ObjectInputStream(cliente.getInputStream());
+                            state = (Game[])is.readObject();
+                            model1.changeInto(state[1]);
+                            model2.changeInto(state[0]);
+                            chat.insertString("Estado carregado.\n", COLOR_RED);
+                        }else{
+                            ps.println(INPUT_LOAD_NO);
+                        }
+                    }else if(aux.equals(INPUT_LOAD_YES)){
+                        view.enableBoats(false);
+                        view.setEnabledCarregar(false);
+                        view.setEnabledIniciar(false);
+                        ObjectOutputStream os = new ObjectOutputStream(cliente.getOutputStream());
+                        os.writeObject(state);
+                        model1.changeInto(state[0]);
+                        model2.changeInto(state[1]);
+                        chat.insertString(remoteName + " aceitou o pedido. Estado carregado\n", COLOR_RED);
+                        fimDeTurno();
+                        controller2.seuTurno();
+                        chat.insertString(MSG_YOUR_TURN, COLOR_RED);
+                    }
+                    else if(aux.equals(INPUT_LOAD_NO)){
+                        chat.insertString(remoteName + " não aceitou o pedido.\n", COLOR_RED);
                     }
                 }
             }
         }
         catch(IOException ex){
+            
+        } catch (ClassNotFoundException ex) {
+            Logger.getLogger(Connection.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
     
@@ -275,6 +326,7 @@ public class Connection {
     public void atk(int x, int y, int atkRestantes){
         try{
             ataques--;
+            setEnabledSalvar();
             ps = new PrintStream(cliente.getOutputStream());
             ps.println(INPUT_ATK);
             ps.println(x);
@@ -299,18 +351,10 @@ public class Connection {
             ps.println(INPUT_READY);
             chat.insertString(MSG_YOU + MSG_READY, COLOR_RED);
             ps.println(INPUT_SYNC_INIT);
-            for(int i=0; i<10; i++){
-                for(int j=0; j<10; j++){
-                    Navios aux = model1.findNavio(i, j);
-                    if(aux!=null){
-                        ps.println(i);
-                        ps.println(j);
-                        ps.println(aux.getType());
-                    }
-                }
-            }
-            ps.println(INPUT_SYNC_END);
+            ObjectOutputStream os = new ObjectOutputStream(cliente.getOutputStream());
+            os.writeObject(model1);
             if(isEveryoneReady() && servidor!=null){
+                view.setEnabledCarregar(false);
                 fimDeTurno();
                 controller2.seuTurno();
                 chat.insertString(MSG_YOUR_TURN, COLOR_RED);
@@ -322,24 +366,21 @@ public class Connection {
     
     public void synchronizeReceive(){
         try{
-            String aux = buffer.readLine();
-            while(!aux.equals(INPUT_SYNC_END)){
-                int x = Integer.parseInt(aux);
-                int y = Integer.parseInt(buffer.readLine());
-                String type = buffer.readLine();
-
-                model2.addMarker(x, y, type);
-
-                aux = buffer.readLine();
-            }
+            ObjectInputStream is = new ObjectInputStream(cliente.getInputStream());
+            model2.changeInto((Game)is.readObject());
+            ps = new PrintStream(cliente.getOutputStream());
+            ps.println(INPUT_SYNC_END);
         }catch(IOException ex){
             ex.printStackTrace();
+        } catch (ClassNotFoundException ex) {
+            Logger.getLogger(Connection.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
     
     public void fimDeTurno(){
         try{
             ataques = 3;
+            setEnabledSalvar();
             ps = new PrintStream(cliente.getOutputStream());
             ps.println(INPUT_TURN);
         }catch(IOException ex){
@@ -348,7 +389,9 @@ public class Connection {
     }
     
     public boolean isEveryoneReady(){
-        return (localReady && remoteReady);
+        boolean ready = (localReady && remoteReady);
+        if(ready)view.setEnabledCarregar(false);
+        return ready;
     }
     
     public String getIP(){
@@ -357,6 +400,33 @@ public class Connection {
         } catch (UnknownHostException ex) {
             Logger.getLogger(Connection.class.getName()).log(Level.SEVERE, null, ex);
             return "Desconhecido";
+        }
+    }
+    
+    public Game[] getState(){
+        state = new Game[2];
+        state[0] = model1;
+        state[1] = model2;
+        
+        return state;
+    }
+    
+    public void setState(Game[] state){
+        try {
+            this.state = state;
+            ps = new PrintStream(cliente.getOutputStream());
+            ps.println(INPUT_LOAD_STATE_CONFIRM);
+            chat.insertString("Aguardando confirmação do jogador remoto para carregar o estado.\n", COLOR_RED);
+        } catch (IOException ex) {
+            Logger.getLogger(Connection.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+    
+    public void setEnabledSalvar(){
+        if(ataques == 3){
+            view.setEnabledSalvar(true);
+        }else{
+            view.setEnabledSalvar(false);
         }
     }
 }

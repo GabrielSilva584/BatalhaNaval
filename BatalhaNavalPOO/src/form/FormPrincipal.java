@@ -12,13 +12,19 @@ import game.GameControllerP2;
 import boats.Patrulha;
 import boats.PortaAvioes;
 import boats.Submarino;
+import game.Game;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.GridLayout;
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.imageio.ImageIO;
@@ -78,6 +84,7 @@ public class FormPrincipal extends javax.swing.JFrame{
         
         chat = new ChatController(jTPChat.getStyledDocument());
         connection = new Connection(chat);
+        connection.setView(this);
         
         atualizaIP();
     }
@@ -203,6 +210,18 @@ public class FormPrincipal extends javax.swing.JFrame{
         allowIniciar();
     }
     
+    public void setEnabledSalvar(boolean b){
+        jBSalvar.setEnabled(b);
+    }
+    
+    public void setEnabledCarregar(boolean b){
+        jBCarregar.setEnabled(b);
+    }
+    
+    public void setEnabledIniciar(boolean b){
+        jBCarregar.setEnabled(b);
+    }
+    
     public void allowIniciar(){
         if(!jBPatrulha.isEnabled()
                 && !jBSubmarino.isEnabled()
@@ -214,14 +233,14 @@ public class FormPrincipal extends javax.swing.JFrame{
         }
     }
     
-    public void enableBoats(){
-        jBIniciarJogo.setEnabled(false);
-        jBPatrulha.setEnabled(true);
-        jBSubmarino.setEnabled(true);
-        jBCruzador.setEnabled(true);
-        jBDestroyer.setEnabled(true);
-        jBPortaAvioes.setEnabled(true);
-        jBRotacionar.setEnabled(true);
+    public void enableBoats(boolean b){
+        jBIniciarJogo.setEnabled(!b);
+        jBPatrulha.setEnabled(b);
+        jBSubmarino.setEnabled(b);
+        jBCruzador.setEnabled(b);
+        jBDestroyer.setEnabled(b);
+        jBPortaAvioes.setEnabled(b);
+        jBRotacionar.setEnabled(b);
     }
 
     /**
@@ -266,6 +285,9 @@ public class FormPrincipal extends javax.swing.JFrame{
         jBSubmarino = new javax.swing.JButton();
         jBPatrulha = new javax.swing.JButton();
         jBIniciarJogo = new javax.swing.JButton();
+        jLPorta1 = new javax.swing.JLabel();
+        jBSalvar = new javax.swing.JButton();
+        jBCarregar = new javax.swing.JButton();
 
         javax.swing.GroupLayout jDesktopPane1Layout = new javax.swing.GroupLayout(jDesktopPane1);
         jDesktopPane1.setLayout(jDesktopPane1Layout);
@@ -516,6 +538,24 @@ public class FormPrincipal extends javax.swing.JFrame{
             }
         });
 
+        jLPorta1.setText("Mensagem:");
+
+        jBSalvar.setText("Salvar");
+        jBSalvar.setEnabled(false);
+        jBSalvar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jBSalvarActionPerformed(evt);
+            }
+        });
+
+        jBCarregar.setText("Carregar");
+        jBCarregar.setEnabled(false);
+        jBCarregar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jBCarregarActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -524,6 +564,8 @@ public class FormPrincipal extends javax.swing.JFrame{
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
+                        .addComponent(jLPorta1)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(jTFMensagem)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(jBEnviar)
@@ -533,53 +575,63 @@ public class FormPrincipal extends javax.swing.JFrame{
                         .addComponent(jBDesconectar))
                     .addComponent(jScrollPane1)
                     .addGroup(layout.createSequentialGroup()
-                        .addComponent(jLPorta)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jTFIP, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(jLNome)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jTFNome, javax.swing.GroupLayout.PREFERRED_SIZE, 174, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(jLLocalIP1)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jLLocalIP2, javax.swing.GroupLayout.PREFERRED_SIZE, 118, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 254, Short.MAX_VALUE)
-                        .addComponent(jBConectar, javax.swing.GroupLayout.PREFERRED_SIZE, 81, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jBIniciarServer))
-                    .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(layout.createSequentialGroup()
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                    .addComponent(jBPortaAvioes, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                    .addComponent(jBDestroyer, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                    .addComponent(jBCruzador, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                    .addComponent(jBSubmarino, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                    .addComponent(jBPatrulha, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(jLNomeDestroyer, javax.swing.GroupLayout.PREFERRED_SIZE, 69, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(jLNomePortaAvioes, javax.swing.GroupLayout.PREFERRED_SIZE, 69, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(jLNomeCruzador, javax.swing.GroupLayout.PREFERRED_SIZE, 69, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(jLNomeSubmarino, javax.swing.GroupLayout.PREFERRED_SIZE, 68, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(jLNomePatrulha, javax.swing.GroupLayout.PREFERRED_SIZE, 69, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                            .addGroup(layout.createSequentialGroup()
-                                .addComponent(jBRotacionar)
+                                    .addGroup(layout.createSequentialGroup()
+                                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                            .addComponent(jBPortaAvioes, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                            .addComponent(jBDestroyer, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                            .addComponent(jBCruzador, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                            .addComponent(jBSubmarino, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                            .addComponent(jBPatrulha, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                            .addComponent(jLNomeDestroyer, javax.swing.GroupLayout.PREFERRED_SIZE, 69, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                            .addComponent(jLNomePortaAvioes, javax.swing.GroupLayout.PREFERRED_SIZE, 69, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                            .addComponent(jLNomeCruzador, javax.swing.GroupLayout.PREFERRED_SIZE, 69, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                            .addComponent(jLNomeSubmarino, javax.swing.GroupLayout.PREFERRED_SIZE, 68, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                            .addComponent(jLNomePatrulha, javax.swing.GroupLayout.PREFERRED_SIZE, 69, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                                    .addGroup(layout.createSequentialGroup()
+                                        .addComponent(jBRotacionar)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                        .addComponent(jBIniciarJogo, javax.swing.GroupLayout.PREFERRED_SIZE, 111, javax.swing.GroupLayout.PREFERRED_SIZE)))
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(jBIniciarJogo, javax.swing.GroupLayout.PREFERRED_SIZE, 111, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jPLeft1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(jPTop1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(jPJogo1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addComponent(jPLeft1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                    .addComponent(jPTop1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                    .addComponent(jPJogo1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(jLPorta)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(jTFIP, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addComponent(jLNome)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(jTFNome, javax.swing.GroupLayout.PREFERRED_SIZE, 174, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addComponent(jLLocalIP1)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(jLLocalIP2, javax.swing.GroupLayout.PREFERRED_SIZE, 118, javax.swing.GroupLayout.PREFERRED_SIZE)))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(jPLeft2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(jPTop2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(jPJogo2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(layout.createSequentialGroup()
+                                .addGap(0, 0, Short.MAX_VALUE)
+                                .addComponent(jBSalvar)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(jBCarregar)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(jBConectar)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(jBIniciarServer))
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(jPLeft2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                    .addComponent(jPTop2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                    .addComponent(jPJogo2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                                .addGap(0, 0, Short.MAX_VALUE)))))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
@@ -633,7 +685,9 @@ public class FormPrincipal extends javax.swing.JFrame{
                     .addComponent(jLLocalIP1)
                     .addComponent(jLLocalIP2)
                     .addComponent(jBConectar)
-                    .addComponent(jBIniciarServer))
+                    .addComponent(jBIniciarServer)
+                    .addComponent(jBSalvar)
+                    .addComponent(jBCarregar))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 170, Short.MAX_VALUE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -641,7 +695,8 @@ public class FormPrincipal extends javax.swing.JFrame{
                     .addComponent(jTFMensagem, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jBEnviar)
                     .addComponent(jBDesconectar)
-                    .addComponent(jBAjuda))
+                    .addComponent(jBAjuda)
+                    .addComponent(jLPorta1))
                 .addContainerGap())
         );
 
@@ -651,7 +706,7 @@ public class FormPrincipal extends javax.swing.JFrame{
     private void jBDesconectarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jBDesconectarActionPerformed
         connection.close();
         isConnected = false;
-        enableBoats();
+        enableBoats(true);
         statusCheck();
     }//GEN-LAST:event_jBDesconectarActionPerformed
 
@@ -667,11 +722,13 @@ public class FormPrincipal extends javax.swing.JFrame{
                 allowIniciar();
                 statusCheck();
                 if(isConnected){
+                    setEnabledCarregar(true);
                     connection.listen();
                     connection.disconnect();
                 }
                 isConnected = false;
-                enableBoats();
+                setEnabledCarregar(false);
+                enableBoats(true);
                 statusCheck();
             }
         }).start();
@@ -709,12 +766,14 @@ public class FormPrincipal extends javax.swing.JFrame{
                 statusCheck();
                 allowIniciar();
                 if(isConnected){
+                    setEnabledCarregar(true);
                     connection.listen();
                     connection.disconnect();
                 }
                 isConnected = false;
+                setEnabledCarregar(false);
                 statusCheck();
-                enableBoats();
+                enableBoats(true);
             }
         }).start();
     }//GEN-LAST:event_jBConectarActionPerformed
@@ -760,9 +819,37 @@ public class FormPrincipal extends javax.swing.JFrame{
         jBRotacionar.setEnabled(false);
         connection.synchronizeSend();
     }//GEN-LAST:event_jBIniciarJogoActionPerformed
+
+    private void jBSalvarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jBSalvarActionPerformed
+        try {
+            ObjectOutputStream save = new ObjectOutputStream(new FileOutputStream("save.bns"));
+            save.writeObject(connection.getState());
+            chat.insertString("Jogo Salvo\n", 1);
+        } catch (FileNotFoundException ex) {
+            Logger.getLogger(FormPrincipal.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (IOException ex) {
+            Logger.getLogger(FormPrincipal.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
+    }//GEN-LAST:event_jBSalvarActionPerformed
+
+    private void jBCarregarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jBCarregarActionPerformed
+        try {
+            ObjectInputStream save = new ObjectInputStream(new FileInputStream("save.bns"));
+            Game[] state = (Game[]) save.readObject();
+            connection.setState(state);
+        } catch (FileNotFoundException ex) {
+            Logger.getLogger(FormPrincipal.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (IOException ex) {
+            Logger.getLogger(FormPrincipal.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (ClassNotFoundException ex) {
+            Logger.getLogger(FormPrincipal.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }//GEN-LAST:event_jBCarregarActionPerformed
      
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jBAjuda;
+    private javax.swing.JButton jBCarregar;
     private javax.swing.JButton jBConectar;
     private javax.swing.JButton jBCruzador;
     private javax.swing.JButton jBDesconectar;
@@ -773,6 +860,7 @@ public class FormPrincipal extends javax.swing.JFrame{
     private javax.swing.JButton jBPatrulha;
     private javax.swing.JButton jBPortaAvioes;
     private javax.swing.JButton jBRotacionar;
+    private javax.swing.JButton jBSalvar;
     private javax.swing.JButton jBSubmarino;
     private javax.swing.JDesktopPane jDesktopPane1;
     private javax.swing.JLabel jLLocalIP1;
@@ -784,6 +872,7 @@ public class FormPrincipal extends javax.swing.JFrame{
     private javax.swing.JLabel jLNomePortaAvioes;
     private javax.swing.JLabel jLNomeSubmarino;
     private javax.swing.JLabel jLPorta;
+    private javax.swing.JLabel jLPorta1;
     private javax.swing.JPanel jPJogo1;
     private javax.swing.JPanel jPJogo2;
     private javax.swing.JPanel jPLeft1;

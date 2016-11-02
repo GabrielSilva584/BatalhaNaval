@@ -48,6 +48,8 @@
               <EmptySpace max="-2" attributes="0"/>
               <Group type="103" groupAlignment="0" attributes="0">
                   <Group type="102" alignment="0" attributes="0">
+                      <Component id="jLPorta1" min="-2" max="-2" attributes="0"/>
+                      <EmptySpace max="-2" attributes="0"/>
                       <Component id="jTFMensagem" max="32767" attributes="0"/>
                       <EmptySpace max="-2" attributes="0"/>
                       <Component id="jBEnviar" min="-2" max="-2" attributes="0"/>
@@ -58,60 +60,75 @@
                   </Group>
                   <Component id="jScrollPane1" alignment="0" max="32767" attributes="0"/>
                   <Group type="102" alignment="0" attributes="0">
-                      <Component id="jLPorta" min="-2" max="-2" attributes="0"/>
-                      <EmptySpace max="-2" attributes="0"/>
-                      <Component id="jTFIP" min="-2" pref="120" max="-2" attributes="0"/>
-                      <EmptySpace type="unrelated" max="-2" attributes="0"/>
-                      <Component id="jLNome" min="-2" max="-2" attributes="0"/>
-                      <EmptySpace max="-2" attributes="0"/>
-                      <Component id="jTFNome" min="-2" pref="174" max="-2" attributes="0"/>
-                      <EmptySpace type="unrelated" max="-2" attributes="0"/>
-                      <Component id="jLLocalIP1" min="-2" max="-2" attributes="0"/>
-                      <EmptySpace max="-2" attributes="0"/>
-                      <Component id="jLLocalIP2" min="-2" pref="118" max="-2" attributes="0"/>
-                      <EmptySpace pref="254" max="32767" attributes="0"/>
-                      <Component id="jBConectar" min="-2" pref="81" max="-2" attributes="0"/>
-                      <EmptySpace max="-2" attributes="0"/>
-                      <Component id="jBIniciarServer" min="-2" max="-2" attributes="0"/>
-                  </Group>
-                  <Group type="102" attributes="0">
                       <Group type="103" groupAlignment="0" attributes="0">
-                          <Group type="102" attributes="0">
-                              <Group type="103" groupAlignment="0" max="-2" attributes="0">
-                                  <Component id="jBPortaAvioes" alignment="0" max="32767" attributes="0"/>
-                                  <Component id="jBDestroyer" alignment="0" max="32767" attributes="0"/>
-                                  <Component id="jBCruzador" alignment="0" max="32767" attributes="0"/>
-                                  <Component id="jBSubmarino" max="32767" attributes="0"/>
-                                  <Component id="jBPatrulha" alignment="0" max="32767" attributes="0"/>
-                              </Group>
-                              <EmptySpace type="unrelated" max="-2" attributes="0"/>
+                          <Group type="102" alignment="0" attributes="0">
                               <Group type="103" groupAlignment="0" attributes="0">
-                                  <Component id="jLNomeDestroyer" min="-2" pref="69" max="-2" attributes="0"/>
-                                  <Component id="jLNomePortaAvioes" min="-2" pref="69" max="-2" attributes="0"/>
-                                  <Component id="jLNomeCruzador" alignment="0" min="-2" pref="69" max="-2" attributes="0"/>
-                                  <Component id="jLNomeSubmarino" alignment="0" min="-2" pref="68" max="-2" attributes="0"/>
-                                  <Component id="jLNomePatrulha" min="-2" pref="69" max="-2" attributes="0"/>
+                                  <Group type="102" attributes="0">
+                                      <Group type="103" groupAlignment="0" max="-2" attributes="0">
+                                          <Component id="jBPortaAvioes" alignment="0" max="32767" attributes="0"/>
+                                          <Component id="jBDestroyer" alignment="0" max="32767" attributes="0"/>
+                                          <Component id="jBCruzador" alignment="0" max="32767" attributes="0"/>
+                                          <Component id="jBSubmarino" max="32767" attributes="0"/>
+                                          <Component id="jBPatrulha" alignment="0" max="32767" attributes="0"/>
+                                      </Group>
+                                      <EmptySpace type="unrelated" max="-2" attributes="0"/>
+                                      <Group type="103" groupAlignment="0" attributes="0">
+                                          <Component id="jLNomeDestroyer" min="-2" pref="69" max="-2" attributes="0"/>
+                                          <Component id="jLNomePortaAvioes" min="-2" pref="69" max="-2" attributes="0"/>
+                                          <Component id="jLNomeCruzador" alignment="0" min="-2" pref="69" max="-2" attributes="0"/>
+                                          <Component id="jLNomeSubmarino" alignment="0" min="-2" pref="68" max="-2" attributes="0"/>
+                                          <Component id="jLNomePatrulha" min="-2" pref="69" max="-2" attributes="0"/>
+                                      </Group>
+                                  </Group>
+                                  <Group type="102" attributes="0">
+                                      <Component id="jBRotacionar" min="-2" max="-2" attributes="0"/>
+                                      <EmptySpace max="-2" attributes="0"/>
+                                      <Component id="jBIniciarJogo" min="-2" pref="111" max="-2" attributes="0"/>
+                                  </Group>
+                              </Group>
+                              <EmptySpace max="-2" attributes="0"/>
+                              <Component id="jPLeft1" min="-2" max="-2" attributes="0"/>
+                              <EmptySpace max="-2" attributes="0"/>
+                              <Group type="103" groupAlignment="0" max="-2" attributes="0">
+                                  <Component id="jPTop1" max="32767" attributes="0"/>
+                                  <Component id="jPJogo1" min="-2" max="-2" attributes="0"/>
                               </Group>
                           </Group>
-                          <Group type="102" attributes="0">
-                              <Component id="jBRotacionar" min="-2" max="-2" attributes="0"/>
+                          <Group type="102" alignment="0" attributes="0">
+                              <Component id="jLPorta" min="-2" max="-2" attributes="0"/>
                               <EmptySpace max="-2" attributes="0"/>
-                              <Component id="jBIniciarJogo" min="-2" pref="111" max="-2" attributes="0"/>
+                              <Component id="jTFIP" min="-2" pref="120" max="-2" attributes="0"/>
+                              <EmptySpace type="unrelated" max="-2" attributes="0"/>
+                              <Component id="jLNome" min="-2" max="-2" attributes="0"/>
+                              <EmptySpace max="-2" attributes="0"/>
+                              <Component id="jTFNome" min="-2" pref="174" max="-2" attributes="0"/>
+                              <EmptySpace type="unrelated" max="-2" attributes="0"/>
+                              <Component id="jLLocalIP1" min="-2" max="-2" attributes="0"/>
+                              <EmptySpace max="-2" attributes="0"/>
+                              <Component id="jLLocalIP2" min="-2" pref="118" max="-2" attributes="0"/>
                           </Group>
-                      </Group>
-                      <EmptySpace max="-2" attributes="0"/>
-                      <Component id="jPLeft1" min="-2" max="-2" attributes="0"/>
-                      <EmptySpace max="-2" attributes="0"/>
-                      <Group type="103" groupAlignment="0" max="-2" attributes="0">
-                          <Component id="jPTop1" max="32767" attributes="0"/>
-                          <Component id="jPJogo1" min="-2" max="-2" attributes="0"/>
                       </Group>
                       <EmptySpace type="unrelated" max="-2" attributes="0"/>
-                      <Component id="jPLeft2" min="-2" max="-2" attributes="0"/>
-                      <EmptySpace max="-2" attributes="0"/>
-                      <Group type="103" groupAlignment="0" max="-2" attributes="0">
-                          <Component id="jPTop2" max="32767" attributes="0"/>
-                          <Component id="jPJogo2" max="32767" attributes="0"/>
+                      <Group type="103" groupAlignment="0" attributes="0">
+                          <Group type="102" alignment="0" attributes="0">
+                              <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
+                              <Component id="jBSalvar" min="-2" max="-2" attributes="0"/>
+                              <EmptySpace max="-2" attributes="0"/>
+                              <Component id="jBCarregar" min="-2" max="-2" attributes="0"/>
+                              <EmptySpace max="-2" attributes="0"/>
+                              <Component id="jBConectar" min="-2" max="-2" attributes="0"/>
+                              <EmptySpace max="-2" attributes="0"/>
+                              <Component id="jBIniciarServer" min="-2" max="-2" attributes="0"/>
+                          </Group>
+                          <Group type="102" attributes="0">
+                              <Component id="jPLeft2" min="-2" max="-2" attributes="0"/>
+                              <EmptySpace max="-2" attributes="0"/>
+                              <Group type="103" groupAlignment="0" max="-2" attributes="0">
+                                  <Component id="jPTop2" max="32767" attributes="0"/>
+                                  <Component id="jPJogo2" max="32767" attributes="0"/>
+                              </Group>
+                              <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
+                          </Group>
                       </Group>
                   </Group>
               </Group>
@@ -184,6 +201,8 @@
                   <Component id="jLLocalIP2" alignment="3" min="-2" max="-2" attributes="0"/>
                   <Component id="jBConectar" alignment="3" min="-2" max="-2" attributes="0"/>
                   <Component id="jBIniciarServer" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="jBSalvar" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="jBCarregar" alignment="3" min="-2" max="-2" attributes="0"/>
               </Group>
               <EmptySpace max="-2" attributes="0"/>
               <Component id="jScrollPane1" pref="170" max="32767" attributes="0"/>
@@ -193,6 +212,7 @@
                   <Component id="jBEnviar" alignment="3" min="-2" max="-2" attributes="0"/>
                   <Component id="jBDesconectar" alignment="3" min="-2" max="-2" attributes="0"/>
                   <Component id="jBAjuda" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="jLPorta1" alignment="3" min="-2" max="-2" attributes="0"/>
               </Group>
               <EmptySpace max="-2" attributes="0"/>
           </Group>
@@ -567,6 +587,29 @@
       </Properties>
       <Events>
         <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jBIniciarJogoActionPerformed"/>
+      </Events>
+    </Component>
+    <Component class="javax.swing.JLabel" name="jLPorta1">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="Mensagem:"/>
+      </Properties>
+    </Component>
+    <Component class="javax.swing.JButton" name="jBSalvar">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="Salvar"/>
+        <Property name="enabled" type="boolean" value="false"/>
+      </Properties>
+      <Events>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jBSalvarActionPerformed"/>
+      </Events>
+    </Component>
+    <Component class="javax.swing.JButton" name="jBCarregar">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="Carregar"/>
+        <Property name="enabled" type="boolean" value="false"/>
+      </Properties>
+      <Events>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jBCarregarActionPerformed"/>
       </Events>
     </Component>
   </SubComponents>

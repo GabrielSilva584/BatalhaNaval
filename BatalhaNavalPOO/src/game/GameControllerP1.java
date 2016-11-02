@@ -46,7 +46,7 @@ public class GameControllerP1 extends GameController{
             g.setColor(Color.black);
             
             if(n!=null){
-                n.drawToCoord(g,qx,qy);
+                ib.drawToCoord(g,qx,qy,n);
             }
         }
     }

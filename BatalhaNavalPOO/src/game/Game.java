@@ -10,6 +10,7 @@ import boats.Navios;
 import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.Point;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Observable;
 import java.util.Observer;
@@ -18,13 +19,24 @@ import java.util.Observer;
  *
  * @author Gabriel
  */
-public class Game implements Observer{
+public class Game implements Serializable{
     private Navios n1[][] = new Navios[10][10];
     private ArrayList<Point> atacados; 
     private Point mouseCoord;
+    private boolean visible = true;
     
     public Game(){
         init();
+    }
+    
+    public void changeInto(Game model){
+        this.atacados = model.getAtacados();
+        for(int i=0;i<10;i++){
+            for(int j=0;j<10;j++){
+                n1[i][j] = model.findNavio(i, j);
+            }
+        }
+        mouseCoord = new Point();
     }
     
     public void init(){
@@ -94,6 +106,18 @@ public class Game implements Observer{
     public void setMouseCoord(Point mouseCoord) {
         this.mouseCoord = mouseCoord;
     }
+
+    public ArrayList<Point> getAtacados() {
+        return atacados;
+    }
+
+    public boolean isVisible() {
+        return visible;
+    }
+
+    public void setVisible(boolean visible) {
+        this.visible = visible;
+    }
     
     public Navios findNavio(int x, int y) {
         return n1[x][y];
@@ -102,10 +126,10 @@ public class Game implements Observer{
     public void drawAttackedCoord(Graphics2D g){
         for(Point p : atacados){
             Color c;
-            if(n1[p.x][p.y]==null){
-                c = new Color(255,0,0,75);
-            }else{
+            if(n1[p.x][p.y]!=null){
                 c = new Color(0,255,0,75);
+            }else{
+                c = new Color(255,0,0,75);
             }
             drawRect(g, c, p);
         }
@@ -115,20 +139,6 @@ public class Game implements Observer{
         g.setColor(c);
         g.fillRect(30*p.x, 30*p.y, 30, 30);
         g.setColor(Color.black);
-    }
-    
-    public void draw(Graphics2D g){
-        for(int i=0;i<10;i++){
-            for(int j=0;j<10;j++){
-                if(n1[i][j]!=null)n1[i][j].draw(g);
-            }
-        }
-        drawAttackedCoord(g);
-    }
-
-    @Override
-    public void update(Observable o, Object arg) {
-        draw((Graphics2D) arg);
     }
     
     public boolean FimDeJogo(){

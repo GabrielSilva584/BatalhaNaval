@@ -5,24 +5,20 @@
  */
 package boats;
 
-import java.awt.Graphics2D;
 import java.awt.Point;
-import java.awt.image.BufferedImage;
+import java.io.Serializable;
 
 /**
  *
  * @author viber
  */
 
-public abstract class Navios {
+public abstract class Navios implements Serializable{
     protected int tam;
     protected String type;
     protected int ocupado[][] = null;
     protected boolean rotacao = false;
     protected int x, y;
-    protected final static String backgroundPath = "src/img/";
-    protected BufferedImage imageh;
-    protected BufferedImage imagev;
 
     public void initMatriz(){
         ocupado = new int[tam][2];
@@ -53,11 +49,15 @@ public abstract class Navios {
         return type;
     }
     
+    public boolean getRotacao(){
+        return rotacao;
+    }
+    
     public void rotacionar(){
         rotacao = !rotacao;
     }
     
-    void pos(int tam, int vertIni, int horIni, boolean rotacao){
+    public void pos(int vertIni, int horIni){
         for(int i=0;i<tam;i++){
             if(!rotacao){
                 ocupado[i][0] = vertIni;
@@ -79,30 +79,5 @@ public abstract class Navios {
             }
         }
         setQuadrante(ocupado[0][1],ocupado[0][0]);
-    }
-    
-    public void draw(Graphics2D g) {
-        BufferedImage aux = null;
-        
-        int squareWidth = g.getClip().getBounds().width / 10;
-        int squareHeight = g.getClip().getBounds().height / 10;
-        
-        int x0 = x * squareWidth;
-        int y0 = y * squareHeight;
-        if(!rotacao){
-            squareWidth*=tam;
-            aux = imageh;
-        }
-        else{
-            squareHeight*=tam;
-            aux = imagev;
-        }
-        
-        g.drawImage(aux, x0, y0, null);
-    }
-    
-    public void drawToCoord(Graphics2D g, int x, int y) {
-        pos(tam,y,x,rotacao);
-        draw(g);
     }
 }

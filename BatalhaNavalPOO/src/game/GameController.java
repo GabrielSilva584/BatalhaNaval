@@ -21,9 +21,17 @@ import java.util.logging.Logger;
  */
 public abstract class GameController implements MouseListener, MouseMotionListener, ActionListener{
     
-    protected boolean mouseInside = false;
+    private static final int FRAMES_PER_SECOND = 30;
+    private static final int SKIP_TICKS = 1000 / FRAMES_PER_SECOND;
+    
+    boolean gameIsRunning = true, mouseInside = false;
     protected FormPrincipal view;
     protected Game model;
+    protected ImageBuffer ib;
+
+    public void setIb(ImageBuffer ib) {
+        this.ib = ib;
+    }
     
     public void addView(FormPrincipal view){
         this.view = view;
@@ -33,48 +41,48 @@ public abstract class GameController implements MouseListener, MouseMotionListen
         this.model = model;
     }
     
+    public void loadModel(Game model){
+        this.model.changeInto(model);
+    }
+    
+    public void gameStart(){
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                
+                long time = System.currentTimeMillis();
+                long sleepTime = 0;
+                
+                while(gameIsRunning){
+                    view.repaint();
+                    
+                    time += SKIP_TICKS;
+                    sleepTime = time - System.currentTimeMillis();
+                    try {
+                        if(sleepTime > 0)Thread.sleep(sleepTime);
+                    } catch (InterruptedException ex) {
+                        Logger.getLogger(GameController.class.getName()).log(Level.SEVERE, null, ex);
+                    }
+                }
+            }
+        }).start();
+    }
+    
     public abstract void drawMouseQuadrante(Graphics2D g);
 
     @Override
     public void mouseEntered(MouseEvent e) {
         mouseInside = true;
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                while(mouseInside){
-                    view.repaint();
-                    try {
-                        Thread.sleep(17);
-                    } catch (InterruptedException ex) {
-                        Logger.getLogger(GameController.class.getName()).log(Level.SEVERE, null, ex);
-                    }
-                }
-            }
-        }).start();
     }
 
     @Override
     public void mouseExited(MouseEvent e) {
         mouseInside = false;
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                while(!mouseInside){
-                    view.repaint();
-                    try {
-                        Thread.sleep(17);
-                    } catch (InterruptedException ex) {
-                        Logger.getLogger(GameController.class.getName()).log(Level.SEVERE, null, ex);
-                    }
-                }
-            }
-        }).start();
     }
 
     @Override
     public void mouseMoved(MouseEvent e) {
         model.getMouseCoord().setLocation(e.getX(), e.getY());
-        view.repaint();
     }
 
     @Override

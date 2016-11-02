@@ -2,6 +2,14 @@
 <project-private xmlns="http://www.netbeans.org/ns/project-private/1">
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
-        <group/>
+        <group>
+            <file>file:/E:/Git/BatalhaNaval/BatalhaNavalPOO/src/net/Connection.java</file>
+            <file>file:/E:/Git/BatalhaNaval/BatalhaNavalPOO/src/board/Tabuleiro.java</file>
+            <file>file:/E:/Git/BatalhaNaval/BatalhaNavalPOO/src/form/FormPrincipal.java</file>
+            <file>file:/E:/Git/BatalhaNaval/BatalhaNavalPOO/src/game/Main.java</file>
+            <file>file:/E:/Git/BatalhaNaval/BatalhaNavalPOO/src/game/ImageBuffer.java</file>
+            <file>file:/E:/Git/BatalhaNaval/BatalhaNavalPOO/src/game/Game.java</file>
+            <file>file:/E:/Git/BatalhaNaval/BatalhaNavalPOO/src/game/GameController.java</file>
+        </group>
     </open-files>
 </project-private>
