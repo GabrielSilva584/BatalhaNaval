@@ -127,7 +127,7 @@ public class ImageBuffer implements Observer{
         
         if(n.getType().equals("PortaAvioes")){
             if(n.getRotacao()){
-                return patV;
+                return porV;
             }
             return porH;
         }
