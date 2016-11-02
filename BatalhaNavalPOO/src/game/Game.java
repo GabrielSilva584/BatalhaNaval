@@ -61,8 +61,8 @@ public class Game implements Serializable{
         }
     }
     
-    public void addMarker(int x, int y, String type){
-        Auxiliar n = new Auxiliar(x, y, type);
+    public void addMarker(int x, int y, String type, boolean rotacao){
+        Auxiliar n = new Auxiliar(x, y, type, rotacao);
         for(int i=0;i<n.getTam();i++){
             Point p = n.getCoord(i);
             n1[p.x][p.y]=n;

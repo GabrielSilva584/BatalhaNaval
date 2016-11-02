@@ -4,6 +4,7 @@ import boats.Navios;
 import form.FormPrincipal;
 import game.Game;
 import game.GameControllerP2;
+import java.awt.Point;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -65,7 +66,7 @@ public class Connection {
     private String name, IP, remoteName;
     private Game model1 = null, model2 = null;
     private GameControllerP2 controller2 = null;
-    private boolean localReady, remoteReady, isSynchronizing = false, remoteSynchronizing = false;
+    private boolean localReady, remoteReady;
     private int ataques;
     private FormPrincipal view;
     
@@ -196,7 +197,7 @@ public class Connection {
             
             while(cliente!=null){
                 aux = null;
-                if(!isSynchronizing)aux = buffer.readLine();
+                aux = buffer.readLine();
                 if(aux!=null){
                     if(aux.equals(INPUT_MSG)){
                         
@@ -267,9 +268,8 @@ public class Connection {
                         
                         synchronizeReceive();
                         
-                    }else if(aux.equals(INPUT_SYNC_INIT)){
+                    }else if(aux.equals(INPUT_SYNC_END)){
                         
-                        remoteSynchronizing = false;
                         
                     }else if(aux.equals(INPUT_LOAD_STATE_CONFIRM)){
                         
@@ -349,10 +349,8 @@ public class Connection {
         }
     }
     
-    public void synchronizeSend(){
+    /*public void synchronizeSend(){
         try{
-            isSynchronizing = true;
-            remoteSynchronizing = true;
             localReady = true;
             ps = new PrintStream(cliente.getOutputStream());
             ps.println(INPUT_READY);
@@ -360,31 +358,113 @@ public class Connection {
             ps.println(INPUT_SYNC_INIT);
             ObjectOutputStream os = new ObjectOutputStream(cliente.getOutputStream());
             os.writeObject(model1);
-            while(!remoteSynchronizing);
+            while(!buffer.readLine().equals(INPUT_SYNC_END));
             if(isEveryoneReady() && servidor!=null){
                 view.setEnabledCarregar(false);
                 fimDeTurno();
                 controller2.seuTurno();
                 chat.insertString(MSG_YOUR_TURN, COLOR_RED);
             }
-            isSynchronizing = false;
+        }catch(IOException ex){
+            ex.printStackTrace();
+        }
+    }*/
+    
+    public void synchronizeSend(){
+        try{
+            localReady = true;
+            
+            boolean sentPatrulha = false;
+            boolean sentSubmarino = false;
+            boolean sentCruzador = false;
+            boolean sentDestroyer = false;
+            boolean sentPortaAvioes = false;
+            
+            ps = new PrintStream(cliente.getOutputStream());
+            ps.println(INPUT_READY);
+            chat.insertString(MSG_YOU + MSG_READY, COLOR_RED);
+            ps.println(INPUT_SYNC_INIT);
+            for(int i=0; i<10; i++){
+                for(int j=0; j<10; j++){
+                    Navios aux = model1.findNavio(i, j);
+                    if(aux!=null){
+                        String type = aux.getType();
+                        if(type.equals("Patrulha")){
+                            if(!sentPatrulha){
+                                sentPatrulha = true;
+                                sendBoat(aux);
+                            }
+                        }else if(type.equals("Submarino")){
+                            if(!sentSubmarino){
+                                sentSubmarino = true;
+                                sendBoat(aux);
+                            }
+                        }else if(type.equals("Cruzador")){
+                            if(!sentCruzador){
+                                sentCruzador = true;
+                                sendBoat(aux);
+                            }
+                        }else if(type.equals("Destroyer")){
+                            if(!sentDestroyer){
+                                sentDestroyer = true;
+                                sendBoat(aux);
+                            }
+                        }else if(type.equals("PortaAvioes")){
+                            if(!sentPortaAvioes){
+                                sentPortaAvioes = true;
+                                sendBoat(aux);
+                            }
+                        }
+                    }
+                }
+            }
+            ps.println(INPUT_SYNC_END);
+            if(isEveryoneReady() && servidor!=null){
+                fimDeTurno();
+                controller2.seuTurno();
+                chat.insertString(MSG_YOUR_TURN, COLOR_RED);
+            }
         }catch(IOException ex){
             ex.printStackTrace();
         }
     }
     
-    public void synchronizeReceive(){
+    public void sendBoat(Navios aux){
+        Point p = aux.getCoord(0);
+        ps.println(p.x);
+        ps.println(p.y);
+        ps.println(aux.getType());
+        ps.println(aux.getRotacao());
+    }
+    
+    /*public void synchronizeReceive(){
         try{
-            isSynchronizing = true;
             ObjectInputStream is = new ObjectInputStream(cliente.getInputStream());
             model2.changeInto((Game)is.readObject());
-            isSynchronizing = false;
             ps = new PrintStream(cliente.getOutputStream());
             ps.println(INPUT_SYNC_END);
         }catch(IOException ex){
             ex.printStackTrace();
         } catch (ClassNotFoundException ex) {
             Logger.getLogger(Connection.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }*/
+    
+    public void synchronizeReceive(){
+        try{
+            String aux = buffer.readLine();
+            while(!aux.equals(INPUT_SYNC_END)){
+                int x = Integer.parseInt(aux);
+                int y = Integer.parseInt(buffer.readLine());
+                String type = buffer.readLine();
+                boolean rotacao = Boolean.parseBoolean(buffer.readLine());
+
+                model2.addMarker(x, y, type, rotacao);
+
+                aux = buffer.readLine();
+            }
+        }catch(IOException ex){
+            ex.printStackTrace();
         }
     }
     

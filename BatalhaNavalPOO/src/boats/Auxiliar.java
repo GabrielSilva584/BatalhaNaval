@@ -12,13 +12,22 @@ package boats;
 public class Auxiliar extends Navios{
     //Embarcação auxiliar para anotar as informações recebidas do player remoto
     
-    public Auxiliar(int x, int y, String type){
-        tam = 1;
+    public Auxiliar(int x, int y, String type, boolean rotacao){
+        if(type.equals("Patrulha"))tam = 2;
+        if(type.equals("Submarino"))tam = 3;
+        if(type.equals("Cruzador"))tam = 4;
+        if(type.equals("Destroyer"))tam = 4;
+        if(type.equals("PortaAvioes"))tam = 5;
+        
         this.type = type;
+        this.rotacao = rotacao;
         initMatriz();
         
-        ocupado[0][1]=x;
-        ocupado[0][0]=y;
-        
+        for(int i=0; i<tam; i++){
+            ocupado[i][1]=x;
+            ocupado[i][0]=y;
+            if(!rotacao)x++;
+            else y++;
+        }
     }
 }
