@@ -713,6 +713,7 @@ public class FormPrincipal extends javax.swing.JFrame{
     private void jBIniciarServerActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jBIniciarServerActionPerformed
         jBConectar.setEnabled(false);
         jBIniciarServer.setEnabled(false);
+        jBSalvar.setEnabled(false);
         chat.insertString("Aguardando Conexão...\n", 1);
         isConnecting();
         new Thread(new Runnable() {
@@ -838,6 +839,7 @@ public class FormPrincipal extends javax.swing.JFrame{
             ObjectInputStream save = new ObjectInputStream(new FileInputStream("save.bns"));
             Game[] state = (Game[]) save.readObject();
             connection.setState(state);
+            jBIniciarJogo.setEnabled(false);
         } catch (FileNotFoundException ex) {
             Logger.getLogger(FormPrincipal.class.getName()).log(Level.SEVERE, null, ex);
         } catch (IOException ex) {
