@@ -219,7 +219,7 @@ public class FormPrincipal extends javax.swing.JFrame{
     }
     
     public void setEnabledIniciar(boolean b){
-        jBCarregar.setEnabled(b);
+        jBIniciarJogo.setEnabled(b);
     }
     
     public void allowIniciar(){
