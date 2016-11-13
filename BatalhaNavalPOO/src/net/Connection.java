@@ -94,6 +94,12 @@ public class Connection {
         time2 = new Time(0);
         time.reset();
         turn = 0;
+        ataques = 0;
+        
+        setThread();
+    }
+    
+    public void setThread(){
         timeCounter = new Thread(new Runnable() {
             @Override
             public void run() {
@@ -111,8 +117,6 @@ public class Connection {
                 }
             }
         });
-        
-        ataques = 0;
     }
     
     public void setModel1(Game model) {
@@ -154,16 +158,16 @@ public class Connection {
     }
     
     public void connectionEnded(){
-        try {
-            if(cliente != null)cliente.close();
-            if(servidor != null)servidor.close();
+            try {
+                if(cliente != null)cliente.close();
+                if(servidor != null)servidor.close();
+            } catch (IOException ex) {
+                Logger.getLogger(Connection.class.getName()).log(Level.SEVERE, null, ex);
+            }
             reset();
             model1.init();
             model2.init();
-        } catch (IOException ex) {
-            JOptionPane.showMessageDialog(null, "Um erro inexperado ocorreu!");
-            Logger.getLogger(Connection.class.getName()).log(Level.SEVERE, null, ex);
-        }
+            setThread();
     }
     
     public void reset(){
@@ -360,7 +364,7 @@ public class Connection {
                 }
             }
         }catch(IOException ex){
-            JOptionPane.showMessageDialog(null, "Um erro inexperado ocorreu!");
+            
         }catch (ClassNotFoundException ex) {
             JOptionPane.showMessageDialog(null, "Um erro inexperado ocorreu!");
             Logger.getLogger(Connection.class.getName()).log(Level.SEVERE, null, ex);

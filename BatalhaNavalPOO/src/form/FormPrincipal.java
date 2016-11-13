@@ -772,11 +772,11 @@ public class FormPrincipal extends javax.swing.JFrame{
                 isConnected = connection.host(jTFNome.getText(),jTFIP.getText());
                 allowIniciar();
                 statusCheck();
-                if(isConnected){
-                    setEnabledCarregar(true);
-                    connection.listen();
-                    connection.disconnect();
-                }
+                //if(isConnected){
+                setEnabledCarregar(true);
+                connection.listen();
+                connection.disconnect();
+                //}
                 isConnected = false;
                 setEnabledCarregar(false);
                 enableBoats(true);
