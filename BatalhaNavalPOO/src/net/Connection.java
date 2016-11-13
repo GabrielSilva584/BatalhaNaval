@@ -2,10 +2,14 @@ package net;
 
 import boats.Navios;
 import form.FormPrincipal;
+import game.CoordAttackedException;
 import game.Game;
 import game.GameControllerP2;
+import game.Time;
 import java.awt.Point;
 import java.io.BufferedReader;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.ObjectInputStream;
@@ -56,6 +60,7 @@ public class Connection {
     static final String MSG_EXITED = " saiu...\n";
     static final String MSG_REMOTE_CONNECTED = " conectou-se...\n";
     static final String MSG_YOU_CONNECTED = "Você se conectou ao servidor de ";
+    static final String MSG_ATK_EXCEPTION = "Coordenada já atacada!\n";
     
     private Game[] state;
     private Socket cliente;
@@ -66,20 +71,47 @@ public class Connection {
     private String name, IP, remoteName;
     private Game model1 = null, model2 = null;
     private GameControllerP2 controller2 = null;
-    private boolean localReady, remoteReady;
-    private int ataques;
+    private boolean localReady, remoteReady, isConnected;
+    private int ataques, turn;
+    private Time time, time1, time2;
+    private Thread timeCounter;
     private FormPrincipal view;
     
-    public Connection(ChatController remoteChat){
+    public Connection(ChatController remoteChat, FormPrincipal form){
         cliente = null;
         servidor = null;
         buffer = null;
         chat = remoteChat;
+        view = form;
         name = null;
         IP = null;
         remoteName = null;
         localReady = false;
         remoteReady = false;
+        isConnected = false;
+        time = new Time(0);
+        time1 = new Time(0);
+        time2 = new Time(0);
+        time.reset();
+        turn = 0;
+        timeCounter = new Thread(new Runnable() {
+            @Override
+            public void run() {
+                while(isConnected){
+                    try {
+                        Thread.sleep(1000);
+                    } catch (InterruptedException ex) {
+                        JOptionPane.showMessageDialog(null, "Um erro inexperado ocorreu!");
+                    }
+                    time.addSec();
+                    if(turn == 1)time1.addSec();
+                    if(turn == 2) time2.addSec();
+                    view.updateTime(time.getTimeString(), 
+                            time1.getTimeString(), time2.getTimeString());
+                }
+            }
+        });
+        
         ataques = 0;
     }
     
@@ -114,6 +146,11 @@ public class Connection {
     public void disconnect(){
         if(remoteName!=null)chat.insertString(remoteName + MSG_EXITED, COLOR_RED);
         connectionEnded();
+        time.reset();
+        time1.reset();
+        time2.reset();
+        view.updateTime(time.getTimeString(), 
+                            time1.getTimeString(), time2.getTimeString());
     }
     
     public void connectionEnded(){
@@ -137,6 +174,8 @@ public class Connection {
         remoteName = null;
         localReady = false;
         remoteReady = false;
+        isConnected = false;
+        turn = 0;
     }
     
     public boolean host(String n, String i){
@@ -158,6 +197,8 @@ public class Connection {
             chat.insertString(remoteName
                     +" ("+cliente.getInetAddress().getHostAddress()+")"
                     + MSG_REMOTE_CONNECTED, COLOR_RED);
+            isConnected = true;
+            timeCounter.start();
             
             return true;
         } catch (IOException ex) {
@@ -182,6 +223,8 @@ public class Connection {
             buffer = new BufferedReader(new InputStreamReader(cliente.getInputStream()));
             remoteName = buffer.readLine();
             chat.insertString(MSG_YOU_CONNECTED +remoteName + "!\n", COLOR_RED);
+            isConnected = true;
+            timeCounter.start();
             return true;
         } catch (IOException ex) {
             chat.insertString(MSG_CONN_ERROR, COLOR_RED);
@@ -213,7 +256,11 @@ public class Connection {
                         int x = Integer.parseInt(buffer.readLine());
                         int y = Integer.parseInt(buffer.readLine());
                         
-                        model1.recebeAtaque(x, y);
+                        try {
+                            model1.recebeAtaque(x, y);
+                        } catch (CoordAttackedException ex) {
+                            exceptionMessage();
+                        }
 
                         boolean acertou = false;
                         String type = "";
@@ -254,7 +301,8 @@ public class Connection {
                         }
                         
                     }else if(aux.equals(INPUT_TURN)){
-                        
+                        time2.reset();
+                        turn = 2;
                         ataques = 3;
                         chat.insertString(MSG_REMOTE_TURN1 + remoteName 
                                 + MSG_REMOTE_TURN2, COLOR_RED);
@@ -349,27 +397,6 @@ public class Connection {
         }
     }
     
-    /*public void synchronizeSend(){
-        try{
-            localReady = true;
-            ps = new PrintStream(cliente.getOutputStream());
-            ps.println(INPUT_READY);
-            chat.insertString(MSG_YOU + MSG_READY, COLOR_RED);
-            ps.println(INPUT_SYNC_INIT);
-            ObjectOutputStream os = new ObjectOutputStream(cliente.getOutputStream());
-            os.writeObject(model1);
-            while(!buffer.readLine().equals(INPUT_SYNC_END));
-            if(isEveryoneReady() && servidor!=null){
-                view.setEnabledCarregar(false);
-                fimDeTurno();
-                controller2.seuTurno();
-                chat.insertString(MSG_YOUR_TURN, COLOR_RED);
-            }
-        }catch(IOException ex){
-            ex.printStackTrace();
-        }
-    }*/
-    
     public void synchronizeSend(){
         try{
             localReady = true;
@@ -437,19 +464,6 @@ public class Connection {
         ps.println(aux.getRotacao());
     }
     
-    /*public void synchronizeReceive(){
-        try{
-            ObjectInputStream is = new ObjectInputStream(cliente.getInputStream());
-            model2.changeInto((Game)is.readObject());
-            ps = new PrintStream(cliente.getOutputStream());
-            ps.println(INPUT_SYNC_END);
-        }catch(IOException ex){
-            ex.printStackTrace();
-        } catch (ClassNotFoundException ex) {
-            Logger.getLogger(Connection.class.getName()).log(Level.SEVERE, null, ex);
-        }
-    }*/
-    
     public void synchronizeReceive(){
         try{
             String aux = buffer.readLine();
@@ -477,6 +491,17 @@ public class Connection {
         }catch(IOException ex){
             ex.printStackTrace();
         }
+        try {
+            ObjectOutputStream save = new ObjectOutputStream(new FileOutputStream("automatic.bns"));
+            save.writeObject(getState());
+            chat.insertString("Jogo Automático Salvo\n", 1);
+        } catch (FileNotFoundException ex) {
+            JOptionPane.showMessageDialog(null, "Arquivo não encontrado!");
+        } catch (IOException ex) {
+            JOptionPane.showMessageDialog(null, "Um erro inexperado ocorreu!");
+        }
+        time1.reset();
+        turn = 1;
     }
     
     public boolean isEveryoneReady(){
@@ -519,5 +544,9 @@ public class Connection {
         }else{
             view.setEnabledSalvar(false);
         }
+    }
+
+    public void exceptionMessage() {
+        chat.insertString(MSG_ATK_EXCEPTION, COLOR_RED);
     }
 }

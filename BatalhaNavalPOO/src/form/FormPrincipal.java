@@ -13,6 +13,7 @@ import boats.Patrulha;
 import boats.PortaAvioes;
 import boats.Submarino;
 import game.Game;
+import game.Time;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
@@ -28,6 +29,7 @@ import java.io.ObjectOutputStream;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.imageio.ImageIO;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
@@ -48,6 +50,7 @@ public class FormPrincipal extends javax.swing.JFrame{
     private GameControllerP1 controller1 = null;
     private GameControllerP2 controller2 = null;
     private Connection connection = null;
+    private Time time = null;
     boolean isConnected = false;
     
     public FormPrincipal(Tabuleiro boardP1, Tabuleiro boardP2) throws IOException {
@@ -57,13 +60,13 @@ public class FormPrincipal extends javax.swing.JFrame{
         try {
             UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
         } catch (ClassNotFoundException ex) {
-            Logger.getLogger(FormPrincipal.class.getName()).log(Level.SEVERE, null, ex);
+            JOptionPane.showMessageDialog(null, "Um erro inexperado ocorreu!");
         } catch (InstantiationException ex) {
-            Logger.getLogger(FormPrincipal.class.getName()).log(Level.SEVERE, null, ex);
+            JOptionPane.showMessageDialog(null, "Um erro inexperado ocorreu!");
         } catch (IllegalAccessException ex) {
-            Logger.getLogger(FormPrincipal.class.getName()).log(Level.SEVERE, null, ex);
+            JOptionPane.showMessageDialog(null, "Um erro inexperado ocorreu!");
         } catch (UnsupportedLookAndFeelException ex) {
-            Logger.getLogger(FormPrincipal.class.getName()).log(Level.SEVERE, null, ex);
+            JOptionPane.showMessageDialog(null, "Um erro inexperado ocorreu!");
         }
         
         initComponents();
@@ -83,10 +86,17 @@ public class FormPrincipal extends javax.swing.JFrame{
         caret.setUpdatePolicy(DefaultCaret.ALWAYS_UPDATE);
         
         chat = new ChatController(jTPChat.getStyledDocument());
-        connection = new Connection(chat);
-        connection.setView(this);
+        connection = new Connection(chat, this);
+        
+        time = new Time(0);
         
         atualizaIP();
+    }
+    
+    public void updateTime(String time, String time1, String time2){
+        jLTime.setText(time);
+        jLTime1.setText(time1);
+        jLTime2.setText(time2);
     }
     
     public Connection getConnection(){
@@ -234,6 +244,7 @@ public class FormPrincipal extends javax.swing.JFrame{
     }
     
     public void enableBoats(boolean b){
+        if(!b)controller1.setN(null);
         jBIniciarJogo.setEnabled(!b);
         jBPatrulha.setEnabled(b);
         jBSubmarino.setEnabled(b);
@@ -288,6 +299,12 @@ public class FormPrincipal extends javax.swing.JFrame{
         jLPorta1 = new javax.swing.JLabel();
         jBSalvar = new javax.swing.JButton();
         jBCarregar = new javax.swing.JButton();
+        jLabel1 = new javax.swing.JLabel();
+        jLTime = new javax.swing.JLabel();
+        jLabel2 = new javax.swing.JLabel();
+        jLTime1 = new javax.swing.JLabel();
+        jLabel5 = new javax.swing.JLabel();
+        jLTime2 = new javax.swing.JLabel();
 
         javax.swing.GroupLayout jDesktopPane1Layout = new javax.swing.GroupLayout(jDesktopPane1);
         jDesktopPane1.setLayout(jDesktopPane1Layout);
@@ -556,6 +573,21 @@ public class FormPrincipal extends javax.swing.JFrame{
             }
         });
 
+        jLabel1.setText("Tempo de Jogo:");
+
+        jLTime.setForeground(new java.awt.Color(255, 0, 0));
+        jLTime.setText("   ");
+
+        jLabel2.setText("Tempo de Turno (Jogador Local):");
+
+        jLTime1.setForeground(new java.awt.Color(255, 0, 0));
+        jLTime1.setText("   ");
+
+        jLabel5.setText("Tempo de Turno (Jogador Remoto):");
+
+        jLTime2.setForeground(new java.awt.Color(255, 0, 0));
+        jLTime2.setText("   ");
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -563,16 +595,6 @@ public class FormPrincipal extends javax.swing.JFrame{
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(jLPorta1)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jTFMensagem)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jBEnviar)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jBAjuda)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jBDesconectar))
                     .addComponent(jScrollPane1)
                     .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -618,10 +640,6 @@ public class FormPrincipal extends javax.swing.JFrame{
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(layout.createSequentialGroup()
                                 .addGap(0, 0, Short.MAX_VALUE)
-                                .addComponent(jBSalvar)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(jBCarregar)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addComponent(jBConectar)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addComponent(jBIniciarServer))
@@ -631,7 +649,33 @@ public class FormPrincipal extends javax.swing.JFrame{
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                                     .addComponent(jPTop2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                     .addComponent(jPJogo2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                                .addGap(0, 0, Short.MAX_VALUE)))))
+                                .addGap(0, 0, Short.MAX_VALUE))))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addComponent(jLPorta1)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jTFMensagem)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jBEnviar)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jBDesconectar))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addComponent(jLabel1)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jLTime)
+                        .addGap(18, 18, 18)
+                        .addComponent(jLabel2)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jLTime1)
+                        .addGap(18, 18, 18)
+                        .addComponent(jLabel5)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jLTime2)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(jBAjuda)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jBSalvar)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jBCarregar)))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
@@ -685,19 +729,27 @@ public class FormPrincipal extends javax.swing.JFrame{
                     .addComponent(jLLocalIP1)
                     .addComponent(jLLocalIP2)
                     .addComponent(jBConectar)
-                    .addComponent(jBIniciarServer)
-                    .addComponent(jBSalvar)
-                    .addComponent(jBCarregar))
+                    .addComponent(jBIniciarServer))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 170, Short.MAX_VALUE)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 175, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jTFMensagem, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jBEnviar)
                     .addComponent(jBDesconectar)
-                    .addComponent(jBAjuda)
                     .addComponent(jLPorta1))
-                .addContainerGap())
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel1)
+                    .addComponent(jLTime)
+                    .addComponent(jLabel2)
+                    .addComponent(jLTime1)
+                    .addComponent(jLabel5)
+                    .addComponent(jLTime2)
+                    .addComponent(jBSalvar)
+                    .addComponent(jBCarregar)
+                    .addComponent(jBAjuda))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         pack();
@@ -730,6 +782,8 @@ public class FormPrincipal extends javax.swing.JFrame{
                 isConnected = false;
                 setEnabledCarregar(false);
                 enableBoats(true);
+                setEnabledSalvar(false);
+                setEnabledCarregar(false);
                 statusCheck();
             }
         }).start();
@@ -775,6 +829,8 @@ public class FormPrincipal extends javax.swing.JFrame{
                 setEnabledCarregar(false);
                 statusCheck();
                 enableBoats(true);
+                setEnabledSalvar(false);
+                setEnabledCarregar(false);
             }
         }).start();
     }//GEN-LAST:event_jBConectarActionPerformed
@@ -827,25 +883,38 @@ public class FormPrincipal extends javax.swing.JFrame{
             save.writeObject(connection.getState());
             chat.insertString("Jogo Salvo\n", 1);
         } catch (FileNotFoundException ex) {
-            Logger.getLogger(FormPrincipal.class.getName()).log(Level.SEVERE, null, ex);
+            JOptionPane.showMessageDialog(null, "Arquivo não encontrado!");
         } catch (IOException ex) {
-            Logger.getLogger(FormPrincipal.class.getName()).log(Level.SEVERE, null, ex);
+            JOptionPane.showMessageDialog(null, "Um erro inexperado ocorreu!");
         }
-        
     }//GEN-LAST:event_jBSalvarActionPerformed
 
     private void jBCarregarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jBCarregarActionPerformed
         try {
-            ObjectInputStream save = new ObjectInputStream(new FileInputStream("save.bns"));
+            Object[] options = {"Manual",
+                                "Automático"};
+            int n = JOptionPane.showOptionDialog(null,
+                "Qual estado salvo deseja carregar?\n"
+                        + "Obs: O salvamento Automático é realizado "
+                        + "no início de cada turno local.",
+                "Carregar jogo salvo",
+                JOptionPane.YES_NO_OPTION,
+                JOptionPane.QUESTION_MESSAGE,
+                null,
+                options,
+                null);
+            ObjectInputStream save = null;
+            if(n==JOptionPane.YES_OPTION)save = new ObjectInputStream(new FileInputStream("save.bns"));
+            else save = new ObjectInputStream(new FileInputStream("automatic.bns"));
             Game[] state = (Game[]) save.readObject();
             connection.setState(state);
             jBIniciarJogo.setEnabled(false);
         } catch (FileNotFoundException ex) {
-            Logger.getLogger(FormPrincipal.class.getName()).log(Level.SEVERE, null, ex);
+            JOptionPane.showMessageDialog(null, "Arquivo não encontrado!");
         } catch (IOException ex) {
-            Logger.getLogger(FormPrincipal.class.getName()).log(Level.SEVERE, null, ex);
+            JOptionPane.showMessageDialog(null, "Um erro inexperado ocorreu!");
         } catch (ClassNotFoundException ex) {
-            Logger.getLogger(FormPrincipal.class.getName()).log(Level.SEVERE, null, ex);
+            JOptionPane.showMessageDialog(null, "Um erro inexperado ocorreu!");
         }
     }//GEN-LAST:event_jBCarregarActionPerformed
      
@@ -875,6 +944,12 @@ public class FormPrincipal extends javax.swing.JFrame{
     private javax.swing.JLabel jLNomeSubmarino;
     private javax.swing.JLabel jLPorta;
     private javax.swing.JLabel jLPorta1;
+    private javax.swing.JLabel jLTime;
+    private javax.swing.JLabel jLTime1;
+    private javax.swing.JLabel jLTime2;
+    private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabel5;
     private javax.swing.JPanel jPJogo1;
     private javax.swing.JPanel jPJogo2;
     private javax.swing.JPanel jPLeft1;

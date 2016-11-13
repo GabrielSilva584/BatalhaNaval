@@ -18,7 +18,7 @@ import java.util.logging.Logger;
 import javax.imageio.ImageIO;
 
 /**
- *
+ * Classe com a utilidade de carregar e gerenciar os Sprites dos Navios
  * @author Gabriel
  */
 public class ImageBuffer implements Observer{

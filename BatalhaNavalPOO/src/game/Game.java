@@ -12,8 +12,6 @@ import java.awt.Graphics2D;
 import java.awt.Point;
 import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.Observable;
-import java.util.Observer;
 
 /**
  *
@@ -69,15 +67,13 @@ public class Game implements Serializable{
         }
     }
     
-    public boolean recebeAtaque(int x, int y){
+    public void recebeAtaque(int x, int y) throws CoordAttackedException{
         Point aux = new Point();
         aux.x = x;
         aux.y = y;
-        if(!atacados.contains(aux)){
-            atacados.add(aux);
-            return true;
-        }
-        return false;
+        if(atacados.contains(aux)){
+            throw new CoordAttackedException();
+        }else atacados.add(aux);
     }
     
     public boolean verifySpaces(Navios n){

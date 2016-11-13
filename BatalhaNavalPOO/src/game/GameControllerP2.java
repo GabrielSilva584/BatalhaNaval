@@ -9,6 +9,8 @@ import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.event.ActionEvent;
 import java.awt.event.MouseEvent;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import net.Connection;
 
 /**
@@ -67,10 +69,13 @@ public class GameControllerP2 extends GameController{
     @Override
     public void mouseClicked(MouseEvent e) {
         if(ataques>0){
-            if(model.recebeAtaque(e.getX()/30, e.getY()/30)){
+            try {
+                model.recebeAtaque(e.getX()/30, e.getY()/30);
                 ataques = ataques -1;
                 conn.atk(e.getX()/30, e.getY()/30, ataques);
                 view.repaint();
+            } catch (CoordAttackedException ex) {
+                conn.exceptionMessage();
             }
         }
     }
