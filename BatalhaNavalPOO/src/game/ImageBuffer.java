@@ -16,6 +16,7 @@ import java.util.Observer;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.imageio.ImageIO;
+import javax.swing.JOptionPane;
 
 /**
  * Classe com a utilidade de carregar e gerenciar os Sprites dos Navios
@@ -52,6 +53,7 @@ public class ImageBuffer implements Observer{
             porH = ImageIO.read(new File(backgroundPath+"portaavioes.png"));
             porV = ImageIO.read(new File(backgroundPath+"portaavioes - vertical.png"));
         } catch (IOException ex) {
+            JOptionPane.showMessageDialog(null, "Falha ao carregar arquivos!");
             Logger.getLogger(ImageBuffer.class.getName()).log(Level.SEVERE, null, ex);
         }
     }

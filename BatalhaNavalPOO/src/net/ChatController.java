@@ -10,6 +10,7 @@ import form.FormPrincipal;
 import java.awt.Color;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.JOptionPane;
 import javax.swing.text.BadLocationException;
 import javax.swing.text.Style;
 import javax.swing.text.StyleConstants;
@@ -56,6 +57,7 @@ public class ChatController {
         try {
             doc.insertString(doc.getLength(), msg, selectColor(color));
         } catch (BadLocationException ex) {
+            JOptionPane.showMessageDialog(null, "Um erro inexperado ocorreu!");
             Logger.getLogger(FormPrincipal.class.getName()).log(Level.SEVERE, null, ex);
         }
     }

@@ -161,6 +161,7 @@ public class Connection {
             model1.init();
             model2.init();
         } catch (IOException ex) {
+            JOptionPane.showMessageDialog(null, "Um erro inexperado ocorreu!");
             Logger.getLogger(Connection.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
@@ -277,6 +278,7 @@ public class Connection {
                                 ps = new PrintStream(cliente.getOutputStream());
                                 ps.println(INPUT_LOST);
                             } catch (IOException ex) {
+                                JOptionPane.showMessageDialog(null, "Um erro inexperado ocorreu!");
                                 Logger.getLogger(Connection.class.getName()).log(Level.SEVERE, null, ex);
                             }
 
@@ -357,10 +359,10 @@ public class Connection {
                     }
                 }
             }
-        }
-        catch(IOException ex){
-            
-        } catch (ClassNotFoundException ex) {
+        }catch(IOException ex){
+            JOptionPane.showMessageDialog(null, "Um erro inexperado ocorreu!");
+        }catch (ClassNotFoundException ex) {
+            JOptionPane.showMessageDialog(null, "Um erro inexperado ocorreu!");
             Logger.getLogger(Connection.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
@@ -372,6 +374,7 @@ public class Connection {
             ps.println(msg);
             chat.insertMessage(name, msg, COLOR_BLUE);
         }catch(IOException ex){
+            JOptionPane.showMessageDialog(null, "Um erro inexperado ocorreu!");
             ex.printStackTrace();
         }
     }
@@ -393,6 +396,7 @@ public class Connection {
             }
             chat.attackMessage(remoteName, x, y, acertou, type, LOCAL_PLAYER);
         }catch(IOException ex){
+            JOptionPane.showMessageDialog(null, "Um erro inexperado ocorreu!");
             ex.printStackTrace();
         }
     }
@@ -452,6 +456,7 @@ public class Connection {
                 chat.insertString(MSG_YOUR_TURN, COLOR_RED);
             }
         }catch(IOException ex){
+            JOptionPane.showMessageDialog(null, "Um erro inexperado ocorreu!");
             ex.printStackTrace();
         }
     }
@@ -478,6 +483,7 @@ public class Connection {
                 aux = buffer.readLine();
             }
         }catch(IOException ex){
+            JOptionPane.showMessageDialog(null, "Um erro inexperado ocorreu!");
             ex.printStackTrace();
         }
     }
@@ -489,6 +495,7 @@ public class Connection {
             ps = new PrintStream(cliente.getOutputStream());
             ps.println(INPUT_TURN);
         }catch(IOException ex){
+            JOptionPane.showMessageDialog(null, "Um erro inexperado ocorreu!");
             ex.printStackTrace();
         }
         try {
@@ -534,6 +541,7 @@ public class Connection {
             ps.println(INPUT_LOAD_STATE_CONFIRM);
             chat.insertString("Aguardando confirmação do jogador remoto para carregar o estado.\n", COLOR_RED);
         } catch (IOException ex) {
+            JOptionPane.showMessageDialog(null, "Um erro inexperado ocorreu!");
             Logger.getLogger(Connection.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
